@@ -15,7 +15,7 @@ Your function should return length = 2, and A is now [1,2].
 class Solution {
 public:
     int removeDuplicates(int A[], int n) {
-        if (n==0 || n==1) return n;
+        if (n == 0) return n;
         int j = 0;
         for (int i=1; i<n; ++i) {
             if (A[j] != A[i]) A[++j] = A[i];
@@ -34,7 +34,7 @@ public:
 class Solution {
 public:
     int removeDuplicates(int A[], int n) {
-        if (n==0 || n==1) return n;
+        if (n == 0) return n;
         int j = 0;
         for (int i=1; i<n; ++i)
             if (A[i] != A[j]) A[++j] = A[i];
@@ -42,3 +42,15 @@ public:
     }
 };
 
+// Experienced version
+// A[i] != A[j] <==> A[i] != A[i-1]
+class Solution {
+public:
+    int removeDuplicates(int A[], int n) {
+        if (n == 0) return n;
+        int j = 0;
+        for (int i=1; i<n; ++i)
+            if (A[i] != A[i-1]) A[++j] = A[i];
+        return j+1;
+    }
+};
