@@ -14,6 +14,8 @@ The minimum depth is the number of nodes along the shortest path from the root n
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+ 
+// Recursive Version 
 class Solution {
 public:
     int minDepth(TreeNode *root) {
@@ -22,5 +24,29 @@ public:
         if (root->left && !root->right) return 1 + minDepth(root->left); 
         if (!root->left && root->right) return 1 + minDepth(root->right);
         return 1 + min(minDepth(root->left), minDepth(root->right));
+    }
+};
+
+// Iterative Version, NULL is a level separator
+class Solution {
+public:
+    int minDepth(TreeNode *root) {
+        if (!root) return 0;
+        queue<TreeNode *> q;
+        q.push(root);
+        q.push(NULL);
+        int depth = 0;
+        while (!q.empty()) {
+            TreeNode *node = q.front();
+            q.pop();
+            if (!node) {
+                ++depth;
+                q.push(NULL);
+            } else {
+                if (node->left) q.push(node->left);
+                if (node->right) q.push(node->right);
+                if (!node->left && !node->right) return ++depth;
+            }
+        }
     }
 };
