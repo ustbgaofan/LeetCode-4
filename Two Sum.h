@@ -29,11 +29,9 @@ public:
             bool bFind = false;
             while (begin <= end) {
                 int mid = (begin + end)/2;
-                if (orderedVec[mid].second < val) {
-                    begin = mid + 1;
-                } else if (orderedVec[mid].second > val) {
-                    end = mid - 1;
-                } else if (orderedVec[mid].second == val) {
+                if (orderedVec[mid].second < val) begin = mid + 1;
+                else if (orderedVec[mid].second > val) end = mid - 1;
+                else if (orderedVec[mid].second == val) {
 					result.push_back(min(orderedVec[i].first, orderedVec[mid].first));
 					result.push_back(max(orderedVec[i].first, orderedVec[mid].first));
 					bFind = true;
@@ -41,6 +39,35 @@ public:
                 }
             }
             if (bFind) break; 
+        }
+        return result;
+    }
+};
+
+// Version 2, Sort+Double-sided Search, O(nlogn)+O(n)
+class Solution {
+public:
+    static bool compare(pair<int,int> p1, pair<int,int> p2) { 
+        return p1.second < p2.second; 
+    }
+    
+    vector<int> twoSum(vector<int> &numbers, int target) {
+        vector<pair<int, int>> orderedVec;
+        int size = numbers.size();
+        for (int i=0; i<size; ++i)
+            orderedVec.push_back(make_pair(i+1, numbers[i]));
+        sort(orderedVec.begin(), orderedVec.end(), compare);
+        int i = 0, j = size - 1; 
+        while (i < j) {
+            int sum = orderedVec[i].second + orderedVec[j].second;
+            if (sum < target) ++i;
+            else if (sum > target) --j;
+            else break;
+        }
+		vector<int> result;
+        if (i < j) {
+            result.push_back(min(orderedVec[i].first, orderedVec[j].first));
+            result.push_back(max(orderedVec[i].first, orderedVec[j].first));
         }
         return result;
     }
