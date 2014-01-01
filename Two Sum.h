@@ -34,15 +34,14 @@ public:
                 } else if (orderedVec[mid].second > val) {
                     end = mid - 1;
                 } else if (orderedVec[mid].second == val) {
-					result.push_back(orderedVec[i].first);
-					result.push_back(orderedVec[mid].first);
+					result.push_back(min(orderedVec[i].first, orderedVec[mid].first));
+					result.push_back(max(orderedVec[i].first, orderedVec[mid].first));
 					bFind = true;
                     break;
                 }
             }
             if (bFind) break; 
         }
-        sort(result.begin(), result.end());
         return result;
     }
 };
