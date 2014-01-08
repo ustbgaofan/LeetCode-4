@@ -35,3 +35,27 @@ public:
         return prefix;
     }
 };
+
+// Recursive Version, O(n)=2O(n/2)+m--->O(nm) same as above methods
+class Solution {
+public:
+    string longestCommonPrefix(string str1, string str2) {
+        int size = min(str1.size(), str2.size());
+        for (int i=0; i<size; ++i) {
+            if (str1[i] != str2[i]) return str1.substr(0, i);
+        }
+        return str1.substr(0, size);
+    }
+    
+    string longestCommonPrefix(vector<string> &strs, int begin, int end) {
+        if (begin > end) return "";
+        if (begin == end) return strs[begin];
+        int mid = (begin + end)/2;
+        return longestCommonPrefix(longestCommonPrefix(strs, begin, mid),
+                                   longestCommonPrefix(strs, mid+1, end));
+    }
+    
+    string longestCommonPrefix(vector<string> &strs) {
+        return longestCommonPrefix(strs, 0, strs.size()-1);
+    }
+};
