@@ -22,6 +22,6 @@ public:
             else if (A[mid] < target) begin = mid + 1;
             else end = mid - 1;
         }
+		return begin;
     }
-    return begin;
 };
