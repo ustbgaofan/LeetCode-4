@@ -84,3 +84,46 @@ public:
         return true;
     }
 };
+
+// Version 3, shorten the code at the cost of extra space  
+class Solution {
+public:
+    bool isValidSudoku(vector<vector<char> > &board) {
+        bool col[9][9] = {false}, block[3][9] = {false};
+        for (int i=0; i<9; ++i) {
+            bool row[9] = {false};
+            if (i==3 || i==6) memset(block, 0, sizeof(block));
+            for (int j=0; j<9; ++j) {
+                if (board[i][j] == '.') continue;
+                int k = board[i][j] - '1', p = i/3*3 + k/3, q = j/3*3 + k%3;
+                if (row[k] || col[k][j] || block[p%3][q]) return false;
+                else {
+                    row[k] = col[k][j] = block[p%3][q]= true;
+                }
+            }
+        }
+        return true;
+    }
+};
+
+// Version 4, less space, bitwise operation based on version 3 
+class Solution {
+public:
+    bool isValidSudoku(vector<vector<char> > &board) {
+        int col[9] = {0}, block[3] = {0};
+        for (int i=0; i<9; ++i) {
+            int row = 0;
+            if (i==3 || i==6) memset(block, 0, sizeof(block));
+            for (int j=0; j<9; ++j) {
+                if (board[i][j] == '.') continue;
+                int k = 1 << board[i][j]-'1';
+                int blkIdx = (i/3*3 + j/3) % 3;
+                if (row&k || col[j]&k || block[blkIdx]&k) return false;
+                row |= k;
+                col[j] |= k;
+                block[blkIdx] |= k;
+            }
+        }
+        return true;
+    }
+};
