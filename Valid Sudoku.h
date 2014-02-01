@@ -89,9 +89,12 @@ public:
 class Solution {
 public:
     bool isValidSudoku(vector<vector<char> > &board) {
-        bool col[9][9] = {false}, block[3][9] = {false};
+        bool col[9][9], block[3][9];
+		memset(col, 0, sizeof(col));
+		memset(block, 0, sizeof(block));
         for (int i=0; i<9; ++i) {
-            bool row[9] = {false};
+            bool row[9];
+			memset(row, 0, sizeof(row));
             if (i==3 || i==6) memset(block, 0, sizeof(block));
             for (int j=0; j<9; ++j) {
                 if (board[i][j] == '.') continue;
@@ -110,7 +113,9 @@ public:
 class Solution {
 public:
     bool isValidSudoku(vector<vector<char> > &board) {
-        int col[9] = {0}, block[3] = {0};
+        int col[9], block[3];
+		memset(col, 0, sizeof(col));
+		memset(block, 0, sizeof(block));
         for (int i=0; i<9; ++i) {
             int row = 0;
             if (i==3 || i==6) memset(block, 0, sizeof(block));
