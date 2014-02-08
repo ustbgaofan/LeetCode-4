@@ -12,6 +12,7 @@ Note:
 Although the above answer is in lexicographical order, your answer could be in any order you want.
 */
 
+// Naive Version, with vector copy 
 class Solution {
 public:
     vector<string> letterCombinations(string digits) {
@@ -38,5 +39,48 @@ public:
 		    }
 	    }
 	    return res;
+    }
+};
+
+// Advanced Version, less code, in place method.
+class Solution {
+public:
+    vector<string> letterCombinations(string digits) {
+        string mapping[8] = {"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        vector<string> res(1, "");
+        for (int i=0; i<digits.size(); ++i) {
+            string str = mapping[digits[i]-'2'];
+            for (int j=res.size()-1; j>=0; --j) {
+                for (int k=1; k<str.size(); ++k) 
+                    res.push_back(res[j] + str[k]);
+                res[j] += str[0];
+            }
+        }
+        return res;
+    }
+};
+
+// DFS Version
+class Solution {
+public:
+    void DFS(vector<string>& res, int depth, string& path, const string& digits, string mapping[]) {
+        if (depth == digits.size()) {
+            res.push_back(path);
+            return;
+        }
+        string str = mapping[digits[depth]-'2'];
+        for (int i=0; i<str.size(); ++i) {
+            path.push_back(str[i]);
+            DFS(res, depth+1, path, digits, mapping);
+            path.pop_back();
+        }
+    }
+    
+    vector<string> letterCombinations(string digits) {
+        string mapping[8] = {"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        vector<string> res;
+        string path;
+        DFS(res, 0, path, digits, mapping);
+        return res; 
     }
 };
