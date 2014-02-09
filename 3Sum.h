@@ -28,10 +28,8 @@ public:
                 if (sum < -num[i]) ++l;
                 else if (sum > -num[i]) --r;
                 else {
-                    vector<int> v(1, num[i]);
-                    v.push_back(min(num[l], num[r]));
-                    v.push_back(max(num[l], num[r]));
-                    res.push_back(v);
+                    int tmp[3] = {num[i], num[l], num[r]};
+                    res.push_back(vector<int>(tmp, tmp+3));
                     do {
                         ++l;
                     } while (l<r && num[l]==num[l-1]);
