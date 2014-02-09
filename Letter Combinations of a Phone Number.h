@@ -63,15 +63,15 @@ public:
 // DFS Version
 class Solution {
 public:
-    void DFS(vector<string>& res, int depth, string& path, const string& digits, string mapping[]) {
-        if (depth == digits.size()) {
+    void DFS(vector<string>& res, string& path, const string& digits, string mapping[]) {
+        if (path.size() == digits.size()) {
             res.push_back(path);
             return;
         }
-        string str = mapping[digits[depth]-'2'];
+        string str = mapping[digits[path.size()]-'2'];
         for (int i=0; i<str.size(); ++i) {
             path.push_back(str[i]);
-            DFS(res, depth+1, path, digits, mapping);
+            DFS(res, path, digits, mapping);
             path.pop_back();
         }
     }
@@ -80,7 +80,7 @@ public:
         string mapping[8] = {"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
         vector<string> res;
         string path;
-        DFS(res, 0, path, digits, mapping);
+        DFS(res, path, digits, mapping);
         return res; 
     }
 };
