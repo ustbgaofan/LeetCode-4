@@ -13,16 +13,17 @@ Output: index1=1, index2=2
 // Version 1, Sort+BinarySearch, O(nlogn)+O(log n!) = O(nlogn)+O(nlogn)
 class Solution {
 public:
-    static bool compare(pair<int,int> p1, pair<int,int> p2) { 
-        return p1.second < p2.second; 
-    }
-    
     vector<int> twoSum(vector<int> &numbers, int target) {
         vector<pair<int, int>> orderedVec;
         int size = numbers.size();
         for (int i=0; i<size; ++i)
             orderedVec.push_back(make_pair(i+1, numbers[i]));
-        sort(orderedVec.begin(), orderedVec.end(), compare);
+        struct MyComp {
+            bool operator() (pair<int, int> p1, pair<int, int> p2) {
+                return p1.second < p2.second;  
+            }
+        };
+        sort(orderedVec.begin(), orderedVec.end(), MyComp());
         vector<int> result;
         for (int i=0; i<size; ++i) {
             int val = target - orderedVec[i].second, begin = i + 1, end = size - 1;
@@ -47,16 +48,17 @@ public:
 // Version 2, Sort+Double-sided Search, O(nlogn)+O(n)
 class Solution {
 public:
-    static bool compare(pair<int,int> p1, pair<int,int> p2) { 
-        return p1.second < p2.second; 
-    }
-    
     vector<int> twoSum(vector<int> &numbers, int target) {
         vector<pair<int, int>> orderedVec;
         int size = numbers.size();
         for (int i=0; i<size; ++i)
             orderedVec.push_back(make_pair(i+1, numbers[i]));
-        sort(orderedVec.begin(), orderedVec.end(), compare);
+        struct MyComp {
+            bool operator() (pair<int, int> p1, pair<int, int> p2) {
+                return p1.second < p2.second;  
+            }
+        };
+        sort(orderedVec.begin(), orderedVec.end(), MyComp());
         int i = 0, j = size - 1; 
         while (i < j) {
             int sum = orderedVec[i].second + orderedVec[j].second;
