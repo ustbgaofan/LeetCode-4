@@ -68,7 +68,7 @@ public:
     }
 };
 
-// Space Optimized Bottom-up Dynamic Programming Version 
+// Space Optimized Bottom-up Dynamic Programming Version, O(2k) 
 class Solution {
 public:
     int uniquePaths(int m, int n) {
@@ -86,6 +86,25 @@ public:
         }
         int res = mem[(m-1)%2][n-1];
         for (int i=0; i<2; ++i) delete[] mem[i];
+        delete[] mem;
+        return res;
+    }
+};
+
+// Space Optimized Bottom-up Dynamic Programming Version, O(k) 
+class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        int *mem = new int[n];
+        memset(mem, 0, sizeof(int)*n);
+        for (int i=0; i<n; ++i) mem[i] = 1;
+        for (int i=1; i<m; ++i) {
+            mem[0] = 1;
+            for (int j=1; j<n; ++j) {
+                mem[j] += mem[j-1];
+            }
+        }
+        int res = mem[n-1];
         delete[] mem;
         return res;
     }

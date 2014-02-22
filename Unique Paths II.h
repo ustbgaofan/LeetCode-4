@@ -64,13 +64,57 @@ public:
         if (obstacleGrid[high-1][len-1] == 1) return 0;
         vector<vector<int>> mem(high, vector<int>(len, -1));
         mem[high-1][len-1] = 1;
-        for (int i=high-2; i>=0; --i)
-            mem[i][len-1] = obstacleGrid[i][len-1]==1? 0: mem[i+1][len-1];
-        for (int i=len-2; i>=0; --i)
+        for (int i=len-2; i>=0; --i) {
             mem[high-1][i] = obstacleGrid[high-1][i]==1? 0: mem[high-1][i+1];
-        for (int i=high-2; i>=0; --i)
-            for (int j=len-2; j>=0; --j)
+        }
+        for (int i=high-2; i>=0; --i) {
+            mem[i][len-1] = obstacleGrid[i][len-1]==1? 0: mem[i+1][len-1];
+            for (int j=len-2; j>=0; --j) {
                 mem[i][j] = obstacleGrid[i][j]==1? 0: mem[i+1][j]+mem[i][j+1];
+            }
+        }
         return mem[0][0];
+    }
+};
+
+// Space Optimized Bottom-up Dynamic Programming Version, O(2k)
+class Solution {
+public:
+    int uniquePathsWithObstacles(vector<vector<int> > &obstacleGrid) {
+        int high = obstacleGrid.size(), len = obstacleGrid.back().size();
+        if (obstacleGrid[high-1][len-1] == 1) return 0;
+        vector<vector<int>> mem(2, vector<int>(len, -1));
+        mem[(high-1)%2][len-1] = 1;
+        for (int i=len-2; i>=0; --i) {
+            mem[(high-1)%2][i] = obstacleGrid[high-1][i]==1? 0: mem[(high-1)%2][i+1];
+		}
+        for (int i=high-2; i>=0; --i) {
+            mem[i%2][len-1] = obstacleGrid[i][len-1]==1? 0: mem[(i+1)%2][len-1];
+            for (int j=len-2; j>=0; --j) {
+                mem[i%2][j] = obstacleGrid[i][j]==1? 0: mem[(i+1)%2][j]+mem[i%2][j+1];
+            }
+        }
+        return mem[0][0];
+    }
+};
+
+// Space Optimized Bottom-up Dynamic Programming Version, O(k)
+class Solution {
+public:
+    int uniquePathsWithObstacles(vector<vector<int> > &obstacleGrid) {
+        int high = obstacleGrid.size(), len = obstacleGrid.back().size();
+        if (obstacleGrid[high-1][len-1] == 1) return 0;
+        vector<int> mem(len, -1);
+        mem[len-1] = 1;
+        for (int i=len-2; i>=0; --i) {
+            mem[i] = obstacleGrid[high-1][i]==1? 0: mem[i+1];
+		}
+        for (int i=high-2; i>=0; --i) {
+            mem[len-1] = obstacleGrid[i][len-1]==1? 0: mem[len-1];
+            for (int j=len-2; j>=0; --j) {
+                mem[j] = obstacleGrid[i][j]==1? 0: mem[j]+mem[j+1];
+            }
+        }
+        return mem[0];
     }
 };
