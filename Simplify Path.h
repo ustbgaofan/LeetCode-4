@@ -80,3 +80,24 @@ public:
         return res;
     }
 };
+
+// In Place Version, without extra space
+class Solution {
+public:
+    string simplifyPath(string path) {
+        if (path.back() != '/') path += "/";
+        int size = path.size(), j = 1;
+        for (int i=0; i<size; ++i) {
+            while (i<size && path[i]=='/') ++i;
+            if (i == size) break;
+            int start = i;
+            while (i<size && path[i]!='/') ++i;
+            if (i-start==2 && path[i-1]=='.' && path[i-2]=='.') {
+                if (j > 1) while (--j>1 && path[j-1]!='/');
+            } else if (i-start>2 || path[i-1]!='.') {
+                for (int k=0; k<i-start+1; ++k) path[j++] = path[start+k];
+            }
+        }
+        return j==1 ? "/": path.substr(0, --j);
+    }
+};
