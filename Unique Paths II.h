@@ -25,10 +25,10 @@ class Solution {
 public:
     int uniquePathsWithObstacles(vector<vector<int>> &obstacleGrid, int i, int j) {
         if (obstacleGrid[i][j] == 1) return 0;
-        int high = obstacleGrid.size(), len = obstacleGrid.back().size();
-        if (i+1==high && j+1==len) return 1;
-        int res = (i+1) < high? uniquePathsWithObstacles(obstacleGrid, i+1, j): 0;
-        res += (j+1) < len? uniquePathsWithObstacles(obstacleGrid, i, j+1): 0;
+        int m = obstacleGrid.size(), n = obstacleGrid.back().size();
+        if (i+1==m && j+1==n) return 1;
+        int res = (i+1) < m? uniquePathsWithObstacles(obstacleGrid, i+1, j): 0;
+        res += (j+1) < n? uniquePathsWithObstacles(obstacleGrid, i, j+1): 0;
         return res;
     }
     
@@ -43,10 +43,10 @@ public:
     int uniquePathsWithObstacles(vector<vector<int>> &obstacleGrid, int i, int j, vector<vector<int>> &mem) {
         if (mem[i][j] >= 0) return mem[i][j];
         if (obstacleGrid[i][j] == 1) return mem[i][j] = 0;
-        int high = obstacleGrid.size(), len = obstacleGrid.back().size();
-        if (i+1==high && j+1==len) return mem[i][j] = 1;
-        mem[i][j] = (i+1) < high? uniquePathsWithObstacles(obstacleGrid, i+1, j, mem): 0;
-        mem[i][j] += (j+1) < len? uniquePathsWithObstacles(obstacleGrid, i, j+1, mem): 0;
+        int m = obstacleGrid.size(), n = obstacleGrid.back().size();
+        if (i+1==m && j+1==n) return mem[i][j] = 1;
+        mem[i][j] = (i+1) < m? uniquePathsWithObstacles(obstacleGrid, i+1, j, mem): 0;
+        mem[i][j] += (j+1) < n? uniquePathsWithObstacles(obstacleGrid, i, j+1, mem): 0;
         return mem[i][j];
     }
     
@@ -60,16 +60,16 @@ public:
 class Solution {
 public:
     int uniquePathsWithObstacles(vector<vector<int> > &obstacleGrid) {
-        int high = obstacleGrid.size(), len = obstacleGrid.back().size();
-        if (obstacleGrid[high-1][len-1] == 1) return 0;
-        vector<vector<int>> mem(high, vector<int>(len, -1));
-        mem[high-1][len-1] = 1;
-        for (int i=len-2; i>=0; --i) {
-            mem[high-1][i] = obstacleGrid[high-1][i]==1? 0: mem[high-1][i+1];
+        int m = obstacleGrid.size(), n = obstacleGrid.back().size();
+        if (obstacleGrid[m-1][n-1] == 1) return 0;
+        vector<vector<int>> mem(m, vector<int>(n, -1));
+        mem[m-1][n-1] = 1;
+        for (int i=n-2; i>=0; --i) {
+            mem[m-1][i] = obstacleGrid[m-1][i]==1? 0: mem[m-1][i+1];
         }
-        for (int i=high-2; i>=0; --i) {
-            mem[i][len-1] = obstacleGrid[i][len-1]==1? 0: mem[i+1][len-1];
-            for (int j=len-2; j>=0; --j) {
+        for (int i=m-2; i>=0; --i) {
+            mem[i][n-1] = obstacleGrid[i][n-1]==1? 0: mem[i+1][n-1];
+            for (int j=n-2; j>=0; --j) {
                 mem[i][j] = obstacleGrid[i][j]==1? 0: mem[i+1][j]+mem[i][j+1];
             }
         }
@@ -81,16 +81,16 @@ public:
 class Solution {
 public:
     int uniquePathsWithObstacles(vector<vector<int> > &obstacleGrid) {
-        int high = obstacleGrid.size(), len = obstacleGrid.back().size();
-        if (obstacleGrid[high-1][len-1] == 1) return 0;
-        vector<vector<int>> mem(2, vector<int>(len, -1));
-        mem[(high-1)%2][len-1] = 1;
-        for (int i=len-2; i>=0; --i) {
-            mem[(high-1)%2][i] = obstacleGrid[high-1][i]==1? 0: mem[(high-1)%2][i+1];
+        int m = obstacleGrid.size(), n = obstacleGrid.back().size();
+        if (obstacleGrid[m-1][n-1] == 1) return 0;
+        vector<vector<int>> mem(2, vector<int>(n, -1));
+        mem[(m-1)%2][n-1] = 1;
+        for (int i=n-2; i>=0; --i) {
+            mem[(m-1)%2][i] = obstacleGrid[m-1][i]==1? 0: mem[(m-1)%2][i+1];
 		}
-        for (int i=high-2; i>=0; --i) {
-            mem[i%2][len-1] = obstacleGrid[i][len-1]==1? 0: mem[(i+1)%2][len-1];
-            for (int j=len-2; j>=0; --j) {
+        for (int i=m-2; i>=0; --i) {
+            mem[i%2][n-1] = obstacleGrid[i][n-1]==1? 0: mem[(i+1)%2][n-1];
+            for (int j=n-2; j>=0; --j) {
                 mem[i%2][j] = obstacleGrid[i][j]==1? 0: mem[(i+1)%2][j]+mem[i%2][j+1];
             }
         }
@@ -102,16 +102,16 @@ public:
 class Solution {
 public:
     int uniquePathsWithObstacles(vector<vector<int> > &obstacleGrid) {
-        int high = obstacleGrid.size(), len = obstacleGrid.back().size();
-        if (obstacleGrid[high-1][len-1] == 1) return 0;
-        vector<int> mem(len, -1);
-        mem[len-1] = 1;
-        for (int i=len-2; i>=0; --i) {
-            mem[i] = obstacleGrid[high-1][i]==1? 0: mem[i+1];
+        int m = obstacleGrid.size(), n = obstacleGrid.back().size();
+        if (obstacleGrid[m-1][n-1] == 1) return 0;
+        vector<int> mem(n, -1);
+        mem[n-1] = 1;
+        for (int i=n-2; i>=0; --i) {
+            mem[i] = obstacleGrid[m-1][i]==1? 0: mem[i+1];
 		}
-        for (int i=high-2; i>=0; --i) {
-            mem[len-1] = obstacleGrid[i][len-1]==1? 0: mem[len-1];
-            for (int j=len-2; j>=0; --j) {
+        for (int i=m-2; i>=0; --i) {
+            mem[n-1] = obstacleGrid[i][n-1]==1? 0: mem[n-1];
+            for (int j=n-2; j>=0; --j) {
                 mem[j] = obstacleGrid[i][j]==1? 0: mem[j]+mem[j+1];
             }
         }
