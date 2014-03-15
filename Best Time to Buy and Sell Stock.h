@@ -45,7 +45,7 @@ public:
     }
 };
 
-// Backward-forward Version with constant Space
+// Backward-forward Version with Constant Space
 class Solution {
 public:
     int maxProfit(vector<int> &prices) {
@@ -60,7 +60,7 @@ public:
     }
 };
 
-// Forward-backward Version with constant Space
+// Forward-backward Version with Constant Space
 class Solution {
 public:
     int maxProfit(vector<int> &prices) {
