@@ -22,6 +22,28 @@ public:
 	}
 };
 
+// Bottom-up Dynamic Programming Version, time complexity O(n^2), space complexity O(1)
+class Solution {
+public:
+    string longestPalindrome(string s) {
+		int N = s.size(), len = 0, l = 0;
+	    for (int i=0; i<N; ++i) {
+		    for (int t=0; t<2; ++t) {
+		        bool mem = true;
+		        for (int j=i, k=i+t; j>=0 && k<N; --j, ++k) {
+			        if (s[j]==s[k] && mem) {
+				        mem = true;
+				        if (k-j+1 > len) len = k - j + 1, l = j;
+			        } else {
+				        mem = false;
+			        }
+		        }
+		    }
+	    }
+	    return s.substr(l, len);
+	}
+};
+
 // Manacher's Algorithm, time complexity O(n), space complexity O(n)
 class Solution {
 public:
