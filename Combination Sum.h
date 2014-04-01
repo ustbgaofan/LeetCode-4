@@ -18,10 +18,10 @@ A solution set is:
 // Version 1, start from big to small
 class Solution {
 public:
-    int searchInsert(vector<int> &v, int target) {
-        int begin = 0, end = v.size() - 1, mid;
+    int searchInsert(vector<int> &v, int end, int target) {
+        int begin = 0;
         while (begin <= end) {
-            mid = (begin + end)/2;
+            int mid = (begin + end)/2;
             if (v[mid] == target) return mid;
             else if (v[mid] < target) begin = mid + 1;
             else end = mid - 1;
@@ -29,16 +29,15 @@ public:
 		return begin;
     }
     
-    void DFS(vector<vector<int>> &res, vector<int> &path, vector<int> &candidates, int start, int target) {
+    void DFS(vector<vector<int>> &res, vector<int> &path, vector<int> &candidates, int end, int target) {
         if (target == 0) {
             res.push_back(path);  // first push then reverse!
             reverse(res.back().begin(), res.back().end());
             return;
         }
-        int newStart = searchInsert(candidates, target);
-        start = newStart<start ? newStart: start;
-        while (start>=0 && candidates[start]>target) --start;
-        for (int i=start; i>=0; --i) {
+        end = min(end, searchInsert(candidates, end, target));
+        while (end>=0 && candidates[end]>target) --end;
+        for (int i=end; i>=0; --i) {
             path.push_back(candidates[i]);
             DFS(res, path, candidates, i, target-candidates[i]);
             path.pop_back();
