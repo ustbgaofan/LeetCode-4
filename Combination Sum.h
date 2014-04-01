@@ -101,3 +101,28 @@ public:
 	    return ans;
     }
 };
+
+// Version 4, avoiding duplicates without set
+class Solution {
+public:
+    void DFS(vector<vector<int>> &res, vector<int> &path, vector<int> &candidates, int start, int target) {
+	    if (target == 0) {
+		    res.push_back(path);
+		    return;
+	    }
+	    for (int i=start; i<candidates.size() && candidates[i]<=target; ++i) {
+	        if (i>start && candidates[i]==candidates[i-1]) continue;
+		    path.push_back(candidates[i]);
+		    DFS(res, path, candidates, i, target-candidates[i]);
+		    path.pop_back();
+	    }
+    }
+
+    vector<vector<int> > combinationSum(vector<int> &candidates, int target) {
+	    vector<vector<int>> res;
+	    vector<int> path;
+	    sort(candidates.begin(), candidates.end());
+	    DFS(res, path, candidates, 0, target);
+	    return res;
+    }
+};
