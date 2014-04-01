@@ -77,7 +77,7 @@ public:
     }
 };
 
-// Version 3, although above version2 are accepted by leetcode OJ, they are not right, as results might be duplicate
+// Version 3, although above versions are accepted by leetcode OJ, they are not right, as results might be duplicate
 class Solution {
 public:
     void DFS(set<vector<int>> &res, vector<int> &path, vector<int> &candidates, int start, int target) {
