@@ -15,7 +15,7 @@ A solution set is:
 */
 
 
-// Version 1, start from big to small
+// Version 1, start from big to small, accepted, but not right
 class Solution {
 public:
     int searchInsert(vector<int> &v, int end, int target) {
@@ -53,7 +53,7 @@ public:
     }
 };
 
-// Version 2, start from small to big, without reverse, without binary search
+// Version 2, start from small to big, without reverse, without binary search, accepted, but not right
 class Solution {
 public:
     void DFS(vector<vector<int>> &res, vector<int> &path, vector<int> &candidates, int start, int target) {
@@ -74,5 +74,30 @@ public:
         sort(candidates.begin(), candidates.end());
         DFS(res, path, candidates, 0, target);
         return res;
+    }
+};
+
+// Version 3, although above version2 are accepted by leetcode OJ, they are not right, as results might be duplicate
+class Solution {
+public:
+    void DFS(set<vector<int>> &res, vector<int> &path, vector<int> &candidates, int start, int target) {
+	    if (target == 0) {
+		    res.insert(path);
+		    return;
+	    }
+	    for (int i=start; i<candidates.size() && candidates[i]<=target; ++i) {
+		    path.push_back(candidates[i]);
+		    DFS(res, path, candidates, i, target-candidates[i]);
+		    path.pop_back();
+	    }
+    }
+
+    vector<vector<int> > combinationSum(vector<int> &candidates, int target) {
+	    set<vector<int>> res;
+	    vector<int> path;
+	    sort(candidates.begin(), candidates.end());
+	    DFS(res, path, candidates, 0, target);
+	    vector<vector<int>> ans(res.begin(), res.end());
+	    return ans;
     }
 };
