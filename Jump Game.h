@@ -18,7 +18,7 @@ class Solution {
 public:
     bool canJump(int A[], int n) {
         int last = n - 1;
-        for (int i=last-2; i>=0; --i) {
+        for (int i=n-2; i>=0; --i) {
             if (last-i <= A[i]) last = i;
         }
         return last == 0;
