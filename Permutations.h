@@ -30,8 +30,9 @@ public:
         vector<vector<int>> res;
         vector<int> path;
         vector<pair<int, bool>> vec;
-        for (int i=0; i<num.size(); ++i) 
+        for (int i=0; i<num.size(); ++i) {
 			vec.push_back(make_pair(num[i], false));
+		}
         DFS(res, path, vec);
         return res;
     }
