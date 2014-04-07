@@ -61,7 +61,7 @@ public:
     }
 };
 
-// Advanced DFS Version with Bit Manipulation, time complexity O(n^(n+1))
+// Advanced DFS Version with Bit Manipulation, size of board must be within INT's number of bits, time complexity O(n^n), 
 class Solution {
 public:
     void BitDFS(int n, int row, int ld, int rd, vector<vector<string>> &res, vector<string> &path) {
