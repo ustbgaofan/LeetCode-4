@@ -86,3 +86,48 @@ public:
         return res;
     }
 };
+
+// Iterative Version, time complexity O(n^(n+1)) 
+class Solution {
+public:
+    bool isValid(vector<string> &path, int n, int pos) {
+        int M = path.size();
+        for (int i=M-1, k=1; i>=0; --i, ++k) {
+            if (path[i][pos] == 'Q') return false;
+            if (pos-k>=0 && path[i][pos-k]=='Q') return false;
+            if (pos+k<n && path[i][pos+k]=='Q') return false;
+        }
+        return true;
+    }
+    
+    vector<vector<string> > solveNQueens(int n) {
+        vector<vector<string>> res;
+        vector<string> path;
+        vector<int> board(n, -1);
+        for (int i=0; i<n && i>=0; ++i) {
+            int j = board[i] + 1;
+            for (; j<n; ++j) {
+                if (!isValid(path, n, j)) continue;
+                board[i] = j;
+                string line(n, '.');
+                line[j] = 'Q';
+                path.push_back(line);
+                break;
+            }
+            if (j == n) {
+                if (!path.empty()) path.pop_back();  // upper level
+                board[i] = -1;
+                i -= 2;
+                continue;
+            }
+            if (i == n-1) {
+                res.push_back(path);
+                path.pop_back();  // current level
+                if (!path.empty()) path.pop_back();  // upper level
+                board[i] = -1;
+                i -= 2;
+            }
+        }
+        return res;
+    }
+};
