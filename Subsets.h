@@ -24,7 +24,7 @@ If S = [1,2,3], a solution is:
 // Version 1, standard DFS, transformation from Combinations version 1  
 class Solution {
 public:
-    void DFS(vector<int> &S, vector<vector<int>> &res, int len, vector<int> &path, int begin) {
+    void DFS(const vector<int> &S, vector<vector<int>> &res, int len, vector<int> &path, int begin) {
         if (len == path.size()) {
             res.push_back(path);
             return;
@@ -49,7 +49,7 @@ public:
 // Version 2, every element has 2 choices
 class Solution {
 public:
-    void DFS(vector<int> &S, vector<vector<int>> &res, vector<int> &path, int begin) {
+    void DFS(const vector<int> &S, vector<vector<int>> &res, vector<int> &path, int begin) {
         if (begin == S.size()) {
             res.push_back(path);
             return;
