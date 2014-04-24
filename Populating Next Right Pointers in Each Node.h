@@ -45,24 +45,19 @@ public:
     void connect(TreeLinkNode *root) {
         if (!root) return;
         queue<TreeLinkNode *> q;
-        q.push(NULL);
         q.push(root);
-        TreeLinkNode *prev = NULL;
+        q.push(NULL);
         while (!q.empty()) {
-            TreeLinkNode *node = q.front();
+            root = q.front();
             q.pop();
-            if (!node && !q.empty()) {
+            if (root) {
+                if (root->left) q.push(root->left);
+                if (root->right) q.push(root->right);
+                root->next = q.front();
+            } else if (!q.empty()) {
                 q.push(NULL);
-                if (prev) prev->next = NULL;
-                prev = NULL;
-            } else if (node) {
-                if (node->left) q.push(node->left);
-                if (node->right) q.push(node->right);
-                if (prev) prev->next = node;
-                prev = node;
             }
         }
-        prev->next = NULL;
     }
 };
 
