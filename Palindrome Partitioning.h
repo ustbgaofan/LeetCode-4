@@ -119,7 +119,7 @@ public:
     }
 };
 
-// Top-down Dynamic Programming Version, time complexity O(n^4), space complexity O(n^3)
+// Top-down Dynamic Programming Version, time complexity O((n^2)(2^n)), space complexity O(n(2^n)n)
 // based on 2nd version instead of 3rd for simplicity
 class Solution {
 public:
@@ -154,7 +154,7 @@ public:
     }
 };
 
-// Bottom-up Dynamic Programming Version, time complexity O(n^4), space complexity O(n^3)
+// Bottom-up Dynamic Programming Version, time complexity O((n^2)(2^n)), space complexity O(n(2^n)n)
 // based on 2nd version instead of 3rd for simplicity
 class Solution {
 public:
@@ -173,6 +173,78 @@ public:
             for (int j=i; j<N; ++j) {
                 string str = s.substr(i, j-i+1);
                 if (!isPalindrome(str)) continue;
+                if (j+1 < N) {
+                    for (int k=0; k<mem[j+1].size(); ++k) {
+                        mem[i].push_back(mem[j+1][k]);
+                        mem[i].back().insert(mem[i].back().begin(), str);
+                    }
+                } else {
+                    mem[i].push_back(vector<string>(1, str));
+                }
+            }
+        }
+        return mem[0];
+    }
+};
+
+// Double Top-down DP, time complexity O((n^2)(2^n)), space complexity O(n(2^n)n)
+class Solution {
+public:
+    bool isPalindrome(const string &s, int begin, int end, vector<vector<int>> &isP) {
+        if (isP[begin][end] != -1) return isP[begin][end];
+        for (int i=begin, j=end; i<j; ++i, --j) {
+            if (s[i] != s[j]) return isP[begin][end] = false;
+        }
+        return isP[begin][end] = true;
+    }
+    
+    vector<vector<string>> DFS(const string &s, int begin, vector<vector<vector<string>>> &mem, vector<vector<int>> &isP) {
+        if (begin == s.size()) {
+            vector<vector<string>> res(1);
+            return res;
+        }
+        if (!mem[begin].empty()) return mem[begin]; 
+        for (int i=begin; i<s.size(); ++i) {
+            if (!isPalindrome(s, begin, i, isP)) continue;
+            vector<vector<string>> v = DFS(s, i+1, mem, isP);
+            string str = s.substr(begin, i-begin+1);
+            for (int j=0; j<v.size(); ++j) {
+                v[j].insert(v[j].begin(), str);
+                mem[begin].push_back(v[j]);
+            }
+        }
+        return mem[begin];
+    }
+    
+    vector<vector<string>> partition(string s) {
+        int N = s.size();
+        vector<vector<vector<string>>> mem(N);
+        vector<vector<int>> isP(N, vector<int>(N, -1));
+        return DFS(s, 0, mem, isP);
+    }
+};
+
+// Double Bottom-up DP, time complexity O((n^2)(2^n)), space complexity O(n(2^n)n)
+class Solution {
+public:
+    bool isPalindrome(const string &s, int begin, int end, vector<vector<int>> &isP) {
+        if (isP[begin][end] != -1) return isP[begin][end];
+        for (int i=begin, j=end; i<j; ++i, --j) {
+            if (s[i] != s[j]) return isP[begin][end] = false;
+        }
+        return isP[begin][end] = true;
+    }
+
+    vector<vector<string>> partition(string s) {
+        int N = s.size();
+        vector<vector<vector<string>>> mem(N);
+        vector<vector<int>> isP(N, vector<int>(N, -1));
+        mem.back().push_back(vector<string>(1, s.substr(N-1, 1)));
+        isP.back().back() = 1;
+        for (int i=N-2; i>=0; --i) {
+            for (int j=i; j<N; ++j) {
+                if (!isPalindrome(s, i, j, isP)) continue;
+                string str = s.substr(i, j-i+1);
                 if (j+1 < N) {
                     for (int k=0; k<mem[j+1].size(); ++k) {
                         mem[i].push_back(mem[j+1][k]);
