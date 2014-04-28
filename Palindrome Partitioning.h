@@ -168,8 +168,7 @@ public:
     vector<vector<string>> partition(string s) {
         int N = s.size();
         vector<vector<vector<string>>> mem(N);
-        mem.back().push_back(vector<string>(1, s.substr(N-1, 1)));
-        for (int i=N-2; i>=0; --i) {
+        for (int i=N-1; i>=0; --i) {
             for (int j=i; j<N; ++j) {
                 string str = s.substr(i, j-i+1);
                 if (!isPalindrome(str)) continue;
@@ -239,11 +238,70 @@ public:
         int N = s.size();
         vector<vector<vector<string>>> mem(N);
         vector<vector<int>> isP(N, vector<int>(N, -1));
-        mem.back().push_back(vector<string>(1, s.substr(N-1, 1)));
-        isP.back().back() = 1;
-        for (int i=N-2; i>=0; --i) {
+        for (int i=N-1; i>=0; --i) {
             for (int j=i; j<N; ++j) {
                 if (!isPalindrome(s, i, j, isP)) continue;
+                string str = s.substr(i, j-i+1);
+                if (j+1 < N) {
+                    for (int k=0; k<mem[j+1].size(); ++k) {
+                        mem[i].push_back(mem[j+1][k]);
+                        mem[i].back().insert(mem[i].back().begin(), str);
+                    }
+                } else {
+                    mem[i].push_back(vector<string>(1, str));
+                }
+            }
+        }
+        return mem[0];
+    }
+};
+
+// Another Double Top-down DP, time complexity O((n^2)(2^n)), space complexity O(n(2^n)n)
+class Solution {
+public:
+    vector<vector<string>> DFS(const string &s, int begin, vector<vector<vector<string>>> &mem, vector<vector<bool>> &isP) {
+        if (begin == s.size()) {
+            vector<vector<string>> res(1);
+            return res;
+        }
+        if (!mem[begin].empty()) return mem[begin]; 
+        for (int i=begin; i<s.size(); ++i) {
+            if (!isP[begin][i]) continue;
+            vector<vector<string>> v = DFS(s, i+1, mem, isP);
+            string str = s.substr(begin, i-begin+1);
+            for (int j=0; j<v.size(); ++j) {
+                v[j].insert(v[j].begin(), str);
+                mem[begin].push_back(v[j]);
+            }
+        }
+        return mem[begin];
+    }
+    
+    vector<vector<string>> partition(string s) {
+        int N = s.size();
+        vector<vector<bool>> isP(N, vector<bool>(N));
+        for (int i=N-1; i>=0; --i) {
+            for (int j=i; j<N; ++j) {
+                if (s[i]==s[j] && (j-i<2 || isP[i+1][j-1])) isP[i][j] = true;
+                else isP[i][j] = false;
+            }
+        }
+        vector<vector<vector<string>>> mem(N);
+        return DFS(s, 0, mem, isP);
+    }
+};
+
+// Another Double Bottom-up DP, time complexity O((n^2)(2^n)), space complexity O(n(2^n)n)
+class Solution {
+public:
+    vector<vector<string>> partition(string s) {
+        int N = s.size();
+        vector<vector<vector<string>>> mem(N);
+        vector<vector<int>> isP(N, vector<int>(N));
+        for (int i=N-1; i>=0; --i) {
+            for (int j=i; j<N; ++j) {
+                isP[i][j] = s[i]==s[j] && (j-i<2 || isP[i+1][j-1])? true: false;
+                if (!isP[i][j]) continue;
                 string str = s.substr(i, j-i+1);
                 if (j+1 < N) {
                     for (int k=0; k<mem[j+1].size(); ++k) {
