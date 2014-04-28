@@ -282,8 +282,7 @@ public:
         vector<vector<bool>> isP(N, vector<bool>(N));
         for (int i=N-1; i>=0; --i) {
             for (int j=i; j<N; ++j) {
-                if (s[i]==s[j] && (j-i<2 || isP[i+1][j-1])) isP[i][j] = true;
-                else isP[i][j] = false;
+                isP[i][j] = s[i]==s[j] && (j-i<2 || isP[i+1][j-1])? true: false;
             }
         }
         vector<vector<vector<string>>> mem(N);
