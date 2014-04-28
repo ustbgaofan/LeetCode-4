@@ -297,7 +297,7 @@ public:
     vector<vector<string>> partition(string s) {
         int N = s.size();
         vector<vector<vector<string>>> mem(N);
-        vector<vector<int>> isP(N, vector<int>(N));
+        vector<vector<bool>> isP(N, vector<bool>(N));
         for (int i=N-1; i>=0; --i) {
             for (int j=i; j<N; ++j) {
                 isP[i][j] = s[i]==s[j] && (j-i<2 || isP[i+1][j-1])? true: false;
