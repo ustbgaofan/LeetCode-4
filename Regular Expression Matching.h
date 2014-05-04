@@ -55,7 +55,7 @@ public:
 // Bottom-up Dynamic Programming, time complexity O(mn), space complexity O(mn)
 class Solution {
 public:
-    bool match(char a, char b){
+    bool match(char a, char b) {
         return a=='.'? true: a==b;
     }
     
@@ -77,7 +77,7 @@ public:
 // Space Optimized Bottom-up Dynamic Programming, time complexity O(mn), space complexity O(n)
 class Solution {
 public:
-    bool match(char a, char b){
+    bool match(char a, char b) {
         return a=='.'? true: a==b;
     }
     
