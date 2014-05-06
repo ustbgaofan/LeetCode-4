@@ -10,7 +10,7 @@ You may assume no duplicate exists in the array.
 */
 
 
-// time complexity O(log(n))
+// 1st Version, time complexity O(log(n)), space complexity O(1) 
 class Solution {
 public:
     int search(int A[], int n, int target) {
@@ -25,6 +25,28 @@ public:
                 else l = m + 1;
             } else {
                 return m;
+            }
+        }
+        return -1;
+    }
+};
+
+// 2nd Version, time complexity O(log(n)), space complexity O(1) 
+class Solution {
+public:
+    int search(int A[], int n, int target) {
+        int l = 0, r = n - 1;
+        while (l <= r) {
+            int m = (l + r) >> 1;
+            if (target == A[m]) return m;
+            if (A[m] > A[l]) {
+                if (target>=A[l] && target<A[m]) r = m - 1;
+                else l = m + 1;
+            } else if (A[m] < A[l]) {
+                if (target<=A[r] && target>A[m]) l = m + 1;             
+                else r = m - 1;
+            } else {
+                ++l;
             }
         }
         return -1;
