@@ -20,7 +20,7 @@ All words contain only lowercase alphabetic characters.
 */
 
 
-// Version 1, store level in every element 
+// Version 1, store level in every element
 class Solution {
 public:
     int ladderLength(string start, string end, unordered_set<string> &dict) {
