@@ -33,13 +33,12 @@ public:
 class Solution {
 public:
     bool hasCycle(ListNode *head) {
-        if (!head) return false;
-        ListNode *slow = head, *fast = head->next;
+        ListNode *slow = head, *fast = head;
         while (true) {
-            if (fast==NULL || fast->next== NULL) return false;
-            if (fast == slow) return true;
+            if (!fast || !fast->next) return false;
             slow = slow->next;
             fast = fast->next->next;
+            if (fast == slow) return true;
         }
     }
 };
