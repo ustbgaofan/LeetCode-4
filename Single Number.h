@@ -34,11 +34,27 @@ public:
     }
 };
 
-// Advanced Version, time complexity O(1), space complexity O(1)
+// Specific Advanced Version, time complexity O(1), space complexity O(1)
 class Solution {
 public:
     int singleNumber(int A[], int n) {
         for (int i=1; i<n; ++i) A[0] ^= A[i];
         return A[0];
+    }
+};
+
+// General Advanced Version, time complexity O(1), space complexity O(1)
+class Solution {
+public:
+    int singleNumber(int A[], int n) {
+        int res = 0;
+        for (int i=0; i<32; ++i) {
+            int bit = 1<<i, count = 0;
+            for (int j=0; j<n; ++j) {
+                if (A[j] & bit) ++count;
+            }
+            if (count % 2) res |= bit;
+        }
+        return res;
     }
 };
