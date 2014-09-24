@@ -9,13 +9,18 @@ it should invalidate the least recently used item before inserting a new item.
 
 
 // list + hash
+#include <iostream>
+#include <list>
+#include <unordered_map>
+using namespace std;
+
 struct Node {
-    int key;
+    int key;  // for deletion in hash
     int value;
     Node(int k, int v): key(k), value(v) {}
 };
 
-class LRUCache{
+class LRUCache {
 public:
     LRUCache(int capacity) {
         maxSize = capacity;
@@ -24,14 +29,14 @@ public:
     int get(int key) {
         if (hash.find(key) == hash.end()) return -1;
         nodes.splice(nodes.begin(), nodes, hash[key]);
-        hash[key] = nodes.begin();
+        //hash[key] = nodes.begin();
         return nodes.begin()->value; 
     }
     
     void set(int key, int value) {
         if (hash.find(key) != hash.end()) {
             nodes.splice(nodes.begin(), nodes, hash[key]);
-            hash[key] = nodes.begin();
+            //hash[key] = nodes.begin();
             nodes.begin()->value = value;
         } else {
             if (nodes.size() < maxSize) {
@@ -45,9 +50,30 @@ public:
             hash[key] = nodes.begin();
         }
     }
+	
+	void print() {
+    	cout<<"~~~~~";
+    	for (list<Node>::iterator it=nodes.begin(); it!=nodes.end(); ++it) {
+    		cout<<it->key<<" ";
+    	}
+    	cout<<endl;
+    }
 
 private:
     list<Node> nodes;
     unordered_map<int, list<Node>::iterator> hash;
     int maxSize;
 };
+
+int main() {
+	LRUCache c(3);
+	c.set(1,1), c.set(2,2), c.set(3,3), c.set(4,4);
+	c.print();
+	c.set(2,3), c.set(3,4), c.set(4,5);
+	c.print();
+	c.set(1,2);
+	c.print();
+	cout<<c.get(2)<<" "<<c.get(3)<<endl;
+	c.print();
+	return 0;
+}
