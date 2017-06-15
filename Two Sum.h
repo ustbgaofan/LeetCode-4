@@ -78,28 +78,18 @@ public:
 // Version 3, hash(unordered_map)
 class Solution {
 public:
-    vector<int> twoSum(vector<int> &numbers, int target) {
-        unordered_map<int, vector<int>> hash;
-        int size = numbers.size();
-        for (int i=0; i<size; ++i) {
-            hash[numbers[i]].push_back(i+1);
-        }
-        vector<int> result;
-        for (int i=0; i<size; ++i) {
-            int val = target - numbers[i];
-            if (hash.find(val) != hash.end()) {
-                if (val != numbers[i]) {
-                    result.push_back(min(i+1, hash[val][0]));
-                    result.push_back(max(i+1, hash[val][0]));
-                    break;
-                } else if (hash[val].size() >= 2) {
-                    result.push_back(min(hash[val][0], hash[val][1]));
-                    result.push_back(max(hash[val][0], hash[val][1]));
-                    break;
-                }
+    vector<int> twoSum(vector<int>& nums, int target) {
+        vector<int> res;
+        unordered_map<int, vector<int>> m;
+        for (int i=0; i<nums.size(); ++i) m[nums[i]].push_back(i);
+        for (int i=0; i<nums.size(); ++i) {
+            if (m.find(target - nums[i]) != m.end()) {
+                if (target == 2*nums[i] && m[nums[i]].size() == 1) continue;
+                res.push_back(i);
+                res.push_back(m[target - nums[i]].back());
+                return res;
             }
         }
-        return result;
     }
 };
 
