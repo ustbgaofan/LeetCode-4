@@ -96,18 +96,17 @@ public:
 // Version 4, hash(unordered_map)+one time insert
 class Solution {
 public:
-    vector<int> twoSum(vector<int> &numbers, int target) {
-        unordered_map<int, int> hash;
-        int size = numbers.size();
-        vector<int> result;
-        for (int i=0; i<size; ++i) {
-            int val = target - numbers[i];
-            if (hash.find(val) != hash.end()) {
-                result.push_back(min(hash[val], i+1));
-                result.push_back(max(hash[val], i+1));
-                break;
-            } else hash[numbers[i]] = i + 1;
+    vector<int> twoSum(vector<int>& nums, int target) {
+        vector<int> res;
+        unordered_map<int, int> m;
+        for (int i=0; i<nums.size(); ++i) {
+            if (m.find(target - nums[i]) != m.end()) {
+                res.push_back(i);
+                res.push_back(m[target - nums[i]]);
+                return res;
+            }
+            m[nums[i]] = i;
         }
-        return result;
+        return res;
     }
 };
