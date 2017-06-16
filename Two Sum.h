@@ -48,30 +48,18 @@ public:
 // Version 2, Sort+Double-sided Search, O(nlogn)+O(n)
 class Solution {
 public:
-    vector<int> twoSum(vector<int> &numbers, int target) {
-        vector<pair<int, int>> orderedVec;
-        int size = numbers.size();
-        for (int i=0; i<size; ++i)
-            orderedVec.push_back(make_pair(i+1, numbers[i]));
-        struct MyComp {
-            bool operator() (pair<int, int> p1, pair<int, int> p2) {
-                return p1.second < p2.second;  
-            }
-        };
-        sort(orderedVec.begin(), orderedVec.end(), MyComp());
-        int i = 0, j = size - 1; 
-        while (i < j) {
-            int sum = orderedVec[i].second + orderedVec[j].second;
-            if (sum < target) ++i;
-            else if (sum > target) --j;
-            else break;
+    vector<int> twoSum(vector<int>& nums, int target) {
+        vector<pair<int, int>> tmp;
+        for (int i=0; i<nums.size(); ++i) tmp.push_back({nums[i], i});
+        sort(tmp.begin(), tmp.end(), [](const pair<int, int>& x, const pair<int, int>& y){ 
+            return x.first < y.first; });
+        int l = 0, r = nums.size() - 1;
+        while (l < r) {
+            if (tmp[l].first + tmp[r].first == target) break;
+            else if (tmp[l].first + tmp[r].first < target) ++l;
+            else --r;
         }
-		vector<int> result;
-        if (i < j) {
-            result.push_back(min(orderedVec[i].first, orderedVec[j].first));
-            result.push_back(max(orderedVec[i].first, orderedVec[j].first));
-        }
-        return result;
+        return vector<int>({tmp[l].second, tmp[r].second});
     }
 };
 
@@ -79,17 +67,15 @@ public:
 class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
-        vector<int> res;
         unordered_map<int, vector<int>> m;
         for (int i=0; i<nums.size(); ++i) m[nums[i]].push_back(i);
         for (int i=0; i<nums.size(); ++i) {
             if (m.find(target - nums[i]) != m.end()) {
                 if (target == 2*nums[i] && m[nums[i]].size() == 1) continue;
-                res.push_back(i);
-                res.push_back(m[target - nums[i]].back());
-                return res;
+                return vector<int>({i, m[target - nums[i]].back()});
             }
         }
+        return vector<int>();
     }
 };
 
@@ -97,16 +83,13 @@ public:
 class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
-        vector<int> res;
         unordered_map<int, int> m;
         for (int i=0; i<nums.size(); ++i) {
             if (m.find(target - nums[i]) != m.end()) {
-                res.push_back(i);
-                res.push_back(m[target - nums[i]]);
-                return res;
+                return vector<int>({i, m[target - nums[i]]});
             }
             m[nums[i]] = i;
         }
-        return res;
+        return vector<int>();
     }
 };
