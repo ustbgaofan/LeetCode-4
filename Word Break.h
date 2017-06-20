@@ -13,33 +13,32 @@ Return true because "leetcode" can be segmented as "leet code".
 // Top-down Dynamic Programming Version, time complexity O(n^2), space complexity O(n)
 class Solution {
 public:
-    bool DFS(const string &s, int begin, const unordered_set<string> &dict, vector<int> &mem) {
-        int N = s.size();
-        if (begin == N) return true;
-        if (mem[begin] != -1) return mem[begin];
-        for (int i=begin; i<N; ++i) {
-            if (dict.find(s.substr(begin, i-begin+1)) != dict.end()) {
-                if (DFS(s, i+1, dict, mem)) return mem[begin] = true;
-            }
-        }
-        return mem[begin] = false;
-    }
-    
-    bool wordBreak(string s, unordered_set<string> &dict) {
+    bool wordBreak(string s, vector<string>& wordDict) {
+        unordered_set<string> dict(wordDict.begin(), wordDict.end());
         vector<int> mem(s.size(), -1);
         return DFS(s, 0, dict, mem);
+    }
+    
+    bool DFS(const string& s, int i, const unordered_set<string>& dict, vector<int>& mem) {
+        if (i == s.size()) return true;
+        if (mem[i] != -1) return mem[i];
+        for (int j=i; j<s.size(); ++j) {
+            if (dict.find(s.substr(i, j-i+1)) == dict.end()) continue;
+            if (DFS(s, j+1, dict, mem)) return mem[i] = true;
+        }
+        return mem[i] = false;
     }
 };
 
 // Bottom-up Dynamic Programming Version, time complexity O(n^2), space complexity O(n)
 class Solution {
 public:
-    bool wordBreak(string s, unordered_set<string> &dict) {
-        int N = s.size();
-        vector<bool> mem(N+1, false);
-        mem[N] = true;
-        for (int i=N-1; i>=0; --i) {
-            for (int j=i; j<N; ++j) {
+    bool wordBreak(string s, vector<string>& wordDict) {
+        unordered_set<string> dict(wordDict.begin(), wordDict.end());
+        vector<bool> mem(s.size()+1, false);
+        mem.back() = true;
+        for (int i=s.size()-1; i>=0; --i) {
+            for (int j=i; j<s.size(); ++j) {
                 if (mem[j+1] && dict.find(s.substr(i, j-i+1))!=dict.end()) {
                     mem[i] = true;
                     break;
