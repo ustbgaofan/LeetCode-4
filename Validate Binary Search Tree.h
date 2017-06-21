@@ -52,16 +52,16 @@ public:
 // In Order Version, time complexity O(n)
 class Solution {
 public:
-    bool isValidBST(TreeNode *root, int &val) {
-        if (!root) return true;
-        if (!isValidBST(root->left, val)) return false;
-        if (val >= root->val) return false;
-        val = root->val;
-        return isValidBST(root->right, val);
+    bool isValidBST(TreeNode* root) {
+        TreeNode* pre = nullptr;
+        return inorder(root, pre);
     }
     
-    bool isValidBST(TreeNode *root) {
-        int val = INT_MIN;
-        return isValidBST(root, val);
+    bool inorder(TreeNode* root, TreeNode*& pre) {
+        if (!root) return true;
+        if (!inorder(root->left, pre)) return false;
+        if (pre && root->val <= pre->val) return false;
+        pre = root;
+        return inorder(root->right, pre);
     }
 };
