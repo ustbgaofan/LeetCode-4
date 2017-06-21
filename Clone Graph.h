@@ -36,20 +36,18 @@ Visually, the graph looks like the following:
 // DFS, time complexity O(E), space complexity O(V) 
 class Solution {
 public:
-    UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node, unordered_map<int, UndirectedGraphNode *> &hash) {
-        if (!node) return NULL;
-        if (hash.find(node->label) != hash.end()) return hash[node->label];
-        UndirectedGraphNode *newNode = new UndirectedGraphNode(node->label);
-        hash[node->label] = newNode;
-        for (int i=0; i<node->neighbors.size(); ++i) {
-            newNode->neighbors.push_back(cloneGraph(node->neighbors[i], hash));
-        }
-        return newNode;
+    UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node) {
+        unordered_map<int, UndirectedGraphNode*> h;
+        return DFS(node, h);
     }
     
-    UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node) {
-        unordered_map<int, UndirectedGraphNode *> hash;
-        return cloneGraph(node, hash);
+    UndirectedGraphNode *DFS(UndirectedGraphNode *node, unordered_map<int, UndirectedGraphNode*>& h) {
+        if (!node) return node;
+        if (h.find(node->label) != h.end()) return h[node->label];
+        UndirectedGraphNode *newNode = new UndirectedGraphNode(node->label);
+        h[node->label] = newNode;
+        for (auto n : node->neighbors) newNode->neighbors.push_back(DFS(n, h));
+        return newNode;
     }
 };
 
@@ -57,23 +55,22 @@ public:
 class Solution {
 public:
     UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node) {
-        if (!node) return NULL;
+        if (!node) return node;
         queue<UndirectedGraphNode *> q;
         q.push(node);
-        unordered_map<UndirectedGraphNode *, UndirectedGraphNode *> hash;
-        hash[node] = new UndirectedGraphNode(node->label);
+        unordered_map<UndirectedGraphNode *, UndirectedGraphNode *> h;
         while (!q.empty()) {
             UndirectedGraphNode *front = q.front();
             q.pop();
-            for (int i=0; i<front->neighbors.size(); ++i) {
-                UndirectedGraphNode *neighbor = front->neighbors[i];
-                if (hash.find(neighbor) == hash.end()) {
-                    q.push(neighbor);
-                    hash[neighbor] = new UndirectedGraphNode(neighbor->label);
+            if (h.find(front) == h.end()) h[front] = new UndirectedGraphNode(front->label);
+            for (auto n : front->neighbors) {
+                if (h.find(n) == h.end()) {
+                    q.push(n);
+                    h[n] = new UndirectedGraphNode(n->label);
                 }
-                hash[front]->neighbors.push_back(hash[neighbor]);
+                h[front]->neighbors.push_back(h[n]);
             }
         }
-        return hash[node];
+        return h[node];
     }
 };
