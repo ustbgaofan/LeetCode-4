@@ -15,18 +15,17 @@ Note: The sequence of integers will be represented as a string.
 class Solution {
 public:
     string countAndSay(int n) {
-        string res = "1";
-        while (--n) {
-            string prev = res;
+        string res("1");
+        for (int i=1; i<n; ++i) {
+            string prev(res);
             res.clear();
-            int size = prev.size();
-            for (int i=0; i<size;) {
-                int k = 1;
-                while (i+k<size && prev[i]==prev[i+k]) ++k;
-                stringstream ss;
-                ss << k;
-                res += ss.str() + prev[i];
-                i += k;
+            for (int j=0; j<prev.size(); ++j) {
+                int cnt = 1;
+                while (j+1<prev.size() && prev[j]==prev[j+1]) {
+                    ++cnt;
+                    ++j;
+                }
+                res += to_string(cnt) + prev[j];
             }
         }
         return res;
