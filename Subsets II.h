@@ -22,26 +22,26 @@ If S = [1,2,2], a solution is:
 // Version 1, standard DFS
 class Solution {
 public:
-    void DFS(const vector<int> &S, vector<vector<int>> &res, int len, vector<int> &path, int begin) {
-        if (len == path.size()) {
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        vector<vector<int>> res(1);
+        vector<int> path;
+        for (int i=1; i<=nums.size(); ++i) DFS(nums, i, res, path, 0);
+        return res;
+    }
+    
+    void DFS(const vector<int>& nums, int len, vector<vector<int>>& res, vector<int>& path, int begin) {
+        if (path.size() == len) {
             res.push_back(path);
             return;
         }
-        int end = S.size() - (len - 1) + path.size();
-        for (int i=begin; i<end; ++i) {
-            if (i>begin && S[i]==S[i-1]) continue;
-            path.push_back(S[i]);
-            DFS(S, res, len, path, i+1);
+        int end = nums.size() - (len - path.size());
+        for (int i=begin; i<=end; ++i) {
+            if (i>begin && nums[i]==nums[i-1]) continue;
+            path.push_back(nums[i]);
+            DFS(nums, len, res, path, i+1);
             path.pop_back();
         }
-    }
-    
-    vector<vector<int> > subsetsWithDup(vector<int> &S) {
-        sort(S.begin(), S.end());
-        vector<vector<int>> res(1);
-        vector<int> path;
-        for (int i=1; i<=S.size(); ++i) DFS(S, res, i, path, 0);
-        return res;
     }
 };
 
