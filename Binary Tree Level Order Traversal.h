@@ -45,22 +45,22 @@ The above binary tree is serialized as "{1,2,3,#,#,4,#,#,5}".
 // BFS, time complexity O(n), space complexity O(n) 
 class Solution {
 public:
-    vector<vector<int> > levelOrder(TreeNode *root) {
-        vector<vector<int>> res;
-        if (!root) return res;
-        queue<TreeNode *> q;
-        q.push(NULL);
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        if (!root) return vector<vector<int>>();
+        queue<TreeNode*> q;
         q.push(root);
-        while (!q.empty()) {
-            TreeNode *node = q.front();
+        q.push(nullptr);
+        vector<vector<int>> res(1);
+        while (q.size() > 1) {
+            TreeNode* f = q.front();
             q.pop();
-            if (!node && !q.empty()) {
-                q.push(NULL);
+            if (!f) {
+                q.push(nullptr);
                 res.push_back(vector<int>());
-            } else if (node) {
-                res.back().push_back(node->val);
-                if (node->left) q.push(node->left);
-                if (node->right) q.push(node->right);
+            } else {
+                res.back().push_back(f->val);
+                if (f->left) q.push(f->left);
+                if (f->right) q.push(f->right);
             }
         }
         return res;
@@ -70,17 +70,17 @@ public:
 // DFS, time complexity O(n), space complexity O(h)  
 class Solution {
 public:
-    void levelOrder(vector<vector<int>> &res, TreeNode *root, int depth) {
-        if (!root) return;
-        if (res.size() <= depth) res.push_back(vector<int>());
-        res[depth].push_back(root->val);
-        levelOrder(res, root->left, depth+1);
-        levelOrder(res, root->right, depth+1);
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        vector<vector<int>> res;
+        DFS(root, res, 0);
+        return res;
     }
     
-    vector<vector<int> > levelOrder(TreeNode *root) {
-        vector<vector<int>> res;
-        levelOrder(res, root, 0);
-        return res;
+    void DFS(TreeNode* root, vector<vector<int>>& res, int depth) {
+        if (!root) return;
+        if (depth == res.size()) res.push_back(vector<int>());
+        res[depth].push_back(root->val);
+        DFS(root->left, res, depth+1);
+        DFS(root->right, res, depth+1);
     }
 };
