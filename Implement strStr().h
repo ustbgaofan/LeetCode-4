@@ -2,36 +2,23 @@
 /*
 Implement strStr().
 
-Returns a pointer to the first occurrence of needle in haystack, or null if needle is not part of haystack.
+Returns the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.
 */
 
 
-// Two-pass Version, time complexity O(nm), space complexity O(1)
+// time complexity O(nm), space complexity O(1)
 class Solution {
 public:
-    char *strStr(char *haystack, char *needle) {
-        int n = strlen(haystack), m = strlen(needle);
-        for (int i=0; i<=n-m; ++i) {
+    int strStr(string haystack, string needle) {
+        int M = haystack.size(), N = needle.size();
+        for (int i=0; i<=M-N; ++i) {
             int j = 0;
-            for (; j<m; ++j) {
-                if (haystack[i+j] != needle[j]) break;
+            for (int k=i; j<N; ++j, ++k) {
+                if (needle[j] != haystack[k]) break;
             }
-            if (j == m) return haystack + i; 
+            if (j == N) return i;
         }
-        return NULL;
-    }
-};
-
-// One-pass Version, time complexity O(nm), space complexity O(1), faster than 1st version 
-class Solution {
-public:
-    char *strStr(char *haystack, char *needle) {
-        for (; ; ++haystack) {
-            char *h = haystack, *n = needle;
-            for (; *n!='\0' && *h==*n; ++h, ++n);
-            if (*n == '\0') return haystack;
-            if (*h == '\0') return NULL;
-        }
+        return -1;
     }
 };
 
