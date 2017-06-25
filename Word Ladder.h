@@ -1,15 +1,15 @@
 // Word Ladder
 /*
-Given two words (start and end), and a dictionary, find the length of shortest transformation sequence from start to end, such that:
+Given two words (beginWord and endWord), and a dictionary's word list, find the length of shortest transformation sequence from beginWord to endWord, such that:
 
-Only one letter can be changed at a time
-Each intermediate word must exist in the dictionary
+Only one letter can be changed at a time.
+Each transformed word must exist in the word list. Note that beginWord is not a transformed word.
 For example,
 
 Given:
-start = "hit"
-end = "cog"
-dict = ["hot","dot","dog","lot","log"]
+beginWord = "hit"
+endWord = "cog"
+wordList = ["hot","dot","dog","lot","log","cog"]
 As one shortest transformation is "hit" -> "hot" -> "dot" -> "dog" -> "cog",
 return its length 5.
 
@@ -17,63 +17,35 @@ Note:
 Return 0 if there is no such transformation sequence.
 All words have the same length.
 All words contain only lowercase alphabetic characters.
+You may assume no duplicates in the word list.
+You may assume beginWord and endWord are non-empty and are not the same.
+UPDATE (2017/1/20):
+The wordList parameter had been changed to a list of strings (instead of a set of strings). Please reload the code definition to get the latest changes.
 */
 
-
-// Version 1, store level in every element
+// Graph, BFS
 class Solution {
 public:
-    int ladderLength(string start, string end, unordered_set<string> &dict) {
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+        unordered_set<string> dict(wordList.begin(), wordList.end());
         queue<pair<string, int>> q;
-        q.push(make_pair(start, 1));
-        dict.erase(start);
+        q.push({beginWord, 1});
+        dict.erase(beginWord);
         while (!q.empty()) {
-            pair<string, int> p = q.front();
+            auto f = q.front();
             q.pop();
-            if (p.first == end) return p.second;
-            for (int i=0; i<p.first.size(); ++i) {
-                char t = p.first[i];
+            if (f.first == endWord) return f.second;
+            for (int i=0; i<f.first.size(); ++i) {
+                char t = f.first[i];
                 for (char c='a'; c<='z'; ++c) {
-                    p.first[i] = c;
-                    if (dict.find(p.first) != dict.end()) {
-                        q.push(make_pair(p.first, p.second+1));
-                        dict.erase(p.first);
+                    f.first[i] = c;
+                    if (dict.find(f.first) != dict.end()) {
+                        q.push({f.first, f.second+1});
+                        dict.erase(f.first);
                     }
                 }
-                p.first[i] = t;
+                f.first[i] = t;
             }
-        }
-        return 0;
-    }
-};
-
-// Version 2, use two queues to distinguish between levels
-class Solution {
-public:
-    int ladderLength(string start, string end, unordered_set<string> &dict) {
-        queue<string> cq, nq;
-        cq.push(start);
-        dict.erase(start);
-        int level = 1;
-        while (!cq.empty()) {
-            while (!cq.empty()) {
-                string str = cq.front();
-                cq.pop();
-                if (str == end) return level;
-                for (int i=0; i<str.size(); ++i) {
-                    char t = str[i];
-                    for (char c='a'; c<='z'; ++c) {
-                        str[i] = c;
-                        if (dict.find(str) != dict.end()) {
-                            nq.push(str);
-                            dict.erase(str);
-                        }
-                    }
-                    str[i] = t;
-                }
-            }
-            ++level;
-            swap(cq, nq);
         }
         return 0;
     }
