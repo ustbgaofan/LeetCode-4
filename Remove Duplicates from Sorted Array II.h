@@ -4,41 +4,19 @@ Follow up for "Remove Duplicates":
 What if duplicates are allowed at most twice?
 
 For example,
-Given sorted array A = [1,1,1,2,2,3],
+Given sorted array nums = [1,1,1,2,2,3],
 
-Your function should return length = 5, and A is now [1,1,2,2,3].
+Your function should return length = 5, with the first five elements of nums being 1, 1, 2, 2 and 3. It doesn't matter what you leave beyond the new length.
 */
 
-
-// Inexperienced Version
 class Solution {
 public:
-    int removeDuplicates(int A[], int n) {
-        if (n == 0) return 0;
-        int i = 0;
-        bool flag = false;
-        for (int j=1; j<n; ++j) {
-            if (A[i] != A[j]) {
-                A[++i] = A[j];
-                flag = false;
-            } else if (A[i]==A[j] && !flag) {
-                A[++i] = A[j];
-                flag = true;
-            }
+    int removeDuplicates(vector<int>& nums) {
+        if (nums.size() < 2) return nums.size(); 
+        int j = 1;
+        for (int i=2; i<nums.size(); ++i) {
+            if (nums[i]!=nums[j] || nums[i]!=nums[j-1]) nums[++j] = nums[i];
         }
-        return i+1;
-    }
-};
-
-// Experienced Version
-class Solution {
-public:
-    int removeDuplicates(int A[], int n) {
-        if (n <= 2) return n;
-        int i = 1;
-        for (int j=2; j<n; ++j) {
-            if (A[j]!=A[i] || A[j]!=A[i-1]) A[++i] = A[j];
-        }
-        return i+1;
+        return j + 1;
     }
 };
