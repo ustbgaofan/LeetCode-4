@@ -9,20 +9,21 @@ Above is a histogram where width of each bar is 1, given height = [2,1,5,6,2,3].
 The largest rectangle is shown in the shaded area, which has area = 10 unit.
 
 For example,
-Given height = [2,1,5,6,2,3],
+Given heights = [2,1,5,6,2,3],
 return 10.
 */
 
 
-// Naive Version, Time Limit Exceeded, time complexity O(n^2), space complexity O(1)
+// Naive Version, Time Limit Exceeded, time O(n^2), space O(1)
 class Solution {
 public:
-    int largestRectangleArea(vector<int> &height) {
-        int N = height.size(), res = 0;
+    int largestRectangleArea(vector<int>& heights) {
+        int N = heights.size(), res = 0;
         for (int i=0; i<N; ++i) {
-            int top = height[i];
+            int h = heights[i];
             for (int j=i; j<N; ++j) {
-                res = max(res, (j-i+1)*min(top, height[j]));
+                h = min(h, heights[j]);
+                res = max(res, (j-i+1) * h);
             }
         }
         return res;
