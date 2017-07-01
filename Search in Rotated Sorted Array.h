@@ -1,6 +1,6 @@
 // Search in Rotated Sorted Array
 /*
-Suppose a sorted array is rotated at some pivot unknown to you beforehand.
+Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.
 
 (i.e., 0 1 2 4 5 6 7 might become 4 5 6 7 0 1 2).
 
@@ -10,18 +10,21 @@ You may assume no duplicate exists in the array.
 */
 
 
-// 1st Version, time complexity O(log(n)), space complexity O(1) 
+// time complexity O(logn), space complexity O(1)
+// case analysis:
+// t<[m]: 1. [l]>[r] 1.1 [m]>[r] 1.2 [m]<[r]  2. [l]<[r]
+// t>[m]: 1. [l]>[r] 1.1 [m]>[r] 1.2 [m]<[r]  2. [l]<[r]
 class Solution {
 public:
-    int search(int A[], int n, int target) {
-        int l = 0, r = n - 1;
+    int search(vector<int>& nums, int target) {
+        int l = 0, r = nums.size() - 1;
         while (l <= r) {
-            int m = (l + r) >> 1;
-            if (target < A[m]) {
-                if (A[l]>A[r] && A[m]>A[r] && target<A[l]) l = m + 1;
+            int m = l + (r-l)/2;
+            if (nums[m] > target) {
+                if (nums[l]>nums[r] && nums[m]>nums[r] && target<=nums[r]) l = m + 1;
                 else r = m - 1;
-            } else if (target > A[m]) {
-                if (A[l]>A[r] && A[m]<A[r] && target>A[r]) r = m - 1;             
+            } else if (nums[m] < target) {
+                if (nums[l]>nums[r] && nums[m]<nums[r] && target>=nums[l]) r = m - 1;
                 else l = m + 1;
             } else {
                 return m;
@@ -31,23 +34,25 @@ public:
     }
 };
 
-// 2nd Version, time complexity O(log(n)), space complexity O(1) 
+// time complexity O(logn), space complexity O(1)
 class Solution {
 public:
-    int search(int A[], int n, int target) {
-        int l = 0, r = n - 1;
+    int search(vector<int>& nums, int target) {
+        // find the rotated point (minimum one)
+        int l = 0, r = nums.size() - 1;
+        while (l < r) {
+            int m = l + (r-l)/2;
+            if (nums[m] < nums[r]) r = m;
+            else l = m + 1;
+        }
+        // usual binary search + %
+        int rot = l;
+        l = 0, r = nums.size() - 1;
         while (l <= r) {
-            int m = (l + r) >> 1;
-            if (target == A[m]) return m;
-            if (A[m] > A[l]) {
-                if (target>=A[l] && target<A[m]) r = m - 1;
-                else l = m + 1;
-            } else if (A[m] < A[l]) {
-                if (target<=A[r] && target>A[m]) l = m + 1;             
-                else r = m - 1;
-            } else {
-                ++l;
-            }
+            int m = l + (r-l)/2, rm = (rot + m) % nums.size();
+            if (nums[rm] < target) l = m + 1;
+            else if (nums[rm] > target) r = m - 1;
+            else return rm;
         }
         return -1;
     }
