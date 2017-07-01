@@ -39,25 +39,26 @@ After calling your function, the tree should look like:
  * };
  */
  
-// Iterative Version with Queue(general), time complexity O(n), space complexity O(n)
+// Iterative Version with Queue (general), time complexity O(n), space complexity O(n)
 class Solution {
 public:
     void connect(TreeLinkNode *root) {
         if (!root) return;
-        queue<TreeLinkNode *> q;
+        queue<TreeLinkNode*> q;
         q.push(root);
-        q.push(NULL);
-        while (!q.empty()) {
-            root = q.front();
+        q.push(nullptr);
+        while (q.size() > 1) {
+            TreeLinkNode* f = q.front();
             q.pop();
-            if (root) {
-                if (root->left) q.push(root->left);
-                if (root->right) q.push(root->right);
-                root->next = q.front();
-            } else if (!q.empty()) {
-                q.push(NULL);
+            if (!f) {
+                q.push(nullptr);
+                continue;
             }
+            if (f->left) q.push(f->left);
+            if (f->right) q.push(f->right);
+            f->next = q.front();
         }
+        return;
     }
 };
 
@@ -67,7 +68,7 @@ public:
     void connect(TreeLinkNode *root) {
         if (!root || !root->left) return;
         root->left->next = root->right;
-        root->right->next = root->next? root->next->left: NULL;
+        root->right->next = root->next ? root->next->left : nullptr;
         connect(root->left);
         connect(root->right);
     }
@@ -81,10 +82,10 @@ public:
             TreeLinkNode *cur = root;
             while (cur) {
                 cur->left->next = cur->right;
-                cur->right->next = cur->next? cur->next->left: NULL;
+                cur->right->next = cur->next ? cur->next->left : nullptr;
                 cur = cur->next;
             }
-            root = root->left;    
+            root = root->left;
         }
     }
 };
