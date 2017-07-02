@@ -45,54 +45,32 @@ public:
     }
 };
 
-// 1st Version, time complexity O(m*n^2), space complexity O(mn)
-class Solution {
-public:  
-    int maximalRectangle(vector<vector<char>> &matrix) {
-        if (matrix.empty() || matrix[0].empty()) return 0;
-        int M = matrix.size(), N = matrix[0].size(), res = 0;
-        vector<vector<pair<int,int>>> mem(M, vector<pair<int,int>>(N, pair<int,int>(0,0)));
-        for (int i=0; i<M; ++i) {
-            for (int j=0; j<N; ++j) {
-                if (matrix[i][j] == '0') continue;
-                int x = j==0? 1: mem[i][j-1].first+1, y = i==0? 1: mem[i-1][j].second+1;
-                mem[i][j] = make_pair(x, y);
-                int minHeight = y;
-                for (int k=j; k>j-x; --k) {
-                    minHeight = min(minHeight, mem[i][k].second);
-                    res = max(res, minHeight*(j-k+1));
-                }
-            }
-        }
-        return res;
-    }
-};
-
-// 2nd Version based on Largest Rectangle in Histogram, time complexity O(mn), space complexity O(n)
+// Based on Largest Rectangle in Histogram, time complexity O(mn), space complexity O(n)
 class Solution {
 public:
-    int largestRectangleArea(const vector<int> &height) {
-        stack<int> lbStk;  // left boundary stack
-        int res = 0;
-        for (int i=0; i<height.size(); ++i) {
-            while (!lbStk.empty() && height[lbStk.top()]>=height[i]) {
-                int h = height[lbStk.top()];
-                lbStk.pop();
-                int w = lbStk.empty()? i: i-lbStk.top()-1;
-                res = max(res, w*h);
-            }
-            lbStk.push(i);
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        if (matrix.empty()) return 0;
+        int M = matrix.size(), N = matrix[0].size(), res = 0;
+        vector<int> heights(N, 0);
+        for (int i=0; i<M; ++i) {
+            for (int j=0; j<N; ++j) heights[j] = matrix[i][j]=='1' ? heights[j]+1 : 0;
+            res = max(res, largestRectangleArea(heights));
         }
         return res;
     }
     
-    int maximalRectangle(vector<vector<char> > &matrix) {
-        if (matrix.empty() || matrix[0].empty()) return 0;
-        int M = matrix.size(), N = matrix[0].size(), res = 0;
-        vector<int> height(N+1, 0);
-        for (int i=0; i<M; ++i) {
-            for (int j=0; j<N; ++j) height[j] = matrix[i][j]=='0'? 0: height[j]+1;
-            res = max(res, largestRectangleArea(height));
+    int largestRectangleArea(vector<int>& heights) {
+        stack<int> stk;
+        int res = 0;
+        heights.push_back(0);
+        for (int i=0; i<heights.size(); ) {
+            if (stk.empty() || heights[i]>=heights[stk.top()]) {
+                stk.push(i++);    
+            } else {
+                int cur = stk.top();
+                stk.pop();
+                res = max(res, heights[cur] * (stk.empty()? i : i-stk.top()-1));
+            }
         }
         return res;
     }
