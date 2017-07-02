@@ -14,7 +14,7 @@ return 10.
 */
 
 
-// Naive Version, Time Limit Exceeded, time O(n^2), space O(1)
+// Time Limit Exceeded, time O(n^2), space O(1)
 class Solution {
 public:
     int largestRectangleArea(vector<int>& heights) {
@@ -30,38 +30,23 @@ public:
     }
 };
 
-// Naive Version with Filtering, time complexity O(n^2), space complexity O(1)
+// time complexity O(n), space complexity O(n)
+// O(n^2) combinations, but only O(n) useful values, so test each bar's largest potential area
+// use stack to record left boundary. only increasing h in stk. if [cur]<[stk.top], trigger calculation.
 class Solution {
 public:
-    int largestRectangleArea(vector<int> &height) {
-        int N = height.size(), res = 0;
-        for (int i=0; i<N; ++i) {
-            if (i<N-1 && height[i]<=height[i+1]) continue;
-            int minHeight = height[i];
-            for (int j=i; j>=0; --j) {
-                minHeight = min(minHeight, height[j]);
-                res = max(res, (i-j+1)*minHeight);
-            }
-        }
-        return res;
-    }
-};
-
-// Left Boundary Recording, time complexity O(n), space complexity O(n)
-class Solution {
-public:
-    int largestRectangleArea(vector<int> &height) {
-        stack<int> lbStk;  // left boundary stack
+    int largestRectangleArea(vector<int>& heights) {
+        stack<int> stk;
         int res = 0;
-        height.push_back(0);
-        for (int i=0; i<height.size(); ++i) {
-            while (!lbStk.empty() && height[lbStk.top()]>=height[i]) {
-                int h = height[lbStk.top()];
-                lbStk.pop();
-                int w = lbStk.empty()? i: i-lbStk.top()-1;
-                res = max(res, w*h);
+        heights.push_back(0);
+        for (int i=0; i<heights.size(); ) {
+            if (stk.empty() || heights[i]>=heights[stk.top()]) {
+                stk.push(i++);    
+            } else {
+                int cur = stk.top();
+                stk.pop();
+                res = max(res, heights[cur] * (stk.empty()? i : i-stk.top()-1));
             }
-            lbStk.push(i);
         }
         return res;
     }
