@@ -11,29 +11,32 @@ The function prototype should be:
 bool isMatch(const char *s, const char *p)
 
 Some examples:
-isMatch("aa","a") ¡ú false
-isMatch("aa","aa") ¡ú true
-isMatch("aaa","aa") ¡ú false
-isMatch("aa", "*") ¡ú true
-isMatch("aa", "a*") ¡ú true
-isMatch("ab", "?*") ¡ú true
-isMatch("aab", "c*a*b") ¡ú false
+isMatch("aa","a") â†’ false
+isMatch("aa","aa") â†’ true
+isMatch("aaa","aa") â†’ false
+isMatch("aa", "*") â†’ true
+isMatch("aa", "a*") â†’ true
+isMatch("ab", "?*") â†’ true
+isMatch("aab", "c*a*b") â†’ false
 */
 
 
-// Recursive Version, Time Limit Exceeded, time complexity O(min(m,n))~O(n^m), space complexity O(min(m,n))
+// Recursive Version, Time Limit Exceeded
 class Solution {
 public:
-    bool isMatch(const char *s, const char *p) {
-        if (*p == '\0') return *s == '\0';
-        if (*s == '\0') return *p == '*';
-        if (*p == '*') {
-            while (*s != '\0') {
-                if (isMatch(s++, p+1)) return true;
+    bool isMatch(string s, string p) {
+        if (p.empty()) return s.empty();
+        if (s.empty()) {
+            for (int i=0; i<p.size(); ++i) {
+                if (p[i] != '*') return false;
             }
-            return isMatch(s, p+1);
+            return true;
         }
-        return (*p==*s || *p=='?') && isMatch(s+1, p+1);
+        if (p[0] != '*') return (p[0]==s[0] || p[0]=='?') && isMatch(s.substr(1), p.substr(1));
+        for (int i=0; i<=s.size(); ++i) {
+            if (isMatch(s.substr(i), p.substr(1))) return true;
+        }
+        return false;
     }
 };
 
