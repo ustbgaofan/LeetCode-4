@@ -79,18 +79,27 @@ public:
     }
 };
 
-// Iterative Version, time complexity O(min(m,n))~O(mn) (m1n1+m2n2<=mn), space complexity O(1)
+// Iterative Version, time complexity O(max(m,n))~O(mn), space complexity O(1)
 class Solution {
 public:
-    bool isMatch(const char *s, const char *p) {
-        const char *bs = NULL, *bp = NULL;
-        while (*s != '\0') {
-            if (*s==*p || *p=='?') ++s, ++p;
-            else if (*p == '*') bs = s, bp = ++p;
-            else if (bs) s = ++bs, p = bp;
-            else return false;
+    bool isMatch(string s, string p) {
+        int i = 0, j = 0, k = -1, t = -1;
+        while (i < s.size()) {
+            if (j<p.size() && (s[i]==p[j] || p[j]=='?')) {
+                ++i;
+                ++j;
+            } else if (j<p.size() && p[j]=='*') {
+                k = i;
+                t = j++;
+            } else if (j==p.size() || s[i]!=p[j]) {
+                if (t == -1) return false;
+                i = ++k;
+                j = t + 1;
+            }
         }
-        while (*p == '*') ++p;
-        return *p == '\0';
+        for (; j<p.size(); ++j) {
+            if (p[j] != '*') return false;
+        }
+        return true;
     }
 };
