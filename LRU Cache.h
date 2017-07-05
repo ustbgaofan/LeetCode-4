@@ -1,79 +1,72 @@
 // LRU Cache
 /*
-Design and implement a data structure for Least Recently Used (LRU) cache. It should support the following operations: get and set.
+Design and implement a data structure for Least Recently Used (LRU) cache. It should support the following operations: get and put.
 
 get(key) - Get the value (will always be positive) of the key if the key exists in the cache, otherwise return -1.
-set(key, value) - Set or insert the value if the key is not already present. When the cache reached its capacity, 
-it should invalidate the least recently used item before inserting a new item.
+put(key, value) - Set or insert the value if the key is not already present. When the cache reached its capacity, it should invalidate the least recently used item before inserting a new item.
+
+Follow up:
+Could you do both operations in O(1) time complexity?
+
+Example:
+
+LRUCache cache = new LRUCache( 2 /* capacity */ );
+
+cache.put(1, 1);
+cache.put(2, 2);
+cache.get(1);       // returns 1
+cache.put(3, 3);    // evicts key 2
+cache.get(2);       // returns -1 (not found)
+cache.put(4, 4);    // evicts key 1
+cache.get(1);       // returns -1 (not found)
+cache.get(3);       // returns 3
+cache.get(4);       // returns 4
 */
 
-
-// list + hash
-#include <iostream>
-#include <list>
-#include <unordered_map>
-using namespace std;
-
-struct Node {
-    int key;  // for deletion in hash
-    int value;
-    Node(int k, int v): key(k), value(v) {}
-};
 
 class LRUCache {
 public:
     LRUCache(int capacity) {
-        maxSize = capacity;
+        c = capacity;    
     }
     
     int get(int key) {
-        if (hash.find(key) == hash.end()) return -1;
-        nodes.splice(nodes.begin(), nodes, hash[key]);
-        //hash[key] = nodes.begin();
-        return nodes.begin()->value; 
+        if (h.find(key) == h.end()) return -1;
+        l.splice(l.begin(), l, h[key]);
+        return l.begin()->v;
     }
     
-    void set(int key, int value) {
-        if (hash.find(key) != hash.end()) {
-            nodes.splice(nodes.begin(), nodes, hash[key]);
-            //hash[key] = nodes.begin();
-            nodes.begin()->value = value;
+    void put(int key, int value) {
+        if (h.find(key) != h.end()) {
+            l.splice(l.begin(), l, h[key]);
+            l.begin()->v = value;
         } else {
-            if (nodes.size() < maxSize) {
-                nodes.push_front(Node(key, value));
+            if (l.size() < c) {
+                l.push_front(Node(key, value));
             } else {
-                nodes.splice(nodes.begin(), nodes, --nodes.end());
-                hash.erase(nodes.begin()->key);
-                nodes.begin()->key = key;
-                nodes.begin()->value = value;
+                l.splice(l.begin(), l, --l.end());
+                h.erase(l.begin()->k);
+                l.begin()->k = key;
+                l.begin()->v = value;
             }
-            hash[key] = nodes.begin();
+            h[key] = l.begin();
         }
     }
-	
-	void print() {
-    	cout<<"~~~~~";
-    	for (list<Node>::iterator it=nodes.begin(); it!=nodes.end(); ++it) {
-    		cout<<it->key<<" ";
-    	}
-    	cout<<endl;
-    }
-
+    
 private:
-    list<Node> nodes;
-    unordered_map<int, list<Node>::iterator> hash;
-    int maxSize;
+    struct Node {
+        int k;  
+        int v;
+        Node(int k, int v): k(k), v(v) {}
+    };
+    int c;
+    list<Node> l;
+    unordered_map<int, list<Node>::iterator> h;
 };
 
-int main() {
-	LRUCache c(3);
-	c.set(1,1), c.set(2,2), c.set(3,3), c.set(4,4);
-	c.print();
-	c.set(2,3), c.set(3,4), c.set(4,5);
-	c.print();
-	c.set(1,2);
-	c.print();
-	cout<<c.get(2)<<" "<<c.get(3)<<endl;
-	c.print();
-	return 0;
-}
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */
