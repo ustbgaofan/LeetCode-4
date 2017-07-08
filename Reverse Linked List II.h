@@ -9,7 +9,7 @@ return 1->4->3->2->5->NULL.
 
 Note:
 Given m, n satisfy the following condition:
-1 ¡Ü m ¡Ü n ¡Ü length of list.
+1 Â¡Ãœ m Â¡Ãœ n Â¡Ãœ length of list.
 */
 
 /**
@@ -20,43 +20,49 @@ Given m, n satisfy the following condition:
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
- 
-// Two-pass Version
+
+// Two-pass Version, time O(n), space O(1)
 class Solution {
 public:
-    ListNode *reverseBetween(ListNode *head, int m, int n) {
-        ListNode header(0), *cur = &header;
-        header.next = head;
-        for (int i=0; i<m-1; ++i) cur = cur->next;
-        head = cur;
-        for (int i=0; i<=n-m; ++i) head = head->next;
-        ListNode *tmp= cur->next;
-        cur->next = head;
-        cur = tmp;
-        for (int i=0; i<n-m; ++i) {
-            tmp = cur->next;
-            cur->next = head->next;
-            head->next = cur;
-            cur = tmp;
+    ListNode* reverseBetween(ListNode* head, int m, int n) {
+        ListNode dummy(0), *prev = &dummy;
+        dummy.next = head;
+        for (int i=0; i<m-1; ++i) prev = prev->next;
+        ListNode *newHead = prev->next, *cur = prev;
+        for (int i=0; i<=n-m; ++i) cur = cur->next;
+        ListNode *nextHead = cur->next;
+        cur->next = nullptr;
+        prev->next = reverseList(newHead);
+        newHead->next = nextHead;
+        return dummy.next;
+    }
+    
+    ListNode* reverseList(ListNode* head) {
+        ListNode* cur = head;
+        while (cur && cur->next) {
+            ListNode* newHead = cur->next;
+            cur->next = newHead->next;
+            newHead->next = head;
+            head = newHead;
         }
-        return header.next;
+        return head;
     }
 };
 
-// One-pass Version
+// One-pass Version, time O(n), space O(1)
 class Solution {
 public:
-    ListNode *reverseBetween(ListNode *head, int m, int n) {
-        ListNode header(0), *ins = &header;
-        header.next = head;
-        for (int i=0; i<m-1; ++i) ins = ins->next;
-        ListNode *cur = ins->next;
+    ListNode* reverseBetween(ListNode* head, int m, int n) {
+        ListNode dummy(0), *prev = &dummy;
+        dummy.next = head;
+        for (int i=0; i<m-1; ++i) prev = prev->next;
+        ListNode* cur = prev->next;
         for (int i=0; i<n-m; ++i) {
-            ListNode *move = cur->next;
-            cur->next = move->next;
-            move->next = ins->next;
-            ins->next = move;
+            ListNode* newHead = cur->next;
+            cur->next = newHead->next;
+            newHead->next = prev->next;
+            prev->next = newHead;
         }
-        return header.next;
+        return dummy.next;
     }
 };
