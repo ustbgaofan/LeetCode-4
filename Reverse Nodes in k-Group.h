@@ -2,7 +2,7 @@
 /*
 Given a linked list, reverse the nodes of a linked list k at a time and return its modified list.
 
-If the number of nodes is not a multiple of k then left-out nodes in the end should remain as it is.
+k is a positive integer and is less than or equal to the length of the linked list. If the number of nodes is not a multiple of k then left-out nodes in the end should remain as it is.
 
 You may not alter the values in the nodes, only nodes itself may be changed.
 
@@ -68,5 +68,64 @@ public:
         }
         head->next = reverseKGroup(head->next, k);
         return header.next;
+    }
+};
+
+// time O(n), space O(1)
+class Solution {
+public:
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        ListNode dummy(0), *prev = &dummy;
+        dummy.next = head;
+        while (true) {
+            ListNode* cur = head;
+            int i = 0;
+            for (; i<k-1 && cur; ++i) cur = cur->next;
+            if (i<k-1 || !cur) return dummy.next;
+            ListNode* nextHead = cur->next;
+            cur->next = nullptr;
+            prev->next = reverseList(head);
+            prev = head;
+            head = head->next = nextHead;
+        }
+    }
+    
+    ListNode* reverseList(ListNode* head) {
+        ListNode *cur = head;
+        while (cur && cur->next) {
+            ListNode* newHead = cur->next;
+            cur->next = newHead->next;
+            newHead->next = head;
+            head = newHead;
+        }
+        return head;
+    }
+};
+
+// time O(n), space O(n/k)
+class Solution {
+public:
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        ListNode* cur = head;
+        int i = 0;
+        for (; i<k-1 && cur; ++i) cur = cur->next;
+        if (i<k-1 || !cur) return head;
+        ListNode* nextHead = cur->next;
+        cur->next = nullptr;
+        cur = head;
+        head = reverseList(head);
+        cur->next = reverseKGroup(nextHead, k);
+        return head;
+    }
+    
+    ListNode* reverseList(ListNode* head) {
+        ListNode *cur = head;
+        while (cur && cur->next) {
+            ListNode* newHead = cur->next;
+            cur->next = newHead->next;
+            newHead->next = head;
+            head = newHead;
+        }
+        return head;
     }
 };
