@@ -27,33 +27,26 @@ A line other than the last line might contain only one word. What should you do 
 In this case, that line should be left-justified.
 */
 
+
+// how many words fit in the current line;
+// mod operation to manage the spaces
 class Solution {
 public:
-    vector<string> fullJustify(vector<string> &words, int L) {
+    vector<string> fullJustify(vector<string>& words, int maxWidth) {
         vector<string> res;
-	    int N = words.size();
-	    for (int i=0; i<N; ) {
-		    int j = i, avail = L;
-		    for (; j<N && (int)words[j].size()<=avail; avail-=words[j].size()+1, ++j);  // !!!
-		    avail += j - i;
-		    string line(L, ' ');
-		    if (j==N || j-i==1) {
-		        for (int k=i, pos=0; k<j; ++k) {
-		            line.replace(pos, words[k].size(), words[k]);
-		            pos += words[k].size() + 1;
-		        }
-		    } else {
-			    int avg = avail / (j-i-1);
-			    int rem = avail % (j-i-1);
-			    for (int k=i, pos=0; k<j; ++k, --rem) {
-				    line.replace(pos, words[k].size(), words[k]);
-				    pos += words[k].size() + avg;
-				    if (rem > 0) ++pos;
-			    }
-		    }
-		    res.push_back(line);
-		    i = j;
-	    }
-	    return res;
+        for (int i=0, j, k; i<words.size(); i+=j) {
+            for (j=0, k=0; i+j<words.size() && k+words[i+j].size()<=maxWidth-j; ++j) {
+                 k += words[i+j].size();
+            }
+            string line = words[i];
+            for (int w=0; w<j-1; ++w) {
+                if (i+j == words.size()) line += " ";
+                else line += string((maxWidth-k)/(j-1) + (w < (maxWidth-k)%(j-1)), ' ');
+                line += words[i+w+1];
+            }
+            line += string(maxWidth-line.size(), ' ');
+            res.push_back(line);
+        }
+        return res;
     }
 };
