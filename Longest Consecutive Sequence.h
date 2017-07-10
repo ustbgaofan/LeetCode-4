@@ -10,37 +10,34 @@ Your algorithm should run in O(n) complexity.
 */
 
 
-// Naive Version, time complexity O(nlog(n)), space complexity O(1)
+// Sort Version, time O(nlogn), space O(1)
 class Solution {
 public:
-    int longestConsecutive(vector<int> &num) {
-        int N = num.size();
-        if (N < 2) return N;
-        sort(num.begin(), num.end());
-        int res = 1, count = 1;
-        for (int i=1; i<N; ++i) {
-            if (num[i] == num[i-1]) continue;
-            if (num[i] == num[i-1]+1) ++count;
-            else count = 1;
-            res = max(res, count);
+    int longestConsecutive(vector<int>& nums) {
+        if (nums.empty()) return 0;
+        sort(nums.begin(), nums.end());
+        int res = 1, cnt = 1;
+        for (int i=1; i<nums.size(); ++i) {
+            if (nums[i]==nums[i-1]) continue;
+            nums[i]==nums[i-1]+1 ? ++cnt : cnt=1;
+            res = max(res, cnt);
         }
         return res;
     }
 };
 
-// Advanced Version, time complexity O(n), space complexity O(n)
+// Hash Version, time O(n), space O(n)
 class Solution {
 public:
-    int longestConsecutive(vector<int> &num) {
-        unordered_set<int> s(num.begin(), num.end());
+    int longestConsecutive(vector<int>& nums) {
+        unordered_set<int> h(nums.begin(), nums.end());
         int res = 0;
-        for (int i=0; !s.empty(); ++i) {
-            if (s.find(num[i]) == s.end()) continue;
-            int l = num[i], u = num[i];
-            while (s.find(l-1) != s.end()) s.erase(--l);
-            while (s.find(u+1) != s.end()) s.erase(++u);
-            s.erase(num[i]);
-            res = max(res, u-l+1);
+        for (int i : nums) {
+            if (h.find(i) == h.end()) continue;
+            int l = i, r = i;
+            while (h.find(r+1) != h.end()) h.erase(++r);
+            while (h.find(l-1) != h.end()) h.erase(--l);
+            res = max(res, r-l+1);
         }
         return res;
     }
