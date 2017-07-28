@@ -5,13 +5,13 @@ Given a sorted array and a target value, return the index if the target is found
 You may assume no duplicates in the array.
 
 Here are few examples.
-[1,3,5,6], 5 ¡ú 2
-[1,3,5,6], 2 ¡ú 1
-[1,3,5,6], 7 ¡ú 4
-[1,3,5,6], 0 ¡ú 0
+[1,3,5,6], 5 â†’ 2
+[1,3,5,6], 2 â†’ 1
+[1,3,5,6], 7 â†’ 4
+[1,3,5,6], 0 â†’ 0
 */
 
-
+// Not recommend, difficult to debug, time O(logn), space O(1)
 class Solution {
 public:
     int searchInsert(int A[], int n, int target) {
@@ -22,6 +22,21 @@ public:
             else if (A[mid] < target) begin = mid + 1;
             else end = mid - 1;
         }
-		return begin;
+	return begin;
+    }
+};
+
+// time O(logn), space O(1)
+class Solution {
+public:
+    int searchInsert(vector<int>& nums, int target) {
+        int l = 0, r = nums.size() - 1, res = 0;
+        while (l <= r) {
+            int m = l + (r-l)/2;
+            if (target > nums[m]) res = l = m + 1;
+            if (target < nums[m]) res = m, r = m - 1;
+            if (target == nums[m]) return m;
+        }
+        return res;
     }
 };
