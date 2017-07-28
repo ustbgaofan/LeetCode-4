@@ -80,11 +80,10 @@ public:
 class Solution {
 public:
     vector<int> searchRange(vector<int>& nums, int target) {
-        vector<int> res(2, -1);
         int l = searchLowerBound(nums, target);
         int r = searchUpperBound(nums, target);
-        if (l!=-1 && r!=-1) res = {l, r};
-        return res;
+        if (l!=-1 && r!=-1) return vector<int>({l, r});
+        return vector<int>({-1, -1});
     }
     
     int searchLowerBound(const vector<int>& nums, int target) {
