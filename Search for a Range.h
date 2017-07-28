@@ -30,7 +30,21 @@ public:
     }
 };
 
-// Advanced Version, time complexity: O(log(n)) 
+// Lower & Upper Bound, time O(logn), space O(1)
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        vector<int> res(2, -1);
+        auto l = lower_bound(nums.begin(), nums.end(), target);  // first X >= target
+        if (l==nums.end() || *l!=target) return res;
+        auto r = upper_bound(nums.begin(), nums.end(), target);  // first X > target
+        if (r==nums.begin() || *(r-1)!=target) return res;
+        res = {l-nums.begin(), r-nums.begin()-1};
+        return res;
+    }
+};
+
+// Not Recommend, Difficult to Debug, time O(logn), space O(1)
 class Solution {
 public:
     int searchLowerBound(int A[], int n, int target) {
@@ -58,6 +72,46 @@ public:
         int l = searchLowerBound(A, n, target);
         int r = searchUpperBound(A, n, target);
         if (l <= r) res[0] = l, res[1] = r;
+        return res;
+    }
+};
+
+// Lower & Upper Bound, time O(logn), space O(1)
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        vector<int> res(2, -1);
+        int l = searchLowerBound(nums, target);
+        int r = searchUpperBound(nums, target);
+        if (l!=-1 && r!=-1) res = {l, r};
+        return res;
+    }
+    
+    int searchLowerBound(const vector<int>& nums, int target) {
+        int l = 0, r = nums.size() - 1, res = -1;
+        while (l <= r) {
+            int m = l + (r-l)/2;
+            if (target > nums[m]) l = m + 1;
+            if (target < nums[m]) r = m - 1;
+            if (target == nums[m]) {
+                res = m;
+                r = m - 1;
+            }
+        }
+        return res;
+    }
+    
+    int searchUpperBound(const vector<int>& nums, int target) {
+        int l = 0, r = nums.size() - 1, res = -1;
+        while (l <= r) {
+            int m = l + (r-l)/2;
+            if (target > nums[m]) l = m + 1;
+            if (target < nums[m]) r = m - 1;
+            if (target == nums[m]) {
+                res = m;
+                l = m + 1;
+            }
+        }
         return res;
     }
 };
