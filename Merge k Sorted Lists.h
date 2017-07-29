@@ -64,3 +64,25 @@ public:
         return dummy.next;
     }
 };
+
+// time O(nlogk), space O(k), assuming length of each list n/k 
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        struct cmp{
+            bool operator()(ListNode* x, ListNode* y) { return x->val < y->val;}
+        };
+        multiset<ListNode*, cmp> s;
+        for (int i=0; i<lists.size(); ++i) {
+            if (lists[i]) s.insert(lists[i]);
+        }
+        ListNode dummy(0), *cur = &dummy;
+        while (!s.empty()) {
+            ListNode* t = *(s.begin());
+            s.erase(s.begin());
+            if (t->next) s.insert(t->next);
+            cur = cur->next = t;
+        }
+        return dummy.next;
+    }
+};
