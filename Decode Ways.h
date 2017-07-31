@@ -36,7 +36,7 @@ public:
     }
 };
 
-// Top-down Dynamic Programming Version
+// Top-down Dynamic Programming, time O(n), space O(n)
 class Solution {
 public:
     int numDecodings(string &s, int begin, vector<int> &mem) {
@@ -59,7 +59,7 @@ public:
     }
 };
 
-// Bottom-up Dynamic Programming Version
+// Bottom-up Dynamic Programming, time O(n), space O(n)
 class Solution {
 public:
     int numDecodings(string s) {
@@ -79,7 +79,7 @@ public:
     }
 };
 
-// Space Optimized Bottom-up Dynamic Programming Version, O(1) 
+// Space Optimized Bottom-up Dynamic Programming time O(n), space O(1) 
 class Solution {
 public:
     int numDecodings(string s) {
