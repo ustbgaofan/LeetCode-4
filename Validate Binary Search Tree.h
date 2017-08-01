@@ -49,7 +49,7 @@ public:
     }
 };
 
-// In Order Version, time complexity O(n)
+// In Order Version, time O(n), space O(n)
 class Solution {
 public:
     bool isValidBST(TreeNode* root) {
@@ -61,7 +61,6 @@ public:
         if (!root) return true;
         if (!inorder(root->left, pre)) return false;
         if (pre && root->val <= pre->val) return false;
-        pre = root;
-        return inorder(root->right, pre);
+        return inorder(root->right, pre = root);
     }
 };
