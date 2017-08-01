@@ -34,10 +34,10 @@ The above binary tree is serialized as "{1,2,3,#,#,4,#,#,5}".
  * };
  */
  
-// Upper and Lower Bound Version, time complexity O(n)
+// Upper and Lower Bound Version, time O(n), space O(n)
 class Solution {
 public:
-    bool isValidBST(TreeNode *root, int lower, int upper) {
+    bool isValidBST(TreeNode *root, long long lower, long long upper) {
         if (!root) return true;
         if (root->val<=lower || root->val>=upper) return false;
         return isValidBST(root->left, lower, root->val) && 
@@ -45,7 +45,7 @@ public:
     }
     
     bool isValidBST(TreeNode *root) {
-        return isValidBST(root, INT_MIN, INT_MAX);
+        return isValidBST(root, LLONG_MIN, LLONG_MAX);
     }
 };
 
