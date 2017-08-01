@@ -15,7 +15,7 @@ Output: 0
 In this case, no transaction is done, i.e. max profit = 0.
 */
 
-// Time Limit Exceeded Version
+// Time Limit Exceeded, time O(n^2), space O(1)
 class Solution {
 public:
     int maxProfit(vector<int> &prices) {
