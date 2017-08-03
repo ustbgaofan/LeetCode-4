@@ -9,8 +9,25 @@ dict = ["leet", "code"].
 Return true because "leetcode" can be segmented as "leet code".
 */
 
+// Time Limit Exceeded 
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        unordered_set<string> dict(wordDict.begin(), wordDict.end());
+        return DFS(s, 0, dict);
+    }
+    
+    bool DFS(const string& s, int i, const unordered_set<string>& dict) {
+        if (i == s.size()) return true;
+        for (int j=i; j<s.size(); ++j) {
+            if (dict.find(s.substr(i, j-i+1)) == dict.end()) continue;
+            if (DFS(s, j+1, dict)) return true;
+        }
+        return false;
+    }
+};
 
-// Top-down Dynamic Programming Version, time complexity O(n^2), space complexity O(n)
+// Top-down Dynamic Programming, time O(n^2), space O(n)
 class Solution {
 public:
     bool wordBreak(string s, vector<string>& wordDict) {
@@ -30,7 +47,7 @@ public:
     }
 };
 
-// Bottom-up Dynamic Programming Version, time complexity O(n^2), space complexity O(n)
+// Bottom-up Dynamic Programming, time O(n^2), space O(n)
 class Solution {
 public:
     bool wordBreak(string s, vector<string>& wordDict) {
