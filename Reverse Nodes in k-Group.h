@@ -75,6 +75,35 @@ public:
 class Solution {
 public:
     ListNode* reverseKGroup(ListNode* head, int k) {
+        ListNode dummy(0), *slow = &dummy, *fast = &dummy;
+        dummy.next = head;
+        while (true) {
+            for (int i=0; i<k && fast; ++i) fast = fast->next;
+            if (!fast) return dummy.next;
+            ListNode* newHead = fast->next, *oldHead = slow->next;
+            fast->next = nullptr;
+            slow->next = ReverseList(oldHead);
+            oldHead->next = newHead;
+            slow = fast = oldHead;
+        }
+    }
+    
+    ListNode* ReverseList(ListNode* head) {
+        ListNode* cur = head;
+        while (cur && cur->next) {
+            ListNode* newHead = cur->next;
+            cur->next = newHead->next;
+            newHead->next = head;
+            head = newHead;
+        }
+        return head; 
+    }
+};
+
+// time O(n), space O(1)
+class Solution {
+public:
+    ListNode* reverseKGroup(ListNode* head, int k) {
         ListNode dummy(0), *prev = &dummy;
         dummy.next = head;
         while (true) {
