@@ -27,10 +27,10 @@ The wordList parameter had been changed to a list of strings (instead of a set o
 class Solution {
 public:
     int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
-        unordered_set<string> dict(wordList.begin(), wordList.end());
+        unordered_set<string> h(wordList.begin(), wordList.end());
         queue<pair<string, int>> q;
         q.push({beginWord, 1});
-        dict.erase(beginWord);
+        h.erase(beginWord);
         while (!q.empty()) {
             auto f = q.front();
             q.pop();
@@ -39,10 +39,9 @@ public:
                 char t = f.first[i];
                 for (char c='a'; c<='z'; ++c) {
                     f.first[i] = c;
-                    if (dict.find(f.first) != dict.end()) {
-                        q.push({f.first, f.second+1});
-                        dict.erase(f.first);
-                    }
+                    if (h.find(f.first) == h.end()) continue;
+                    q.push({f.first, f.second+1});
+                    h.erase(f.first);
                 }
                 f.first[i] = t;
             }
