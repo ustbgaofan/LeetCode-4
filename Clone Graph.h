@@ -54,21 +54,21 @@ public:
 // BFS, time complexity O(E), space complexity O(V) 
 class Solution {
 public:
-    UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node) {
+    UndirectedGraphNode* cloneGraph(UndirectedGraphNode* node) {
         if (!node) return node;
         queue<UndirectedGraphNode *> q;
         q.push(node);
         unordered_map<UndirectedGraphNode *, UndirectedGraphNode *> h;
+        h[node] = new UndirectedGraphNode(node->label);
         while (!q.empty()) {
-            UndirectedGraphNode *front = q.front();
+            UndirectedGraphNode *f = q.front();
             q.pop();
-            if (h.find(front) == h.end()) h[front] = new UndirectedGraphNode(front->label);
-            for (auto n : front->neighbors) {
+            for (auto n : f->neighbors) {
                 if (h.find(n) == h.end()) {
                     q.push(n);
                     h[n] = new UndirectedGraphNode(n->label);
                 }
-                h[front]->neighbors.push_back(h[n]);
+                h[f]->neighbors.push_back(h[n]);
             }
         }
         return h[node];
