@@ -21,13 +21,13 @@ public:
 class Solution {
 public:
     double myPow(double x, int n) {
-        if (n < 0) return 1 / power(x, -n);
-        return power(x, n);
+        if (n < 0) return 1 / DFS(x, -n);
+        return DFS(x, n);
     }
     
-    double power(double x, int n) {
+    double DFS(double x, int n) {
         if (n == 0) return 1;
-        double h = power(x, n/2);
-        return n%2==0 ? h*h : h*h*x;
+        double t = DFS(x, n/2);
+        return n%2? t*t*x : t*t;
     }
 };
