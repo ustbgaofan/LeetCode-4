@@ -8,15 +8,17 @@ Compute and return the square root of x.
 class Solution {
 public:
     int mySqrt(int x) {
-        int l = 0, r = x; // r = x/2+1
+        int l = 0, r = x, res;
         while (l <= r) {
-            int m = l + (r-l)/2;
-            long long t = m;  // long long t = m*m (wrong!)
-            t *= m;
-            if (t > x) r = m-1;
-            if (t < x) l = m+1;
+            long long m = l + (r-l)/2;
+            long long t = m * m;
             if (t == x) return m;
+            if (t < x) {
+                res = m;
+                l = m + 1;
+            }
+            if (t > x) r = m - 1;
         }
-        return r;
+        return res;
     }
 };
