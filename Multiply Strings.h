@@ -19,13 +19,13 @@ public:
         for (int i=N-1; i>=0; --i) {
             int carry = 0;
             for (int j=M-1; j>=0; --j) {
-                int tmp = (num2[i]-'0') * (num1[j]-'0') + carry + (res[i+j+1]-'0');
-                carry = tmp / 10;
-                res[i+j+1] = tmp % 10 + '0';
+                int mul = (num2[i]-'0') * (num1[j]-'0') + carry + (res[M+N-(N-i)-(M-j)+1]-'0');
+                carry = mul / 10;
+                res[i+j+1] = mul % 10 + '0'; 
             }
-            if (carry > 0) res[i] = carry + '0';
+            if (carry > 0) res[i] = res[i] + carry;
         }
-        while (res[0]=='0' && res.size()>1) res.erase(0, 1);
+        while (res[0]=='0' && res.size()>1) res.erase(0, 1); 
         return res;
     }
 };
