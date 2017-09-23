@@ -17,10 +17,10 @@ public:
     int maximalRectangle(vector<vector<char>>& matrix) {
         if (matrix.empty()) return 0;
         int M = matrix.size(), N = matrix[0].size(), res = 0;
-        for (int y1=0; y1<M; ++y1) {
-            for (int y2=y1; y2<M; ++y2) {
-                for (int x1=0; x1<N; ++x1) {
-                    for (int x2=x1; x2<N; ++x2) {
+        for (int x1=0; x1<N; ++x1) {
+            for (int y1=0; y1<M; ++y1) {
+                for (int x2=x1; x2<N; ++x2) {
+                    for (int y2=y1; y2<M; ++y2) {
                         if (isValid(matrix, x1, x2, y1, y2)) {
                             res = max(res, getArea(matrix, x1, x2, y1, y2));
                         }
