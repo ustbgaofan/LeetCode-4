@@ -51,10 +51,10 @@ public:
     int maximalRectangle(vector<vector<char>>& matrix) {
         if (matrix.empty()) return 0;
         int M = matrix.size(), N = matrix[0].size(), res = 0;
-        vector<int> heights(N, 0);
+        vector<int> v(N, 0);
         for (int i=0; i<M; ++i) {
-            for (int j=0; j<N; ++j) heights[j] = matrix[i][j]=='1' ? heights[j]+1 : 0;
-            res = max(res, largestRectangleArea(heights));
+            for (int j=0; j<N; ++j) matrix[i][j]=='1'? ++v[j]: v[j]=0;
+            res = max(res, largestRectangleArea(v));
         }
         return res;
     }
