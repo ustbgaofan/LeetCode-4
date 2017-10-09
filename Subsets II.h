@@ -93,3 +93,48 @@ public:
         return res;
     }
 };
+
+// Version 2, every element has 2 choices
+class Solution {
+public:
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        vector<int> path;
+        DFS(nums, path, 0);
+        return res;
+    }
+    
+    void DFS(const vector<int>& nums, vector<int>& path, int begin) {
+        if (begin == nums.size()) {
+            if (h.insert(path).second) res.push_back(path);
+            return;
+        }
+        DFS(nums, path, begin+1);
+        path.push_back(nums[begin]);
+        DFS(nums, path, begin+1);
+        path.pop_back();
+    }
+    
+private:
+    vector<vector<int>> res;
+    set<vector<int>> h;
+};
+
+// Version 3, iterative version of version 2
+class Solution {
+public:
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        set<vector<int>> h;
+        vector<vector<int>> res(1);
+        for (int i=0; i<nums.size(); ++i) {
+            int k = res.size();
+            for (int j=0; j<k; ++j) {
+                res.push_back(res[j]);
+                res.back().push_back(nums[i]);
+                if (!h.insert(res.back()).second) res.pop_back();
+            }
+        }
+        return res;
+    }
+};
