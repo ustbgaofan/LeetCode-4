@@ -18,27 +18,27 @@ word = "ABCB", -> returns false.
 */
 
 
-// time complexity O(mn * 4^(k-1)), extra space complexity O(k)
+// time O(mn * 4^(k-1)), space O(k)
 class Solution {
 public:
     bool exist(vector<vector<char>>& board, string word) {
         for (int i=0; i<board.size(); ++i) {
-            for (int j=0; j<board[0].size(); ++j) {
-                if (board[i][j]==word[0] && DFS(board, i, j, word, 1)) return true;
+            for (int j=0; j<board[i].size(); ++j) {
+                if (board[i][j]==word[0] && DFS(board, word, 1, i, j)) return true;
             }
         }
         return false;
     }
     
-    bool DFS(vector<vector<char>>& board, int row, int col, string word, int i) {
+    bool DFS(vector<vector<char>>& board, const string& word, int i, int r, int c) {
         if (i == word.size()) return true;
-        char tmp = board[row][col];
-        board[row][col] = '#';
-        if (row>0 && board[row-1][col]==word[i] && DFS(board, row-1, col, word, i+1)) return true;
-        if (col+1<board[0].size() && board[row][col+1]==word[i] && DFS(board, row, col+1, word, i+1)) return true;
-        if (row+1<board.size()>0 && board[row+1][col]==word[i] && DFS(board, row+1, col, word, i+1)) return true;
-        if (col>0 && board[row][col-1]==word[i] && DFS(board, row, col-1, word, i+1)) return true;
-        board[row][col] = tmp;
+        char t = board[r][c];
+        board[r][c] = '#';
+        if (r>0 && board[r-1][c]==word[i] && DFS(board, word, i+1, r-1, c)) return true;
+        if (c+1<board[r].size() && board[r][c+1]==word[i] && DFS(board, word, i+1, r, c+1)) return true;
+        if (r+1<board.size() && board[r+1][c]==word[i] && DFS(board, word, i+1, r+1, c)) return true;
+        if (c>0 && board[r][c-1]==word[i] && DFS(board, word, i+1, r, c-1)) return true;
+        board[r][c] = t;
         return false;
     }
 };
