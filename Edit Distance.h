@@ -21,94 +21,94 @@ Replace		A[2, lenA] B[2, lenB]
 */ 
 class Solution {
 public:
-    int minDistance(const string &word1, const string &word2, int i, int j) {
-	    int N = word1.size(), M = word2.size();
-	    if (i==N || j==M) return max(N-i, M-j);  
-	    if (word1[i] == word2[j]) return minDistance(word1, word2, i+1, j+1);
-		int res = minDistance(word1, word2, i+1, j+1);
-		res = min(res, minDistance(word1, word2, i, j+1));
-		res = min(res, minDistance(word1, word2, i+1, j));
-		return ++res; 
-    }
-
     int minDistance(string word1, string word2) {
-	    return minDistance(word1, word2, 0, 0);
+        return DFS(word1, word2, 0, 0);
+    }
+    
+    int DFS(const string& w1, const string& w2, int i, int j) {
+        int M = w1.size(), N = w2.size();
+        if (i==M || j==N) return max(M-i, N-j);
+        if (w1[i] == w2[j]) return DFS(w1, w2, i+1, j+1);
+        int res = DFS(w1, w2, i, j+1);
+        res = min(res, DFS(w1, w2, i+1, j));
+        res = min(res, DFS(w1, w2, i+1, j+1));
+        return ++res;
     }
 };
 
-// Top-down Dynamic Programming Version 
+// Top-down Dynamic Programming Version, time O(MN), space O(MN) 
 class Solution {
 public:
-    int minDistance(const string &word1, const string &word2, int i, int j, vector<vector<int>> &mem) {
-	    int N = word1.size(), M = word2.size();
-	    if (i==N || j==M) return max(N-i, M-j);
-	    if (mem[i][j] != -1) return mem[i][j];
-	    if (word1[i] == word2[j]) return mem[i][j] = minDistance(word1, word2, i+1, j+1, mem);
-		int res = minDistance(word1, word2, i+1, j+1, mem);
-		res = min(res, minDistance(word1, word2, i, j+1, mem));
-		res = min(res, minDistance(word1, word2, i+1, j, mem));
-		return mem[i][j] = ++res;
-    }
-
     int minDistance(string word1, string word2) {
-        vector<vector<int>> mem(word1.size(), vector<int>(word2.size(), -1));
-	    return minDistance(word1, word2, 0, 0, mem);
+        vector<vector<int>> m(word1.size(), vector<int>(word2.size(), -1));
+        return DFS(word1, word2, 0, 0, m);
+    }
+    
+    int DFS(const string& w1, const string& w2, int i, int j, vector<vector<int>>& m) {
+        int M = w1.size(), N = w2.size();
+        if (i==M || j==N) return max(M-i, N-j);
+        if (m[i][j] != -1) return m[i][j];
+        if (w1[i] == w2[j]) return DFS(w1, w2, i+1, j+1, m);
+        int res = DFS(w1, w2, i, j+1, m);
+        res = min(res, DFS(w1, w2, i+1, j, m));
+        res = min(res, DFS(w1, w2, i+1, j+1, m));
+        return m[i][j] = ++res;
     }
 };
 
-// Bottom-up Dynamic Programming Version
+// Bottom-up Dynamic Programming Version, time O(MN), space O(MN) 
 class Solution {
 public:
     int minDistance(string word1, string word2) {
-        int N = word1.size(), M = word2.size();
-        vector<vector<int>> mem(N+1, vector<int>(M+1));
-        for (int i=0; i<=M; ++i) mem[0][i] = i; 
-        for (int i=0; i<N; ++i) {
-            mem[i+1][0] = i + 1;
-            for (int j=0; j<M; ++j) {
-                if (word1[i] == word2[j]) mem[i+1][j+1] = mem[i][j];
-                else mem[i+1][j+1] = 1 + min(mem[i][j], min(mem[i][j+1], mem[i+1][j]));
+        int M = word1.size(), N = word2.size();
+        vector<vector<int>> m(M+1, vector<int>(N+1, 0));
+        for (int i=0; i<=N; ++i) m[0][i] = i;
+        for (int i=1; i<=M; ++i) {
+            m[i][0] = i;
+            for (int j=1; j<=N; ++j) {
+                if (word1[i-1] == word2[j-1]) m[i][j] = m[i-1][j-1];
+                else m[i][j] = 1 + min(m[i-1][j-1], min(m[i-1][j], m[i][j-1]));
             }
         }
-	    return mem[N][M];
+        return m[M][N];
     }
 };
 
-// Space Optimized Bottom-up Dynamic Programming Version, O(2M)
+// Space Optimized Bottom-up Dynamic Programming Version, time O(MN), space O(2N) 
 class Solution {
 public:
     int minDistance(string word1, string word2) {
-        int N = word1.size(), M = word2.size();
-        vector<vector<int>> mem(2, vector<int>(M+1));
-        for (int i=0; i<=M; ++i) mem[0][i] = i; 
-        for (int i=0; i<N; ++i) {
-            mem[(i+1)%2][0] = i + 1;
-            for (int j=0; j<M; ++j) {
-                if (word1[i] == word2[j]) mem[(i+1)%2][j+1] = mem[i%2][j];
-                else mem[(i+1)%2][j+1] = 1 + min(mem[i%2][j], min(mem[i%2][j+1], mem[(i+1)%2][j]));
+        int M = word1.size(), N = word2.size();
+        vector<vector<int>> m(2, vector<int>(N+1, 0));
+        for (int i=0; i<=N; ++i) m[0][i] = i;
+        for (int i=1; i<=M; ++i) {
+            m[i%2][0] = i;
+            for (int j=1; j<=N; ++j) {
+                if (word1[i-1] == word2[j-1]) m[i%2][j] = m[(i-1)%2][j-1];
+                else m[i%2][j] = 1 + min(m[(i-1)%2][j-1], min(m[(i-1)%2][j], m[i%2][j-1]));
             }
         }
-	    return mem[N%2][M];
+        return m[M%2][N];
     }
 };
 
-// Space Optimized Bottom-up Dynamic Programming Version, O(M)
+// Space Optimized Bottom-up Dynamic Programming Version, time O(MN), space O(N) 
 class Solution {
 public:
     int minDistance(string word1, string word2) {
-        int N = word1.size(), M = word2.size();
-        vector<int> mem(M+1);
-        for (int i=0; i<=M; ++i) mem[i] = i; 
-        for (int i=0; i<N; ++i) {
-            int backup = mem[0];
-            mem[0] = i + 1;
-            for (int j=0; j<M; ++j) {
-                int tmp = mem[j+1];
-                if (word1[i] == word2[j]) mem[j+1] = backup;
-                else mem[j+1] = 1 + min(backup, min(mem[j+1], mem[j]));
-                backup = tmp;
+        int M = word1.size(), N = word2.size();
+        vector<int> m(N+1, 0);
+        for (int i=0; i<=N; ++i) m[i] = i;
+        for (int i=1; i<=M; ++i) {
+            int backup = m[0];
+            m[0] = i;
+            for (int j=1; j<=N; ++j) {
+                int t = m[j];
+                if (word1[i-1] == word2[j-1]) m[j] = backup;
+                else m[j] = 1 + min(backup, min(m[j], m[j-1]));
+                backup = t;
             }
         }
-	    return mem[M];
+        return m[N];
     }
 };
