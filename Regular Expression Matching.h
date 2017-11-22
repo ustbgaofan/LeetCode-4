@@ -75,7 +75,7 @@ public:
         vector<vector<bool>> m(2, vector<bool>(N+1, false));
         m[0][0] = true;
         for (int i=0; i<=M; ++i) {
-            if (i > 1) m[0][0] = m[1][0] = false;
+            if (i > 1) m[0][0] = false;
             for (int j=1; j<=N; ++j) {
                 if (p[j-1] != '*') m[i%2][j] = i>0 && m[(i-1)%2][j-1] && (s[i-1]==p[j-1] || p[j-1]=='.'); 
                 else m[i%2][j] = m[i%2][j-2] || (i>0 && m[(i-1)%2][j] && (s[i-1]==p[j-2] || p[j-2]=='.'));
