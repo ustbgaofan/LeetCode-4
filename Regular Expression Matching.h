@@ -46,7 +46,7 @@ public:
     }
 };
 
-// Bottom-up Dynamic Programming, time O(mn), space O(mn)
+// Bottom-up Dynamic Programming, time O(MN), space O(MN)
 // We define the state m[i][j] to be true if s[0..i) matches p[0..j) and false otherwise. Then the state equations are:
 // m[i][j] = m[i-1][j-1], if p[j-1]!='*' && (s[i-1]==p[j-1] || p[j-1]=='.');
 // m[i][j] = m[i][j-2], if p[j-1]=='*' and the pattern repeats for 0 times;
@@ -67,20 +67,20 @@ public:
     }
 };
 
-// Space Optimized Bottom-up Dynamic Programming, time O(mn), space O(n)
+// Space Optimized Bottom-up Dynamic Programming, time O(MN), space O(N)
 class Solution {
 public:
     bool isMatch(string s, string p) {
         int M = s.size(), N = p.size();
-        vector<vector<bool>> m(3, vector<bool>(N+1, false));
+        vector<vector<bool>> m(2, vector<bool>(N+1, false));
         m[0][0] = true;
         for (int i=0; i<=M; ++i) {
-            if (i > 2) m[0][0] = false;
+            if (i > 1) m[0][0] = m[1][0] = false;
             for (int j=1; j<=N; ++j) {
-                if (p[j-1] != '*') m[i%3][j] = i>0 && (s[i-1]==p[j-1] || p[j-1]=='.') && m[(i-1)%3][j-1];
-                else m[i%3][j] = m[i%3][j-2] || (i>0 && (s[i-1]==p[j-2] || p[j-2]=='.') && m[(i-1)%3][j]);
+                if (p[j-1] != '*') m[i%2][j] = i>0 && m[(i-1)%2][j-1] && (s[i-1]==p[j-1] || p[j-1]=='.'); 
+                else m[i%2][j] = m[i%2][j-2] || (i>0 && m[(i-1)%2][j] && (s[i-1]==p[j-2] || p[j-2]=='.'));
             }
         }
-        return m[M%3][N];
+        return m[M%2][N];
     }
 };
