@@ -12,34 +12,34 @@ A solution is ["cats and dog", "cat sand dog"].
 */
 
 
-// Top-down Dynamic Programming Version, time complexity O(n^2)
+// Top-down Dynamic Programming Version, time O(n^2)
 class Solution {
 public:
-    vector<string> DFS(const string &s, int begin, const unordered_set<string> &dict, vector<vector<string>> &mem, vector<bool> &visited) {
-        if (visited[begin]) return mem[begin];
-        for (int i=begin; i<s.size(); ++i) {
-            string path = s.substr(begin, i-begin+1);
-            if (dict.find(path) != dict.end()) {
-                if (i+1 == s.size()) {
-                    mem[begin].push_back(path);
-                } else {
-					vector<string> res = DFS(s, i+1, dict, mem, visited);
-					for (int j=0; j<res.size(); ++j) mem[begin].push_back(path+" "+res[j]);
-				}
-            }
-        }
-        visited[begin] = true;
-        return mem[begin];
+    vector<string> wordBreak(string s, vector<string>& wordDict) {
+        unordered_set<string> dict(wordDict.begin(), wordDict.end());
+        vector<vector<string>> m(s.size());
+        vector<bool> v(s.size(), false);
+        return DFS(s, dict, 0, m, v);
     }
     
-    vector<string> wordBreak(string s, unordered_set<string> &dict) {
-        vector<vector<string>> mem(s.size());
-        vector<bool> visited(s.size(), false);
-        return DFS(s, 0, dict, mem, visited);
+    vector<string> DFS(const string& s, const unordered_set<string>& dict, int i, vector<vector<string>>& m, vector<bool>& v) {
+        if (v[i]) return m[i];
+        v[i] = true;
+        for (int j=i; j<s.size(); ++j) {
+            string path = s.substr(i, j-i+1);
+            if (dict.find(path) == dict.end()) continue;
+            if (j+1 == s.size()) {
+                m[i].push_back(path);
+            } else {
+                vector<string> res = DFS(s, dict, j+1, m, v);
+                for (int k=0; k<res.size(); ++k) m[i].push_back(path+" "+res[k]);
+            }
+        }
+        return m[i];
     }
 };
 
-// Bottom-up Dynamic Programming Version, time complexity O(n^2)
+// Bottom-up Dynamic Programming Version, time O(n^2)
 class Solution {
 public:
     vector<string> wordBreak(string s, unordered_set<string> &dict) {
