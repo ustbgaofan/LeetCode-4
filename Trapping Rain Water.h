@@ -42,19 +42,18 @@ public:
 // No-array Version, time O(n), space O(1)
 class Solution {
 public:
-    int trap(int A[], int n) {
-        int maxPos = 0;
-        for (int i=1; i<n; ++i) {
-            if (A[maxPos] < A[i]) maxPos = i; 
+    int trap(vector<int>& height) {
+        int N = height.size(), res = 0, maxPos = 0;
+        for (int i=1; i<N; ++i) {
+            if (height[i] > height[maxPos]) maxPos = i;
         }
-        int res = 0;
-        for (int i=1, h=0; i<maxPos; ++i) {
-            h = max(h, A[i-1]);
-            res += max(h-A[i], 0);
+        for (int i=1, l=0; i<maxPos; ++i) {
+            l = max(l, height[i-1]);
+            res += max(l-height[i], 0);
         }
-        for (int i=n-2, h=0; i>maxPos; --i) {
-            h = max(h, A[i+1]);
-            res += max(h-A[i], 0);
+        for (int i=N-2, r=0; i>maxPos; --i) {
+            r = max(r, height[i+1]);
+            res += max(r-height[i], 0);
         }
         return res;
     }
