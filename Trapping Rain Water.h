@@ -39,7 +39,7 @@ public:
     }
 };
 
-// No-array Version, time O(n), space O(1)
+// Constant Space Dynamic Programming, time O(n), space O(1)
 class Solution {
 public:
     int trap(vector<int>& height) {
