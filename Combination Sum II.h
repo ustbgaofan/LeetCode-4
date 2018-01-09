@@ -6,63 +6,64 @@ Each number in C may only be used once in the combination.
 
 Note:
 All numbers (including target) will be positive integers.
-Elements in a combination (a1, a2, ¡­ , ak) must be in non-descending order. (ie, a1 ¡Ü a2 ¡Ü ¡­ ¡Ü ak).
 The solution set must not contain duplicate combinations.
-For example, given candidate set 10,1,2,7,6,1,5 and target 8, 
+For example, given candidate set [10, 1, 2, 7, 6, 1, 5] and target 8, 
 A solution set is: 
-[1, 7] 
-[1, 2, 5] 
-[2, 6] 
-[1, 1, 6] 
+[
+  [1, 7],
+  [1, 2, 5],
+  [2, 6],
+  [1, 1, 6]
+]
 */
 
 
 // Naive Version, using set to avoid duplicates
 class Solution {
 public:
-    void DFS(set<vector<int>> &res, vector<int> &path, vector<int> &num, int start, int target) {
-        if (target == 0) {
-            res.insert(path);
-            return;
-        }
-        for (int i=start; i<num.size() && num[i]<=target; ++i) {
-            path.push_back(num[i]);
-            DFS(res, path, num, i+1, target-num[i]);
-            path.pop_back();
-        }
-    }
-    
-    vector<vector<int> > combinationSum2(vector<int> &num, int target) {
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
         set<vector<int>> res;
         vector<int> path;
-        sort(num.begin(), num.end());
-        DFS(res, path, num, 0, target);
+        sort(candidates.begin(), candidates.end());
+        DFS(candidates, 0, target, path, res);
         vector<vector<int>> ans(res.begin(), res.end());
         return ans;
     }
-};
-
-// Advanced Version, avoiding duplicates without set
-class Solution {
-public:
-    void DFS(vector<vector<int>> &res, vector<int> &path, vector<int> &num, int start, int target) {
-        if (target == 0) {
-            res.push_back(path);
+    
+    void DFS(const vector<int>& num, int i, int target, vector<int>& path, set<vector<int>>& res) {
+        if (target <= 0) {
+            if (target == 0) res.insert(path);
             return;
         }
-        for (int i=start; i<num.size() && num[i]<=target; ++i) {
-            if (i>start && num[i]==num[i-1]) continue;
-            path.push_back(num[i]);
-            DFS(res, path, num, i+1, target-num[i]);
+        for (int j=i; j<num.size(); ++j) {
+            path.push_back(num[j]);
+            DFS(num, j+1, target-num[j], path, res);
             path.pop_back();
         }
     }
-    
-    vector<vector<int> > combinationSum2(vector<int> &num, int target) {
+};
+
+// Advanced Version, avoiding duplicates without set, time O(2^n), space O(target/min)
+class Solution {
+public:
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
         vector<vector<int>> res;
         vector<int> path;
-        sort(num.begin(), num.end());
-        DFS(res, path, num, 0, target);
+        sort(candidates.begin(), candidates.end());  // with duplicates
+        DFS(candidates, 0, target, path, res);
         return res;
+    }
+    
+    void DFS(const vector<int>& nums, int i, int target, vector<int>& path, vector<vector<int>>& res) {
+        if (target <= 0) {
+            if (target == 0) res.push_back(path);
+            return;
+        }
+        for (int j=i; j<nums.size(); ++j) {
+            if (j>i && nums[j]==nums[j-1]) continue;  // with duplicates 
+            path.push_back(nums[j]);
+            DFS(nums, j+1, target-nums[j], path, res);  // Each number in C may only be used once in the combination.
+            path.pop_back();
+        }
     }
 };
