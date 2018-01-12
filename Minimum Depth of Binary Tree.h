@@ -15,37 +15,37 @@ The minimum depth is the number of nodes along the shortest path from the root n
  * };
  */
  
-// Recursive Version 
+// Recursive, time O(n), space O(h)
 class Solution {
 public:
-    int minDepth(TreeNode *root) {
+    int minDepth(TreeNode* root) {
         if (!root) return 0;
-        if (!root->left && !root->right) return 1;  // included in left && right
-        if (root->left && !root->right) return 1 + minDepth(root->left); 
+        if (!root->left && !root->right) return 1;
+        if (root->left && !root->right) return 1 + minDepth(root->left);
         if (!root->left && root->right) return 1 + minDepth(root->right);
         return 1 + min(minDepth(root->left), minDepth(root->right));
     }
 };
 
-// Iterative Version, NULL is a level separator
+// Iterative, time O(), space O()
 class Solution {
 public:
-    int minDepth(TreeNode *root) {
+    int minDepth(TreeNode* root) {
         if (!root) return 0;
-        queue<TreeNode *> q;
+        int res = 0;
+        queue<TreeNode*> q;
         q.push(root);
-        q.push(NULL);
-        int depth = 0;
+        q.push(nullptr);
         while (!q.empty()) {
-            TreeNode *node = q.front();
+            TreeNode* node = q.front();
             q.pop();
             if (!node) {
-                ++depth;
-                q.push(NULL);
+                ++res;
+                q.push(nullptr);
             } else {
+                if (!node->left && !node->right) return res+1;
                 if (node->left) q.push(node->left);
                 if (node->right) q.push(node->right);
-                if (!node->left && !node->right) return ++depth;
             }
         }
     }
