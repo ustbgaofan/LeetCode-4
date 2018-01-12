@@ -27,7 +27,7 @@ public:
     }
 };
 
-// Iterative, time O(), space O()
+// Iterative, time O(n), space O(n)
 class Solution {
 public:
     int minDepth(TreeNode* root) {
