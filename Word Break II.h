@@ -1,6 +1,6 @@
 // Word Break II
 /*
-Given a string s and a dictionary of words dict, add spaces in s to construct a sentence where each word is a valid dictionary word.
+Given a non-empty string s and a dictionary wordDict containing a list of non-empty words, add spaces in s to construct a sentence where each word is a valid dictionary word. You may assume the dictionary does not contain duplicate words.
 
 Return all such possible sentences.
 
@@ -9,10 +9,13 @@ s = "catsanddog",
 dict = ["cat", "cats", "and", "sand", "dog"].
 
 A solution is ["cats and dog", "cat sand dog"].
+
+UPDATE (2017/1/4):
+The wordDict parameter had been changed to a list of strings (instead of a set of strings). Please reload the code definition to get the latest changes.
 */
 
 
-// Top-down Dynamic Programming Version, time O(n^2)
+// Top-down Dynamic Programming, time O(2^n), space O(2^n)
 class Solution {
 public:
     vector<string> wordBreak(string s, vector<string>& wordDict) {
@@ -39,23 +42,23 @@ public:
     }
 };
 
-// Bottom-up Dynamic Programming Version, time O(n^2)
+// Bottom-up Dynamic Programming, time O(2^n), space O(2^n)
 class Solution {
 public:
-    vector<string> wordBreak(string s, unordered_set<string> &dict) {
+    vector<string> wordBreak(string s, vector<string>& wordDict) {
+        unordered_set<string> dict(wordDict.begin(), wordDict.end());
         int N = s.size();
         vector<vector<string>> mem(N+1);
         mem[N].push_back("*");
         for (int i=N-1; i>=0; --i) {
             for (int j=i; j<N; ++j) {
                 string path = s.substr(i, j-i+1);
-                if (!mem[j+1].empty() && dict.find(path)!=dict.end()) {
-                    if (j+1 == N) {
-                        mem[i].push_back(path);
-                    } else {
-                        for (int k=0; k<mem[j+1].size(); ++k) {
-                            mem[i].push_back(path+" "+mem[j+1][k]);
-                        }
+                if (mem[j+1].empty() || dict.find(path)==dict.end()) continue;
+                if (j+1 == N) {
+                    mem[i].push_back(path);
+                } else {
+                    for (int k=0; k<mem[j+1].size(); ++k) {
+                        mem[i].push_back(path+" "+mem[j+1][k]);
                     }
                 }
             }
