@@ -6,21 +6,6 @@ Recover the tree without changing its structure.
 
 Note:
 A solution using O(n) space is pretty straight forward. Could you devise a constant space solution?
-confused what "{1,#,2,3}" means? > read more on how binary tree is serialized on OJ.
-
-
-OJ's Binary Tree Serialization:
-The serialization of a binary tree follows a level order traversal, where '#' signifies a path terminator where no node exists below.
-
-Here's an example:
-   1
-  / \
- 2   3
-    /
-   4
-    \
-     5
-The above binary tree is serialized as "{1,2,3,#,#,4,#,#,5}".
 */
 
 /**
@@ -33,49 +18,48 @@ The above binary tree is serialized as "{1,2,3,#,#,4,#,#,5}".
  * };
  */
  
-// Vector Version, time complexity O(n), space complexity O(n)
+// Vector, time O(n), space O(n)
 class Solution {
 public:
-    void inorderTraversal(TreeNode *root, vector<TreeNode *> &v) {
-        if (!root) return;
-        inorderTraversal(root->left, v);
-        v.push_back(root);
-        inorderTraversal(root->right, v);
-    }
-    
-    void recoverTree(TreeNode *root) {
-        vector<TreeNode *> v;
-        inorderTraversal(root, v);
-        int i = 0;
+    void recoverTree(TreeNode* root) {
+        vector<TreeNode*> v;
+        inorder(root, v);
+        int i = 0, j = v.size() - 1;
         for (; i<v.size()-1 && v[i]->val<v[i+1]->val; ++i);
-        int j = v.size() - 1;
         for (; j>0 && v[j]->val>v[j-1]->val; --j);
         swap(v[i]->val, v[j]->val);
     }
+    
+    void inorder(TreeNode* root, vector<TreeNode*>& v) {
+        if (!root) return;
+        inorder(root->left, v);
+        v.push_back(root);
+        inorder(root->right, v);
+    }
 };
 
-// Two-pointers Version, time complexity O(n), space complexity O(h)
+// Two-pointers, time O(n), space O(h)
 class Solution {
 public:
-    TreeNode *inorderTraversal(TreeNode *&prev, TreeNode *cur) {
-        if (!cur) return NULL;
-        TreeNode *res = inorderTraversal(prev, cur->left);
-        if (res) return res;
-        else if (prev && prev->val>cur->val) return prev; 
-        else return inorderTraversal(prev=cur, cur->right);
+    void recoverTree(TreeNode* root) {
+        TreeNode* prev1 = nullptr, *prev2 = nullptr;
+        swap(inorder(root, prev1)->val, rinorder(root, prev2)->val);
     }
     
-    TreeNode *rinorderTraversal(TreeNode *&prev, TreeNode *cur) {
-        if (!cur) return NULL;
-        TreeNode *res = rinorderTraversal(prev, cur->right);
+    TreeNode* inorder(TreeNode* root, TreeNode*& prev) {
+        if (!root) return nullptr;
+        TreeNode* res = inorder(root->left, prev);
         if (res) return res;
-        else if (prev && prev->val<cur->val) return prev; 
-        else return rinorderTraversal(prev=cur, cur->left);
+        if (prev && root->val<prev->val) return prev;
+        return inorder(root->right, prev=root);
     }
     
-    void recoverTree(TreeNode *root) {
-        TreeNode *prev1 = NULL, *prev2 = NULL;
-        swap(inorderTraversal(prev1, root)->val, rinorderTraversal(prev2, root)->val);
+    TreeNode* rinorder(TreeNode* root, TreeNode*& prev) {
+        if (!root) return nullptr;
+        TreeNode* res = rinorder(root->right, prev);
+        if (res) return res;
+        if (prev && root->val>prev->val) return prev;
+        return rinorder(root->left, prev=root);
     }
 };
 
