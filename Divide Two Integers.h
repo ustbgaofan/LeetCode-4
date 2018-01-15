@@ -1,44 +1,42 @@
 // Divide Two Integers
 /*
 Divide two integers without using multiplication, division and mod operator.
+
+If it is overflow, return MAX_INT.
 */
 
-// Naive Version, Time Limit Exceeded, time complexity O(n), where n=dividend/divisor
+// Naive Version, Time Limit Exceeded, time O(n), where n=dividend/divisor, space O(1)
 class Solution {
 public:
     int divide(int dividend, int divisor) {
-        bool flag = false;
-        if (dividend>0 && divisor<0 || dividend<0 && divisor>0) flag = true;
-        if (dividend < 0) dividend = -dividend;  // overflow!
-        if (divisor < 0) divisor = -divisor;  //overflow!
-        int res = 0;  // may overflow, but is required by the return type
-        while (dividend >= divisor) {
-            dividend -= divisor;
+        if (divisor==0 || (dividend==INT_MIN && divisor==-1)) return INT_MAX;
+        bool sign = (dividend>0 && divisor<0) || (dividend<0 && divisor>0);
+        long long dvd = labs(dividend), dvs = labs(divisor), res = 0;
+        while (dvd >= dvs) {
+            dvd -= dvs;
             ++res;
         }
-        return res = flag? -res: res;
+        return res = sign? -res: res;
     }
 };
 
-// Sophisticated Version, O((log(n))^2), where n=dividend/divisor
+// Bit-manipulation, time O(logn), where n=dividend/divisor, space O(1)
+// 2^k * dvs = dvd; 
 class Solution {
 public:
     int divide(int dividend, int divisor) {
-        bool flag = false;
-        if (dividend>0 && divisor<0 || dividend<0 && divisor>0) flag = true;
-        long long dividendll = abs((long long)dividend);
-        long long divisorll = abs((long long)divisor);
-        int res = 0;  // may overflow, but is required by the return type 
-        while (dividendll >= divisorll) {
-            long long div = divisorll;
-            int count = 1;
-            while (div<<1 <= dividendll) {
-                div <<= 1;
-                count <<= 1;
+        if (divisor==0 || (dividend==INT_MIN && divisor==-1)) return INT_MAX;
+        bool sign = (dividend>0 && divisor<0) || (dividend<0 && divisor>0);
+        long long dvd = labs(dividend), dvs = labs(divisor), res = 0;
+        while (dvd >= dvs) {
+            long long temp = dvs, multiple = 1;
+            while (dvd >= (temp<<1)){
+                temp <<= 1;
+                multiple <<= 1;
             }
-            dividendll -= div;
-            res += count;
+            dvd -= temp;
+            res += multiple;
         }
-        return res = flag? -res: res;
+        return res = sign? -res: res;
     }
 };
