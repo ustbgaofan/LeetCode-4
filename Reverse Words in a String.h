@@ -6,6 +6,9 @@ For example,
 Given s = "the sky is blue",
 return "blue is sky the".
 
+Update (2015-02-12):
+For C programmers: Try to solve it in-place in O(1) space.
+
 click to show clarification.
 
 Clarification:
@@ -17,28 +20,36 @@ How about multiple spaces between two words?
 Reduce them to a single space in the reversed string.
 */
 
-
-// All-->Part, time complexity O(n), space complexity O(n)
+// time O(n), space O(n)
 class Solution {
 public:
     void reverseWords(string &s) {
-        string t;
-        bool space = false;
-        for (int i=s.size()-1; i>=0; --i) {
-            if (s[i] == ' ') {
-                space = true;
-                continue;
-            }
-            if (space && !t.empty()) t += " ";
-            space = false;
-            t += s[i];
+        istringstream in(s);
+        s = "";
+        string word;
+        while (in >> word) {
+            reverse(word.begin(), word.end());
+            s += word + " ";
         }
-        for (int i=0; i<t.size(); ++i) {
+        if (!s.empty()) s.pop_back();
+        reverse(s.begin(), s.end());
+    }
+};
+
+// time O(n), space O(1)
+class Solution {
+public:
+    void reverseWords(string &s) {
+        reverse(s.begin(), s.end());
+        int k = 0;
+        for (int i=0; i<s.size(); ++i) {
+            if (s[i] == ' ') continue;
+            if (k != 0) s[k++] = ' ';
             int j = i;
-            for (; j<t.size() && t[j]!=' '; ++j);
-            reverse(t.begin()+i, t.begin()+j);
-            i = j; 
+            for (; j<s.size() && s[j]!=' '; ++j) s[k++] = s[j];
+            reverse(s.begin()+k-(j-i), s.begin()+k);
+            i = j;
         }
-        s = t;
+        s.erase(s.begin()+k, s.end());
     }
 };
