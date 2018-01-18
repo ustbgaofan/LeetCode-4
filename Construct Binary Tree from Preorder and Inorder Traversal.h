@@ -16,7 +16,7 @@ You may assume that duplicates do not exist in the tree.
  * };
  */
 
-/*
+/* time O(nlogn), space O(logn)
 Say we have 2 arrays, PRE and IN.
 Preorder traversing implies that PRE[0] is the root node.
 Then we can find this PRE[0] in IN, say it’s IN[5].
