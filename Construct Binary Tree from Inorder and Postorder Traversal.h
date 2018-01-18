@@ -39,7 +39,6 @@ class Solution {
 public:
     TreeNode *buildTree(vector<int>& inorder, int begin1, int end1, vector<int>& postorder, int begin2, int end2, unordered_map<int, int>& h) {
         if (begin1>end1 || begin2>end2) return nullptr;
-        int i = begin1;
         int i= h[postorder[end2]];
         TreeNode *node = new TreeNode(postorder[end2]);
         node->left = buildTree(inorder, begin1, i-1, postorder, begin2, begin2+i-begin1-1, h);
