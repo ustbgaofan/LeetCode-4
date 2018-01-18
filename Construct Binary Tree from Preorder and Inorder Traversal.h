@@ -39,3 +39,22 @@ public:
         return buildTree(preorder, 0, preorder.size()-1, inorder, 0, inorder.size()-1);
     }
 };
+
+// time O(n), space O(n)
+class Solution {
+public:
+    TreeNode *buildTree(vector<int>& preorder, int begin1, int end1, vector<int>& inorder, int begin2, int end2, unordered_map<int, int>& h) {
+        if (begin1>end1 || begin2>end2) return nullptr;
+        int i = h[preorder[begin1]];
+        TreeNode *node = new TreeNode(preorder[begin1]);
+        node->left = buildTree(preorder, begin1+1, begin1+i-begin2, inorder, begin2, i-1, h);
+        node->right = buildTree(preorder, begin1+i-begin2+1, end1, inorder, i+1, end2, h);
+        return node;
+    }
+    
+    TreeNode *buildTree(vector<int>& preorder, vector<int>& inorder) {
+        unordered_map<int, int> h;
+        for (int i=0; i<inorder.size(); ++i) h[inorder[i]] = i;
+        return buildTree(preorder, 0, preorder.size()-1, inorder, 0, inorder.size()-1, h);
+    }
+};
