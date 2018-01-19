@@ -11,6 +11,21 @@ Given [5, 7, 7, 8, 8, 10] and target value 8,
 return [3, 4].
 */
 
+// Linear Search, time O(n), space O(1) 
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        vector<int> res(2, -1);
+        for (int i=0; i<nums.size(); ++i) {
+            if (nums[i] == target) {
+                if (res[0] == -1) res[0] = i;
+                if (res[0] != -1) res[1] = i;
+            }
+        }
+        return res;
+    }
+};
+
 // Naive Binary Search, time O(n), space O(1) 
 class Solution {
 public:
@@ -22,11 +37,11 @@ public:
             if (target < nums[m]) r = m - 1;
             if (target == nums[m]) {
                 for (l=m-1; l>=0 && nums[l]==target; --l);
-                for (r=m+1; r<=nums.size()-1 && nums[r]==target; ++r);
-                return vector<int>({++l, --r});
+                for (r=m+1; r<nums.size() && nums[r]==target; ++r);
+                return {++l, --r};
             }
         }
-        return vector<int>({-1, -1});
+        return {-1, -1};
     }
 };
 
@@ -34,45 +49,10 @@ public:
 class Solution {
 public:
     vector<int> searchRange(vector<int>& nums, int target) {
-        vector<int> res(2, -1);
-        auto l = lower_bound(nums.begin(), nums.end(), target);  // first X >= target
-        if (l==nums.end() || *l!=target) return res;
-        auto r = upper_bound(nums.begin(), nums.end(), target);  // first X > target
-        if (r==nums.begin() || *(r-1)!=target) return res;
-        res = {l-nums.begin(), r-nums.begin()-1};
-        return res;
-    }
-};
-
-// Not Recommend, Difficult to Debug, time O(logn), space O(1)
-class Solution {
-public:
-    int searchLowerBound(int A[], int n, int target) {
-        int l = 0, r = n - 1;
-        while (l <= r) {
-            int m = (l + r)/2;
-            if (target <= A[m]) r = m - 1;
-            else l = m + 1;
-        }
-        return l;
-    }
-    
-    int searchUpperBound(int A[], int n, int target) {
-        int l = 0, r = n - 1;
-        while (l <= r) {
-            int m = (l + r)/2;
-            if (target >= A[m]) l = m + 1;
-            else r = m - 1;
-        }
-        return r;
-    }
-    
-    vector<int> searchRange(int A[], int n, int target) {
-        vector<int> res(2, -1);
-        int l = searchLowerBound(A, n, target);
-        int r = searchUpperBound(A, n, target);
-        if (l <= r) res[0] = l, res[1] = r;
-        return res;
+        auto l = lower_bound(nums.begin(), nums.end(), target);  // first elem >= target
+        if (l==nums.end() || *l!=target) return {-1, -1};
+        auto r = upper_bound(nums.begin(), nums.end(), target);  // first elem > target
+        return {l-nums.begin(), r-nums.begin()-1};
     }
 };
 
