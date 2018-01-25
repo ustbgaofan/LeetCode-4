@@ -6,7 +6,7 @@ For this problem, a height-balanced binary tree is defined as a binary tree in w
 */
 
 /**
- * Definition for binary tree
+ * Definition for a binary tree node.
  * struct TreeNode {
  *     int val;
  *     TreeNode *left;
@@ -15,39 +15,39 @@ For this problem, a height-balanced binary tree is defined as a binary tree in w
  * };
  */
  
-// Slow Version, O(nlogn) if workload is divided equally 
+// time O(nlogn), space O(h)
 class Solution {
 public:
-    bool isBalanced(TreeNode *root) {
+    bool isBalanced(TreeNode* root) {
         if (!root) return true;
-        if (abs(getTreeDepth(root->left)-getTreeDepth(root->right)) > 1) return false;
+        if (abs(getTreeDepth(root->left)-getTreeDepth(root->right)) >1) return false;
         return isBalanced(root->left) && isBalanced(root->right);
     }
     
-    int getTreeDepth(TreeNode *root) {
+    int getTreeDepth(TreeNode* root) {
         if (!root) return 0;
-        return 1 + max(getTreeDepth(root->left), getTreeDepth(root->right));
+        return max(getTreeDepth(root->left), getTreeDepth(root->right)) + 1;
     }
 };
 
-// Fast Version, O(n) if workload is divided equally 
+// time O(n), space O(h) 
 class Solution {
 public:
-    bool isBalanced(TreeNode *root) {
-        int height;
-        return isBalanced(root, height);
+    bool isBalanced(TreeNode* root) {
+        int depth;
+        return isBalanced(root, depth);
     }
     
-    bool isBalanced(TreeNode *root, int& height) {
+    bool isBalanced(TreeNode* root, int& depth) {
         if (!root) {
-            height = 0;
+            depth = 0;
             return true;
         }
-        int leftHeight, rightHeight;
-        if (!isBalanced(root->left, leftHeight)) return false;
-        if (!isBalanced(root->right, rightHeight)) return false;
-        if (abs(rightHeight - leftHeight) > 1) return false;
-        height = 1 + max(leftHeight, rightHeight);
+        int l, r;
+        if (!isBalanced(root->left, l)) return false;
+        if (!isBalanced(root->right, r)) return false;
+        if (abs(l-r) > 1) return false;
+        depth = 1 + max(l, r);
         return true;
     }
 };
