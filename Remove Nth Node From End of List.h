@@ -22,18 +22,18 @@ Try to do this in one pass.
  */
 class Solution {
 public:
-    ListNode *removeNthFromEnd(ListNode *head, int n) {
-        ListNode header(0);
-        header.next = head;
-        ListNode *begin = &header, *end = &header;
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        ListNode dummy(0);
+        dummy.next = head;
+        ListNode *begin = &dummy, *end = &dummy;
         for (int i=0; i<n; ++i) end = end->next;
         while (end->next) {
-            begin = begin->next;
             end = end->next;
+            begin = begin->next;
         }
         end = begin->next;
         begin->next = end->next;
         delete end;
-        return header.next;
+        return dummy.next;
     }
 };
