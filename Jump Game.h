@@ -12,26 +12,14 @@ A = [2,3,1,1,4], return true.
 A = [3,2,1,0,4], return false.
 */
 
- 
-// Backward Version
+// Greedy, time O(n), space O(1) 
 class Solution {
 public:
-    bool canJump(int A[], int n) {
-        int last = n - 1;
-        for (int i=n-2; i>=0; --i) {
-            if (last-i <= A[i]) last = i;
-        }
-        return last == 0;
-    }
-};
-
-// Forward Version
-class Solution {
-public:
-    bool canJump(int A[], int n) {
-        for (int i=0, reach=0; i<n && i<=reach; ++i) {
-            reach = max(reach, i+A[i]);
-            if (reach >= n-1) return true;
+    bool canJump(vector<int>& nums) {
+        if (nums.empty()) return true;
+        for (int i=0, reach=0; i<nums.size() && i<=reach; ++i) {
+            reach = max(reach, i+nums[i]);
+            if (reach >= nums.size()-1) return true;
         }
         return false;
     }
