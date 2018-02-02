@@ -37,15 +37,15 @@ Visually, the graph looks like the following:
 class Solution {
 public:
     UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node) {
-        unordered_map<int, UndirectedGraphNode*> h;
+        unordered_map<UndirectedGraphNode*, UndirectedGraphNode*> h;
         return DFS(node, h);
     }
     
-    UndirectedGraphNode *DFS(UndirectedGraphNode *node, unordered_map<int, UndirectedGraphNode*>& h) {
+    UndirectedGraphNode *DFS(UndirectedGraphNode *node, unordered_map<UndirectedGraphNode*, UndirectedGraphNode*>& h) {
         if (!node) return node;
-        if (h.find(node->label) != h.end()) return h[node->label];
+        if (h.find(node) != h.end()) return h[node];
         UndirectedGraphNode *newNode = new UndirectedGraphNode(node->label);
-        h[node->label] = newNode;
+        h[node] = newNode;
         for (auto n : node->neighbors) newNode->neighbors.push_back(DFS(n, h));
         return newNode;
     }
