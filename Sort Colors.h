@@ -33,9 +33,9 @@ class Solution {
 public:
     void sortColors(vector<int>& nums) {
         int N = nums.size();
-        for (int i=0, j=N-1, k=0; i<=j; ++i) {
-            if (nums[i] == 0) swap(nums[i], nums[k++]);
-            if (nums[i] == 2) swap(nums[i--], nums[j--]);
+        for (int i=0, p=0, q=N-1; i<=q; ++i) {
+            if (nums[i] == 0) swap(nums[i], nums[p++]);
+            if (nums[i] == 2) swap(nums[i--], nums[q--]);
         }
     }
 };
