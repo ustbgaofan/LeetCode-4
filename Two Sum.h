@@ -1,16 +1,17 @@
 // Two Sum
 /*
-Given an array of integers, find two numbers such that they add up to a specific target number.
+Given an array of integers, return indices of the two numbers such that they add up to a specific target.
 
-The function twoSum should return indices of the two numbers such that they add up to the target, where index1 must be less than index2. Please note that your returned answers (both index1 and index2) are not zero-based.
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
 
-You may assume that each input would have exactly one solution.
+Example:
+Given nums = [2, 7, 11, 15], target = 9,
 
-Input: numbers={2, 7, 11, 15}, target=9
-Output: index1=1, index2=2
+Because nums[0] + nums[1] = 2 + 7 = 9,
+return [0, 1].
 */
 
-// Sort+Double-sided Search, time O(nlogn), space O(n)
+// Two pointers, time O(nlogn), space O(n)
 class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
@@ -34,11 +35,10 @@ public:
     vector<int> twoSum(vector<int>& nums, int target) {
         unordered_map<int, int> m;
         for (int i=0; i<nums.size(); ++i) {
-            if (m.find(target - nums[i]) != m.end()) {
-                return vector<int>({i, m[target - nums[i]]});
-            }
+            int t = target - nums[i]; 
+            if (m.find(t) != m.end()) return {m[t], i};
             m[nums[i]] = i;
         }
-        return vector<int>();
+        return {};
     }
 };
