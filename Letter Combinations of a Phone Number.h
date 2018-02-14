@@ -16,7 +16,7 @@ Although the above answer is in lexicographical order, your answer could be in a
 class Solution {
 public:
     vector<string> letterCombinations(string digits) {
-        if (digits.empty()) return vector<string>();
+        if (digits.empty()) return {};
         vector<string> h = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
         vector<string> res(1, "");
         for (int i=0; i<digits.size(); ++i) {
@@ -37,7 +37,7 @@ public:
 class Solution {
 public:
     vector<string> letterCombinations(string digits) {
-        if (digits.empty()) return vector<string>();
+        if (digits.empty()) return {};
         vector<string> h = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
         vector<string> res(1, "");
         for (int i=0; i<digits.size(); ++i) {
@@ -58,7 +58,7 @@ public:
 class Solution {
 public:
     vector<string> letterCombinations(string digits) {
-        if (digits.empty()) return vector<string>();
+        if (digits.empty()) return {};
         vector<string> h = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
         vector<string> res;
         string path;
