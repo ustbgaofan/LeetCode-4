@@ -21,7 +21,7 @@ isMatch("aab", "c*a*b") → false
 */
 
 
-// Recursive Version, Time Limit Exceeded
+// Recursive, Time Limit Exceeded
 class Solution {
 public:
     bool isMatch(string s, string p) {
@@ -40,7 +40,7 @@ public:
     }
 };
 
-// Bottom-up Dynamic Programming, time O(MN), space O(MN)
+// Bottom-up Dynamic Programming, time O(mn), space O(mn)
 // We define the state m[i][j] to be true if s[0..i) matches p[0..j) and false otherwise. Then the state equations are:
 // m[i][j] = m[i-1][j-1], if p[j-1]!='*' && (s[i-1]==p[j-1] || p[j-1]=='?');
 // m[i][j] = m[i][j-1], if p[j-1]=='*' and the pattern repeats for 0 times;
@@ -61,7 +61,7 @@ public:
     }
 };
 
-// Space Optimized Bottom-up Dynamic Programming, time O(MN), space O(N)
+// Space Optimized Bottom-up Dynamic Programming, time O(mn), space O(n)
 class Solution {
 public:
     bool isMatch(string s, string p) {
@@ -79,22 +79,22 @@ public:
     }
 };
 
-// Iterative Version, time complexity O(max(m,n))~O(mn), space complexity O(1)
+// Iterative, time O(mn), space O(1)
 class Solution {
 public:
     bool isMatch(string s, string p) {
-        int i = 0, j = 0, k = -1, t = -1;
+        int i = 0, j = 0, x = -1, y = -1;
         while (i < s.size()) {
             if (j<p.size() && (s[i]==p[j] || p[j]=='?')) {
                 ++i;
                 ++j;
             } else if (j<p.size() && p[j]=='*') {
-                k = i;
-                t = j++;
+                x = i;
+                y = j++;
             } else if (j==p.size() || s[i]!=p[j]) {
-                if (t == -1) return false;
-                i = ++k;
-                j = t + 1;
+                if (x == -1) return false;
+                i = ++x;
+                j = y + 1;
             }
         }
         for (; j<p.size(); ++j) {
