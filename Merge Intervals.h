@@ -21,7 +21,7 @@ return [1,6],[8,10],[15,18].
 class Solution {
 public:
     vector<Interval> merge(vector<Interval>& intervals) {
-        if (intervals.empty()) return vector<Interval>();
+        if (intervals.empty()) return {};
         sort(intervals.begin(), intervals.end(), [](const Interval& x, const Interval& y) {
             return x.start < y.start;
         });
