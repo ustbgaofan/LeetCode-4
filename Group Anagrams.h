@@ -13,6 +13,7 @@ Return:
 Note: All inputs will be in lower-case.
 */
 
+// Hash, time O(n), space O(n)
 class Solution {
 public:
     vector<vector<string>> groupAnagrams(vector<string>& strs) {
@@ -23,7 +24,7 @@ public:
             h[t].push_back(s);
         }
         vector<vector<string>> res;
-        for (auto p : h) res.push_back(p.second);
+        for (auto& it : h) res.push_back(it.second);
         return res;
     }
 };
