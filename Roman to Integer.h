@@ -5,24 +5,21 @@ Given a roman numeral, convert it to an integer.
 Input is guaranteed to be within the range from 1 to 3999.
 */
 
-
+// time O(n), space O(1)
 class Solution {
 public:
     int romanToInt(string s) {
-        if (!s.size()) return 0;
-        unordered_map<char, int> hash;
-        hash['I'] = 1;
-        hash['V'] = 5;
-        hash['X'] = 10;
-        hash['L'] = 50;
-        hash['C'] = 100;
-        hash['D'] = 500;
-        hash['M'] = 1000;
-        int size = s.size(), res = hash[s[size-1]];
-        for (int i=size-2; i>=0; --i) {
-            if (hash[s[i]] >= hash[s[i+1]]) res += hash[s[i]]; 
-            else res -= hash[s[i]];
-        }
+        if (s.empty()) return 0;
+        unordered_map<char, int> h;
+        h['I'] = 1;
+        h['V'] = 5;
+        h['X'] = 10;
+        h['L'] = 50;
+        h['C'] = 100;
+        h['D'] = 500;
+        h['M'] = 1000;
+        int N = s.size(), res = h[s.back()];
+        for (int i=N-2; i>=0; --i) res += h[s[i]]<h[s[i+1]]? -h[s[i]]: h[s[i]];
         return res;
     }
 };
