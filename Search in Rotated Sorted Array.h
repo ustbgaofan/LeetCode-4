@@ -10,7 +10,7 @@ You may assume no duplicate exists in the array.
 */
 
 
-// time complexity O(logn), space complexity O(1)
+// (Not suggested) time O(logn), space O(1)
 // case analysis:
 // t<[m]: 1. [l]>[r] 1.1 [m]>[r] 1.2 [m]<[r]  2. [l]<[r]
 // t>[m]: 1. [l]>[r] 1.1 [m]>[r] 1.2 [m]<[r]  2. [l]<[r]
@@ -34,7 +34,7 @@ public:
     }
 };
 
-// time complexity O(logn), space complexity O(1)
+// time O(logn), space O(1)
 class Solution {
 public:
     int search(vector<int>& nums, int target) {
@@ -58,7 +58,7 @@ public:
     }
 };
 
-// time complexity O(logn), space complexity O(1)
+// time O(logn), space O(1)
 class Solution {
 public:
     int search(vector<int>& nums, int target) {
