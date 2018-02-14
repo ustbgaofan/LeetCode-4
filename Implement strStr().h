@@ -2,21 +2,31 @@
 /*
 Implement strStr().
 
-Returns the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.
+Return the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.
+
+Example 1:
+
+Input: haystack = "hello", needle = "ll"
+Output: 2
+Example 2:
+
+Input: haystack = "aaaaa", needle = "bba"
+Output: -1
 */
 
 
-// time complexity O(nm), space complexity O(1)
+// time O(nm), space O(1)
 class Solution {
 public:
     int strStr(string haystack, string needle) {
+        if (needle.empty()) return 0;
         int M = haystack.size(), N = needle.size();
-        for (int i=0; i<=M-N; ++i) {
-            int j = 0;
-            for (int k=i; j<N; ++j, ++k) {
-                if (needle[j] != haystack[k]) break;
+        for (int i=0; i<M; ++i) {
+            int k = 0;
+            for (int j=i; j<M && k<N; ++j, ++k) {
+                if (haystack[j] != needle[k]) break;
             }
-            if (j == N) return i;
+            if (k == N) return i;
         }
         return -1;
     }
