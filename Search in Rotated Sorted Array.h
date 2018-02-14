@@ -38,30 +38,6 @@ public:
 class Solution {
 public:
     int search(vector<int>& nums, int target) {
-        // find the rotated point (minimum one)
-        int l = 0, r = nums.size() - 1;
-        while (l < r) {
-            int m = l + (r-l)/2;
-            if (nums[m] < nums[r]) r = m;
-            else l = m + 1;
-        }
-        // usual binary search + %
-        int rot = l;
-        l = 0, r = nums.size() - 1;
-        while (l <= r) {
-            int m = l + (r-l)/2, rm = (rot + m) % nums.size();
-            if (nums[rm] < target) l = m + 1;
-            else if (nums[rm] > target) r = m - 1;
-            else return rm;
-        }
-        return -1;
-    }
-};
-
-// time O(logn), space O(1)
-class Solution {
-public:
-    int search(vector<int>& nums, int target) {
         int l = 0, r = nums.size() - 1;
         while (l <= r) {
             int m = l + (r-l)/2;
