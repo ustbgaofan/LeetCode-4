@@ -25,53 +25,7 @@ For k = 3, you should return: 3->2->1->4->5
  * };
  */
  
-// Iterative Version
-class Solution {
-public:
-    ListNode *reverseKGroup(ListNode *head, int k) {
-        ListNode header(0), *ins = &header;
-        header.next = head;
-        while (1) {
-            ListNode *probe = ins;
-            for (int i=0; i<k; ++i) {
-                probe = probe->next;
-                if (!probe) return header.next;
-            }
-            for (int i=0; i<k-1; ++i) {
-                ListNode *cur = head->next;
-                head->next = cur->next;
-                cur->next = ins->next;
-                ins->next = cur;
-            }
-            ins = head;
-            head = head->next;
-        }
-    }
-};
-
-// Recursive Version
-class Solution {
-public:
-    ListNode *reverseKGroup(ListNode *head, int k) {
-        ListNode header(0);
-        header.next = head;
-        ListNode *probe = &header;
-        for (int i=0; i<k; ++i) {
-            probe = probe->next;
-            if (!probe) return header.next;
-        }
-        for (int i=0; i<k-1; ++i) {
-            ListNode *cur = head->next;
-            head->next = cur->next;
-            cur->next = header.next;
-            header.next = cur;
-        }
-        head->next = reverseKGroup(head->next, k);
-        return header.next;
-    }
-};
-
-// time O(n), space O(1)
+// Iterative, time O(n), space O(1)
 class Solution {
 public:
     ListNode* reverseKGroup(ListNode* head, int k) {
@@ -100,45 +54,13 @@ public:
     }
 };
 
-// time O(n), space O(1)
-class Solution {
-public:
-    ListNode* reverseKGroup(ListNode* head, int k) {
-        ListNode dummy(0), *prev = &dummy;
-        dummy.next = head;
-        while (true) {
-            ListNode* cur = head;
-            int i = 0;
-            for (; i<k-1 && cur; ++i) cur = cur->next;
-            if (i<k-1 || !cur) return dummy.next;
-            ListNode* nextHead = cur->next;
-            cur->next = nullptr;
-            prev->next = reverseList(head);
-            prev = head;
-            head = head->next = nextHead;
-        }
-    }
-    
-    ListNode* reverseList(ListNode* head) {
-        ListNode *cur = head;
-        while (cur && cur->next) {
-            ListNode* newHead = cur->next;
-            cur->next = newHead->next;
-            newHead->next = head;
-            head = newHead;
-        }
-        return head;
-    }
-};
-
-// time O(n), space O(n/k)
+// Recursive, time O(n), space O(n/k)
 class Solution {
 public:
     ListNode* reverseKGroup(ListNode* head, int k) {
         ListNode* cur = head;
-        int i = 0;
-        for (; i<k-1 && cur; ++i) cur = cur->next;
-        if (i<k-1 || !cur) return head;
+        for (int i=0; i<k-1 && cur; ++i) cur = cur->next;
+        if (!cur) return head;
         ListNode* nextHead = cur->next;
         cur->next = nullptr;
         cur = head;
