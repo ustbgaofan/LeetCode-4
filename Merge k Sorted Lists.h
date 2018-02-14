@@ -12,7 +12,7 @@ Merge k sorted linked lists and return it as one sorted list. Analyze and descri
  * };
  */
 
-// time O(kn), space O(1), assuming length of each list n/k 
+// time O(kn), space O(1), assuming length of each list n 
 class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
@@ -37,13 +37,13 @@ public:
             }
             cur = cur->next;
         }
-        if (!l1) cur->next = l2;
-        if (!l2) cur->next = l1;
+        if (l1) cur->next = l1;
+        if (l2) cur->next = l2;
         return dummy.next;
     }
 };
 
-// time O(nlogk), space O(k), assuming length of each list n/k 
+// time O(nklogk), space O(k), assuming length of each list n 
 class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
@@ -65,7 +65,7 @@ public:
     }
 };
 
-// time O(nlogk), space O(k), assuming length of each list n/k 
+// time O(nklogk), space O(k), assuming length of each list n
 class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
