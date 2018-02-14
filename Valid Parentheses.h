@@ -6,40 +6,21 @@ The brackets must close in the correct order, "()" and "()[]{}" are all valid bu
 */
 
 
-// Non-hash Version
+// Stack, time O(n), space O(n) 
 class Solution {
 public:
     bool isValid(string s) {
+        unordered_map<char, char> h;
+        h[')'] = '(';
+        h[']'] = '[';
+        h['}'] = '{';
         stack<char> stk;
-        int size = s.size();
-        for (int i=0; i<size; ++i) {
-            if (s[i]=='(' || s[i]=='[' || s[i]=='{' ) stk.push(s[i]);
-            else {
-                if (stk.empty()) return false;
-                char c = stk.top();
-                if (s[i]==')' && c!='(' || s[i]==']' && c!='[' || s[i]=='}' && c!='{') 
-                    return false;
-                stk.pop();
-            }
-        }
-        return stk.empty();
-    }
-};
-
-// Hash Version 
-class Solution {
-public:
-    bool isValid(string s) {
-        unordered_map<char, char> hash;
-        hash[')'] = '(';
-        hash[']'] = '[';
-        hash['}'] = '{';
-        stack<char> stk;
-        int size = s.size();
-        for (int i=0; i<size; ++i) {
-            if (s[i]=='(' || s[i]=='[' || s[i]=='{' ) stk.push(s[i]);
-            else {
-                if (stk.empty() || hash[s[i]]!=stk.top()) return false;
+        int N = s.size();
+        for (int i=0; i<N; ++i) {
+            if (s[i]=='(' || s[i]=='[' || s[i]=='{' ) {
+                stk.push(s[i]);
+            } else {
+                if (stk.empty() || h[s[i]]!=stk.top()) return false;
                 stk.pop();
             }
         }
