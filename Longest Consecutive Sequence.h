@@ -10,7 +10,7 @@ Your algorithm should run in O(n) complexity.
 */
 
 
-// Sort Version, time O(nlogn), space O(1)
+// Sort, time O(nlogn), space O(1)
 class Solution {
 public:
     int longestConsecutive(vector<int>& nums) {
@@ -26,7 +26,7 @@ public:
     }
 };
 
-// Hash Version, time O(n), space O(n)
+// Hash, time O(n), space O(n)
 class Solution {
 public:
     int longestConsecutive(vector<int>& nums) {
@@ -34,6 +34,7 @@ public:
         int res = 0;
         for (int i : nums) {
             if (h.find(i) == h.end()) continue;
+            h.erase(i);
             int l = i, r = i;
             while (h.find(r+1) != h.end()) h.erase(++r);
             while (h.find(l-1) != h.end()) h.erase(--l);
