@@ -34,10 +34,10 @@ public:
         if (i == word.size()) return true;
         char t = board[r][c];
         board[r][c] = '#';
-        if (r>0 && board[r-1][c]==word[i] && DFS(board, word, i+1, r-1, c)) return true;
-        if (c+1<board[r].size() && board[r][c+1]==word[i] && DFS(board, word, i+1, r, c+1)) return true;
-        if (r+1<board.size() && board[r+1][c]==word[i] && DFS(board, word, i+1, r+1, c)) return true;
-        if (c>0 && board[r][c-1]==word[i] && DFS(board, word, i+1, r, c-1)) return true;
+        if (r>0 && board[r-1][c]==word[i] && DFS(board, word, i+1, r-1, c)) { board[r][c] = t; return true; }
+        if (c+1<board[r].size() && board[r][c+1]==word[i] && DFS(board, word, i+1, r, c+1)) { board[r][c] = t; return true; }
+        if (r+1<board.size() && board[r+1][c]==word[i] && DFS(board, word, i+1, r+1, c)) { board[r][c] = t; return true; }
+        if (c>0 && board[r][c-1]==word[i] && DFS(board, word, i+1, r, c-1)) { board[r][c] = t; return true; }
         board[r][c] = t;
         return false;
     }
