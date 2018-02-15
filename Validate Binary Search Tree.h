@@ -7,21 +7,16 @@ Assume a BST is defined as follows:
 The left subtree of a node contains only nodes with keys less than the node's key.
 The right subtree of a node contains only nodes with keys greater than the node's key.
 Both the left and right subtrees must also be binary search trees.
-confused what "{1,#,2,3}" means? > read more on how binary tree is serialized on OJ.
-
-
-OJ's Binary Tree Serialization:
-The serialization of a binary tree follows a level order traversal, where '#' signifies a path terminator where no node exists below.
-
-Here's an example:
-   1
-  / \
- 2   3
-    /
-   4
-    \
-     5
-The above binary tree is serialized as "{1,2,3,#,#,4,#,#,5}".
+Example 1:
+    2
+   / \
+  1   3
+Binary tree [2,1,3], return true.
+Example 2:
+    1
+   / \
+  2   3
+Binary tree [1,2,3], return false.
 */
 
 /**
@@ -34,7 +29,7 @@ The above binary tree is serialized as "{1,2,3,#,#,4,#,#,5}".
  * };
  */
  
-// Upper and Lower Bound Version, time O(n), space O(n)
+// Upper and Lower Bound Version, time O(n), space O(h)
 class Solution {
 public:
     bool isValidBST(TreeNode *root, long long lower, long long upper) {
@@ -49,7 +44,7 @@ public:
     }
 };
 
-// In Order Version, time O(n), space O(n)
+// In Order Version, time O(n), space O(h)
 class Solution {
 public:
     bool isValidBST(TreeNode* root) {
