@@ -18,7 +18,7 @@ word = "ABCB", -> returns false.
 */
 
 
-// time O(mn * 4^(k-1)), space O(k)
+// time O(mn * 4^k), space O(k), k = len(word)
 class Solution {
 public:
     bool exist(vector<vector<char>>& board, string word) {
