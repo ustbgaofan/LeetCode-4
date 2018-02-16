@@ -16,19 +16,19 @@ First, iterate the array counting number of 0's, 1's, and 2's, then overwrite ar
 Could you come up with an one-pass algorithm using only constant space?
 */
 
-// Counting Sort, two-pass, time O(n), space O(1)
+// Bucket Sort, two-pass, time O(n), space O(1)
 class Solution {
 public:
     void sortColors(vector<int>& nums) {
         vector<int> cc(3, 0);
         for (int i : nums) ++cc[i];
-        for (int i=0, j=0, t=0; i<cc.size(); ++i, t+=j) {
-            for (j=0; j<cc[i]; ++j) nums[t+j] = i;
+        for (int i=0, j=0, k=0; i<cc.size(); ++i, k+=j) {
+            for (j=0; j<cc[i]; ++j) nums[k+j] = i;
         }
     }
 };
 
-// Counting Sort + Swap, one-pass, time O(n), space O(1)
+// Swap, one-pass, time O(n), space O(1)
 class Solution {
 public:
     void sortColors(vector<int>& nums) {
