@@ -1,12 +1,11 @@
 // Subsets 
 /*
-Given a set of distinct integers, S, return all possible subsets.
+Given a set of distinct integers, nums, return all possible subsets (the power set).
 
-Note:
-Elements in a subset must be in non-descending order.
-The solution set must not contain duplicate subsets.
+Note: The solution set must not contain duplicate subsets.
+
 For example,
-If S = [1,2,3], a solution is:
+If nums = [1,2,3], a solution is:
 
 [
   [3],
@@ -20,7 +19,8 @@ If S = [1,2,3], a solution is:
 ]
 */
 
-// Recursive, every element has 2 choices
+// Recursive, time O(2^n), space O(n)
+// every element has 2 choices
 class Solution {
 public:
     vector<vector<int>> subsets(vector<int>& nums) {
@@ -42,7 +42,8 @@ public:
     }
 };
 
-// Iterative, push nums[i] at the end
+// Iterative, time O(2^n), space O(1)
+// push nums[i] at the end
 class Solution {
 public:
     vector<vector<int>> subsets(vector<int>& nums) {
