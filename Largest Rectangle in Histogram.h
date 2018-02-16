@@ -14,7 +14,7 @@ return 10.
 */
 
 
-// Time Limit Exceeded, time O(n^2), space O(1)
+// Brute force, time O(n^2), space O(1)
 class Solution {
 public:
     int largestRectangleArea(vector<int>& heights) {
@@ -30,15 +30,15 @@ public:
     }
 };
 
-// time complexity O(n), space complexity O(n)
-// O(n^2) combinations, but only O(n) useful values, so test each bar's largest potential area
+// time O(n), space O(n)
+// O(n^2) combinations, but only O(n) useful values, so test each bar's largest potential area.
 // use stack to record left boundary. only increasing h in stk. if [cur]<[stk.top], trigger calculation.
 class Solution {
 public:
     int largestRectangleArea(vector<int>& heights) {
         stack<int> stk;
         int res = 0;
-        heights.push_back(0);
+        heights.push_back(0);  // corner case, to trigger the final calculation!
         for (int i=0; i<heights.size(); ) {
             if (stk.empty() || heights[i]>=heights[stk.top()]) {
                 stk.push(i++);    
