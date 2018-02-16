@@ -45,7 +45,7 @@ public:
     }
 };
 
-// Based on Largest Rectangle in Histogram, time complexity O(mn), space complexity O(n)
+// Based on Largest Rectangle in Histogram, time O(mn), space O(n)
 class Solution {
 public:
     int maximalRectangle(vector<vector<char>>& matrix) {
