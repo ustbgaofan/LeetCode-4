@@ -28,6 +28,7 @@ In this case, that line should be left-justified.
 */
 
 
+// time O(n), space O(1)
 // how many words fit in the current line;
 // mod operation to manage the spaces
 class Solution {
@@ -36,13 +37,13 @@ public:
         vector<string> res;
         for (int i=0, j, k; i<words.size(); i+=j) {
             for (j=0, k=0; i+j<words.size() && k+words[i+j].size()<=maxWidth-j; ++j) {
-                 k += words[i+j].size();
+                k += words[i+j].size();
             }
             string line = words[i];
             for (int w=0; w<j-1; ++w) {
-                if (i+j == words.size()) line += " ";
+                if (i+j == words.size()) line += " ";  // last line
                 else line += string((maxWidth-k)/(j-1) + (w < (maxWidth-k)%(j-1)), ' ');
-                line += words[i+w+1];
+                line += words[i+1+w];
             }
             line += string(maxWidth-line.size(), ' ');
             res.push_back(line);
