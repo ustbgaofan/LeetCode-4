@@ -22,6 +22,7 @@ An absolute path always starts from the root directory, i.e. "/".
 Redundant slashes can be ignored. E.g. "/a///b" == "/a/b"
 --------------------------------------------------------------------------------------------------*/
 
+// time O(n), space O(n)
 class Solution {
 public:
     string simplifyPath(string path) {
@@ -34,6 +35,6 @@ public:
             if (tmp != "..") stk.push_back(tmp);
         }
         for (auto s : stk) res += "/" + s;
-        return res.empty() ? "/" : res;
+        return res.empty() ? "/" : res;  // corner case!
     }
 };
