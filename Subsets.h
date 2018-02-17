@@ -58,3 +58,27 @@ public:
         return res;
     }
 };
+
+// More general, time O(2^n), space O(n)
+// @ --> 1 --> 1,2 --> 1,2,3
+//         --> 1,3
+//   --> 2 --> 2,3
+//   --> 3
+class Solution {
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<vector<int>> res;
+        vector<int> path;
+        DFS(nums, res, path, 0);
+        return res;
+    }
+    
+    void DFS(const vector<int>& nums, vector<vector<int>>& res, vector<int>& path, int i) {
+        res.push_back(path);
+        for (int j=i; j<nums.size(); ++j) {
+            path.push_back(nums[j]);
+            DFS(nums, res, path, j+1);
+            path.pop_back();
+        }
+    }
+};
