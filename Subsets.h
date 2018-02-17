@@ -30,14 +30,14 @@ public:
         return res;
     }
     
-    void DFS(const vector<int>& nums, vector<vector<int>>& res, vector<int>& path, int begin) {
-        if (begin == nums.size()) {
+    void DFS(const vector<int>& nums, vector<vector<int>>& res, vector<int>& path, int i) {
+        if (i == nums.size()) {
             res.push_back(path);
             return;
         }
-        DFS(nums, res, path, begin+1);
-        path.push_back(nums[begin]);
-        DFS(nums, res, path, begin+1);
+        DFS(nums, res, path, i+1);
+        path.push_back(nums[i]);
+        DFS(nums, res, path, i+1);
         path.pop_back();
     }
 };
