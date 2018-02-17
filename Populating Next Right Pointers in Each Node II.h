@@ -31,26 +31,23 @@ After calling your function, the tree should look like:
  * };
  */
 
-// Iterative, time O(n), space O(n)
+// BFS, time O(n), space O(n)
 class Solution {
 public:
     void connect(TreeLinkNode *root) {
         if (!root) return;
         queue<TreeLinkNode*> q;
         q.push(root);
-        q.push(nullptr);
-        while (q.size() > 1) {
-            TreeLinkNode* f = q.front();
-            q.pop();
-            if (!f) {
-                q.push(nullptr);
-                continue;
+        while (!q.empty()) {
+            int k = q.size();
+            for (int i=0; i<k; ++i) {
+                TreeLinkNode* f = q.front();
+                q.pop();
+                if (f->left) q.push(f->left);
+                if (f->right) q.push(f->right);
+                f->next = i==k-1? nullptr: q.front();
             }
-            if (f->left) q.push(f->left);
-            if (f->right) q.push(f->right);
-            f->next = q.front();
         }
-        return;
     }
 };
 
