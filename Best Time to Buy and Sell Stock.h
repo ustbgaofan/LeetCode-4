@@ -15,16 +15,15 @@ Output: 0
 In this case, no transaction is done, i.e. max profit = 0.
 */
 
-// Time Limit Exceeded, time O(n^2), space O(1)
+// Brute force, time O(n^2), space O(1)
 class Solution {
 public:
     int maxProfit(vector<int> &prices) {
-        int maxProfit = 0;
-        int size = prices.size();
-        for (int i=0; i<size; ++i)
-            for (int j=i+1; j<size; ++j) 
-                maxProfit = max(maxProfit, prices[j]-prices[i]);
-        return maxProfit;
+        int res = 0;
+        for (int i=0; i<prices.size(); ++i)
+            for (int j=i+1; j<prices.size(); ++j) 
+                res = max(res, prices[j]-prices[i]);
+        return res;
     }
 };
 
