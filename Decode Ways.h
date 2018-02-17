@@ -15,7 +15,7 @@ The number of ways decoding "12" is 2.
 */
 
 
-// Recursive Version
+// Recursive
 class Solution {
 public:
     int numDecodings(string s) {
