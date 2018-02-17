@@ -29,22 +29,22 @@ Binary tree [1,2,3], return false.
  * };
  */
  
-// Upper and Lower Bound Version, time O(n), space O(h)
+// Upper and Lower Bound, time O(n), space O(h)
 class Solution {
-public:
-    bool isValidBST(TreeNode *root, long long lower, long long upper) {
-        if (!root) return true;
-        if (root->val<=lower || root->val>=upper) return false;
-        return isValidBST(root->left, lower, root->val) && 
-               isValidBST(root->right, root->val, upper);
+public:   
+    bool isValidBST(TreeNode *root) {
+        return preorder(root, LLONG_MIN, LLONG_MAX);
     }
     
-    bool isValidBST(TreeNode *root) {
-        return isValidBST(root, LLONG_MIN, LLONG_MAX);
+    bool preorder(TreeNode *root, long long lower, long long upper) {
+        if (!root) return true;
+        if (root->val<=lower || root->val>=upper) return false;
+        return preorder(root->left, lower, root->val) && 
+               preorder(root->right, root->val, upper);
     }
 };
 
-// In Order Version, time O(n), space O(h)
+// Inorder, time O(n), space O(h)
 class Solution {
 public:
     bool isValidBST(TreeNode* root) {
