@@ -27,22 +27,20 @@ return its level order traversal as:
  * };
  */
  
-// BFS, time complexity O(n), space complexity O(n) 
+// BFS, time O(n), space O(n) 
 class Solution {
 public:
     vector<vector<int>> levelOrder(TreeNode* root) {
         if (!root) return {};
         queue<TreeNode*> q;
         q.push(root);
-        q.push(nullptr);
-        vector<vector<int>> res(1);
-        while (q.size() > 1) {
-            TreeNode* f = q.front();
-            q.pop();
-            if (!f) {
-                q.push(nullptr);
-                res.push_back({});
-            } else {
+        vector<vector<int>> res;
+        while (!q.empty()) {
+            int k = q.size();
+            res.push_back({});
+            for (int i=0; i<k; ++i) {
+                TreeNode* f = q.front();
+                q.pop();
                 res.back().push_back(f->val);
                 if (f->left) q.push(f->left);
                 if (f->right) q.push(f->right);
@@ -52,7 +50,7 @@ public:
     }
 };
 
-// DFS, time complexity O(n), space complexity O(h)  
+// DFS, time O(n), space O(h)  
 class Solution {
 public:
     vector<vector<int>> levelOrder(TreeNode* root) {
