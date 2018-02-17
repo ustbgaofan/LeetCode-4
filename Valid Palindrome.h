@@ -12,6 +12,7 @@ Have you consider that the string might be empty? This is a good question to ask
 For the purpose of this problem, we define empty string as valid palindrome.
 */
 
+// time O(n), space O(1)
 class Solution {
 public:
     bool isPalindrome(string s) {
@@ -19,8 +20,7 @@ public:
         while (i < j) {
             while (i<j && !isalnum(s[i])) ++i;
             while (j>i && !isalnum(s[j])) --j;
-            if (i<j && tolower(s[i++])!=tolower(s[j--])) 
-                return false;
+            if (i<j && tolower(s[i++])!=tolower(s[j--])) return false;
         }
         return true;
     }
