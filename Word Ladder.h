@@ -23,27 +23,31 @@ UPDATE (2017/1/20):
 The wordList parameter had been changed to a list of strings (instead of a set of strings). Please reload the code definition to get the latest changes.
 */
 
-// Graph, BFS
+// BFS, time O(n), space O(n), n = len(wordList)
 class Solution {
 public:
     int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
         unordered_set<string> h(wordList.begin(), wordList.end());
-        queue<pair<string, int>> q;
-        q.push({beginWord, 1});
-        h.erase(beginWord);
+        int res = 0;
+        queue<string> q;
+        q.push(beginWord);
         while (!q.empty()) {
-            auto f = q.front();
-            q.pop();
-            if (f.first == endWord) return f.second;
-            for (int i=0; i<f.first.size(); ++i) {
-                char t = f.first[i];
-                for (char c='a'; c<='z'; ++c) {
-                    f.first[i] = c;
-                    if (h.find(f.first) == h.end()) continue;
-                    q.push({f.first, f.second+1});
-                    h.erase(f.first);
+            int k = q.size();
+            ++res;
+            for (int i=0; i<k; ++i) {
+                string f = q.front();
+                q.pop();
+                if (f == endWord) return res;
+                for (int i=0; i<f.size(); ++i) {
+                    char t = f[i];
+                    for (char c='a'; c<='z'; ++c) {
+                        f[i] = c;
+                        if (h.find(f) == h.end()) continue;
+                        q.push(f);
+                        h.erase(f);  // corner case!
+                    }
+                    f[i] = t;
                 }
-                f.first[i] = t;
             }
         }
         return 0;
