@@ -7,7 +7,7 @@ You may assume that nums1 has enough space (size that is greater or equal to m +
 */
 
 
-// Forward Version, time O(m+n), space O(m)
+// Forward, time O(m+n), space O(m)
 class Solution {
 public:
     void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
@@ -21,7 +21,7 @@ public:
     }
 };
 
-// Backward Version, time O(m+n), space O(1)
+// Backward, time O(m+n), space O(1)
 class Solution {
 public:
     void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
