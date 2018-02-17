@@ -73,7 +73,7 @@ public:
     }
 };
 
-// Space Optimized Bottom-up Dynamic Programming, time O(n), space O(1) 
+// Space-optimized Bottom-up Dynamic Programming, time O(n), space O(1) 
 class Solution {
 public:
     int numDecodings(string s) {
@@ -85,7 +85,7 @@ public:
         if (N>1 && s[N-2]=='1' && s.back()>='0' && s.back()<='9') ++m[(N-2)%3];
         if (N>1 && s[N-2]=='2' && s.back()>='0' && s.back()<='6') ++m[(N-2)%3];
         for (int i=N-3; i>=0; --i) {
-            m[i%3] = (s[i]>='1' && s[i]<='9')? m[(i+1)%3]: 0;
+            m[i%3] = (s[i]>='1' && s[i]<='9')? m[(i+1)%3]: 0;  // corner case!
             if (s[i]=='1' && s[i+1]>='0' && s[i+1]<='9') m[i%3] += m[(i+2)%3];
             if (s[i]=='2' && s[i+1]>='0' && s[i+1]<='6') m[i%3] += m[(i+2)%3];
         }
