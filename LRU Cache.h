@@ -30,12 +30,14 @@ public:
         c = capacity;    
     }
     
+    // O(1)
     int get(int key) {
         if (h.find(key) == h.end()) return -1;
         l.splice(l.begin(), l, h[key]);
         return l.begin()->v;
     }
     
+    // O(1)
     void put(int key, int value) {
         if (h.find(key) != h.end()) {
             l.splice(l.begin(), l, h[key]);
