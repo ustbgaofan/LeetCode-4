@@ -10,15 +10,7 @@ c) Replace a character
 */
 
 
-// Recursive Version, Time Limit Exceeded 
-/*
-Insert   	A[1, lenA] B[2, lenB]
-			A[2, lenA] B[1, lenB]
-Delete		A[2, lenA] B[1, lenB]
-			A[1, lenA] B[2, lenB]
-Replace		A[2, lenA] B[2, lenB]
-			A[2, lenA] B[2, lenB]
-*/ 
+// Recursive
 class Solution {
 public:
     int minDistance(string word1, string word2) {
@@ -36,7 +28,7 @@ public:
     }
 };
 
-// Top-down Dynamic Programming Version, time O(MN), space O(MN) 
+// Top-down Dynamic Programming, time O(MN), space O(MN) 
 class Solution {
 public:
     int minDistance(string word1, string word2) {
@@ -56,7 +48,7 @@ public:
     }
 };
 
-// Bottom-up Dynamic Programming Version, time O(MN), space O(MN) 
+// Bottom-up Dynamic Programming, time O(MN), space O(MN) 
 class Solution {
 public:
     int minDistance(string word1, string word2) {
@@ -66,15 +58,15 @@ public:
         for (int i=1; i<=M; ++i) {
             m[i][0] = i;
             for (int j=1; j<=N; ++j) {
-                if (word1[i-1] == word2[j-1]) m[i][j] = m[i-1][j-1];
-                else m[i][j] = 1 + min(m[i-1][j-1], min(m[i-1][j], m[i][j-1]));
+                m[i][j] = word1[i-1]==word2[j-1]? 
+                    m[i-1][j-1]: 1+min(m[i-1][j-1], min(m[i-1][j], m[i][j-1]));
             }
         }
         return m[M][N];
     }
 };
 
-// Space Optimized Bottom-up Dynamic Programming Version, time O(MN), space O(2N) 
+// Space-optimized Bottom-up Dynamic Programming, time O(MN), space O(2N) 
 class Solution {
 public:
     int minDistance(string word1, string word2) {
@@ -84,15 +76,15 @@ public:
         for (int i=1; i<=M; ++i) {
             m[i%2][0] = i;
             for (int j=1; j<=N; ++j) {
-                if (word1[i-1] == word2[j-1]) m[i%2][j] = m[(i-1)%2][j-1];
-                else m[i%2][j] = 1 + min(m[(i-1)%2][j-1], min(m[(i-1)%2][j], m[i%2][j-1]));
+                m[i%2][j] = word1[i-1]==word2[j-1]?  
+                    m[(i-1)%2][j-1]: 1+min(m[(i-1)%2][j-1], min(m[(i-1)%2][j], m[i%2][j-1]));
             }
         }
         return m[M%2][N];
     }
 };
 
-// Space Optimized Bottom-up Dynamic Programming Version, time O(MN), space O(N) 
+// Space-optimized Bottom-up Dynamic Programming, time O(MN), space O(N) 
 class Solution {
 public:
     int minDistance(string word1, string word2) {
@@ -104,8 +96,7 @@ public:
             m[0] = i;
             for (int j=1; j<=N; ++j) {
                 int t = m[j];
-                if (word1[i-1] == word2[j-1]) m[j] = backup;
-                else m[j] = 1 + min(backup, min(m[j], m[j-1]));
+                m[j] = word1[i-1]==word2[j-1]? backup: 1+min(backup, min(m[j], m[j-1]));
                 backup = t;
             }
         }
