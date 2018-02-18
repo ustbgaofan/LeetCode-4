@@ -33,7 +33,7 @@ Visually, the graph looks like the following:
  * };
  */
 
-// DFS, time complexity O(E), space complexity O(V) 
+// DFS, time O(E), space O(V) 
 class Solution {
 public:
     UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node) {
@@ -51,14 +51,14 @@ public:
     }
 };
 
-// BFS, time complexity O(E), space complexity O(V) 
+// BFS, time O(E), space O(V) 
 class Solution {
 public:
-    UndirectedGraphNode* cloneGraph(UndirectedGraphNode* node) {
+    UndirectedGraphNode* cloneGraph(UndirectedGraphNode *node) {
         if (!node) return node;
-        queue<UndirectedGraphNode *> q;
+        queue<UndirectedGraphNode*> q;
         q.push(node);
-        unordered_map<UndirectedGraphNode *, UndirectedGraphNode *> h;
+        unordered_map<UndirectedGraphNode*, UndirectedGraphNode*> h;
         h[node] = new UndirectedGraphNode(node->label);
         while (!q.empty()) {
             UndirectedGraphNode *f = q.front();
