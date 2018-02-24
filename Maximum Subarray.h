@@ -12,6 +12,21 @@ If you have figured out the O(n) solution, try coding another solution using the
 */
 
 
+// Brute force, time O(n^2), space O(1)
+class Solution {
+public:   
+    int maxSubArray(vector<int>& nums) {
+        int res = INT_MIN;
+        for (int i=0; i<nums.size(); ++i) {
+            for (int j=i, s=0; j<nums.size(); ++j) {
+                s += nums[j];
+                res = max(res, s);
+            }
+        }
+        return res;
+    }
+};
+
 // Dynamic Programming, time O(n), space O(n)
 // m[i] represents the max sum of subarray ending at i
 class Solution {
