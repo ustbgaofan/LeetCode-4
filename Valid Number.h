@@ -30,7 +30,7 @@ public:
         
         if (i<N && s[i]=='e') {
             ++i;
-            if (i<N && s[i]=='+' || s[i]=='-') ++i;
+            if (i<N && (s[i]=='+' || s[i]=='-')) ++i;
             for (num=0; i<N && isdigit(s[i]); ++i, ++num) ;
             if (num < 1) return false;
         }
