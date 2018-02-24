@@ -27,7 +27,7 @@ Explanation:  There are three ways to climb to the top.
 */
 
 
-// Recursive Version, Time Limit Exceeded
+// Recursive
 class Solution {
 public:
     int climbStairs(int n) {
