@@ -15,18 +15,18 @@ return [3, 4].
 class Solution {
 public:
     vector<int> searchRange(vector<int>& nums, int target) {
-        vector<int> res(2, -1);
+        vector<int> res = {-1, -1};
         for (int i=0; i<nums.size(); ++i) {
             if (nums[i] == target) {
                 if (res[0] == -1) res[0] = i;
-                if (res[0] != -1) res[1] = i;
+                res[1] = i;
             }
         }
         return res;
     }
 };
 
-// Naive Binary Search, time O(n), space O(1) 
+// Binary Search, time O(n), space O(1) 
 class Solution {
 public:
     vector<int> searchRange(vector<int>& nums, int target) {
@@ -60,13 +60,13 @@ public:
 class Solution {
 public:
     vector<int> searchRange(vector<int>& nums, int target) {
-        int l = searchLowerBound(nums, target);
-        int r = searchUpperBound(nums, target);
-        if (l!=-1 && r!=-1) return vector<int>({l, r});
-        return vector<int>({-1, -1});
+        int l = searchBound(nums, target, true);
+        int r = searchBound(nums, target, false);
+        if (l!=-1 && r!=-1) return {l, r};
+        return {-1, -1};
     }
     
-    int searchLowerBound(const vector<int>& nums, int target) {
+    int searchBound(const vector<int>& nums, int target, bool lower) {
         int l = 0, r = nums.size() - 1, res = -1;
         while (l <= r) {
             int m = l + (r-l)/2;
@@ -74,21 +74,7 @@ public:
             if (target < nums[m]) r = m - 1;
             if (target == nums[m]) {
                 res = m;
-                r = m - 1;
-            }
-        }
-        return res;
-    }
-    
-    int searchUpperBound(const vector<int>& nums, int target) {
-        int l = 0, r = nums.size() - 1, res = -1;
-        while (l <= r) {
-            int m = l + (r-l)/2;
-            if (target > nums[m]) l = m + 1;
-            if (target < nums[m]) r = m - 1;
-            if (target == nums[m]) {
-                res = m;
-                l = m + 1;
+                lower? r=m-1: l=m+1;
             }
         }
         return res;
