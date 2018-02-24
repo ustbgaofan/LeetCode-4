@@ -18,32 +18,7 @@ A solution set is:
 */
 
 
-// Naive Version, using set to avoid duplicates
-class Solution {
-public:
-    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
-        set<vector<int>> res;
-        vector<int> path;
-        sort(candidates.begin(), candidates.end());
-        DFS(candidates, 0, target, path, res);
-        vector<vector<int>> ans(res.begin(), res.end());
-        return ans;
-    }
-    
-    void DFS(const vector<int>& num, int i, int target, vector<int>& path, set<vector<int>>& res) {
-        if (target <= 0) {
-            if (target == 0) res.insert(path);
-            return;
-        }
-        for (int j=i; j<num.size(); ++j) {
-            path.push_back(num[j]);
-            DFS(num, j+1, target-num[j], path, res);
-            path.pop_back();
-        }
-    }
-};
-
-// Advanced Version, avoiding duplicates without set, time O(2^n), space O(target/min)
+// time O(2^n), space O(target/min)
 class Solution {
 public:
     vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
