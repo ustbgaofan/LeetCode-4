@@ -20,20 +20,21 @@ Try to do this in one pass.
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
+
+// Two pointers, time O(n), space O(1)
 class Solution {
 public:
     ListNode* removeNthFromEnd(ListNode* head, int n) {
-        ListNode dummy(0);
+        ListNode dummy(0), *slow = &dummy, *fast = &dummy;
         dummy.next = head;
-        ListNode *begin = &dummy, *end = &dummy;
-        for (int i=0; i<n; ++i) end = end->next;
-        while (end->next) {
-            end = end->next;
-            begin = begin->next;
+        for (int i=0; i<n; ++i) fast = fast->next;
+        while (fast->next) {
+            fast = fast->next;
+            slow = slow->next;
         }
-        end = begin->next;
-        begin->next = end->next;
-        delete end;
+        fast = slow->next;
+        slow->next = fast->next;
+        delete fast;
         return dummy.next;
     }
 };
