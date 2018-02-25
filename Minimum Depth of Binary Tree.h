@@ -35,18 +35,16 @@ public:
         int res = 0;
         queue<TreeNode*> q;
         q.push(root);
-        q.push(nullptr);
         while (!q.empty()) {
-            TreeNode* node = q.front();
-            q.pop();
-            if (!node) {
-                ++res;
-                q.push(nullptr);
-            } else {
-                if (!node->left && !node->right) return res+1;
-                if (node->left) q.push(node->left);
-                if (node->right) q.push(node->right);
-            }
+            ++res;
+            int k = q.size();
+            for (int i=0; i<k; ++i) {
+                TreeNode* f = q.front();
+                q.pop();
+                if (!f->left && !f->right) return res;
+                if (f->left) q.push(f->left);
+                if (f->right) q.push(f->right);
+            }            
         }
     }
 };
