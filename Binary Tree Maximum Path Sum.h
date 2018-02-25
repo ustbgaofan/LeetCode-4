@@ -22,7 +22,8 @@ Return 6.
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
- 
+
+// time O(n), space O(h)
 class Solution {
 public:
     int maxPathSum(TreeNode *root, int &res) {
