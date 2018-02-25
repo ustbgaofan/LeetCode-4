@@ -4,6 +4,18 @@ Given preorder and inorder traversal of a tree, construct the binary tree.
 
 Note:
 You may assume that duplicates do not exist in the tree.
+
+For example, given
+
+preorder = [3,9,20,15,7]
+inorder = [9,3,15,20,7]
+Return the following binary tree:
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
 */
 
 /**
@@ -16,8 +28,8 @@ You may assume that duplicates do not exist in the tree.
  * };
  */
 
-/* time O(nlogn), space O(logn)
-Say we have 2 arrays, PRE and IN.
+// time O(nlogn), space O(h)
+/*Say we have 2 arrays, PRE and IN.
 Preorder traversing implies that PRE[0] is the root node.
 Then we can find this PRE[0] in IN, say it’s IN[5].
 Now we know that IN[5] is root, so we know that IN[0] - IN[4] is on the left side, IN[6] to the end is on the right side.
@@ -41,6 +53,7 @@ public:
 };
 
 // time O(n), space O(n)
+// hash to speedup the above approach
 class Solution {
 public:
     TreeNode *buildTree(vector<int>& preorder, int begin1, int end1, vector<int>& inorder, int begin2, int end2, unordered_map<int, int>& h) {
