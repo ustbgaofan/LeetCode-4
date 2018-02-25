@@ -69,7 +69,7 @@ public:
             if (root->left) {
                 TreeNode *subtree = root->right;
                 root->right = root->left;
-                root->left = NULL;
+                root->left = nullptr;
                 TreeNode *next = root;
                 while (next->right) next = next->right;
                 next->right = subtree;  // may not be the final place of subtree
