@@ -38,30 +38,30 @@ If you notice carefully in the flattened tree, each node's right child points to
  * };
  */
 
-// Recursive Version, time complexity O(n)
+// Recursive, time O(n), space O(h)
 class Solution {
 public:
     void flatten(TreeNode *root, TreeNode *&next) {
         if (!root) return;
         if (!root->left && !root->right) {
-            root->right = next;
+            root->left = root->right = nullptr;
             next = root;
             return;
         }
         flatten(root->right, next);
         flatten(root->left, next);
-        root->left = NULL;
+        root->left = nullptr;
         root->right = next;
         next = root;
     }
     
     void flatten(TreeNode *root) {
-        TreeNode *next = NULL;
+        TreeNode *next = nullptr;
         flatten(root, next);
     }
 };
 
-// Iterative Version, time complexity O(n)
+// Iterative, time O(n), space O(1)
 class Solution {
 public:
     void flatten(TreeNode *root) {
