@@ -15,6 +15,9 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
 
 // time O(n), space O(1)
 // https://leetcode.com/problems/next-permutation/solution/
+// 1. find first decreasing element e from right
+// 2. find number x just larger than e, swap x & e
+// 3. reverse
 class Solution {
 public:
     void nextPermutation(vector<int> &nums) {
