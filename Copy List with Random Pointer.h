@@ -5,65 +5,60 @@ A linked list is given such that each node contains an additional random pointer
 Return a deep copy of the list.
 */
 
+/**
+ * Definition for singly-linked list with a random pointer.
+ * struct RandomListNode {
+ *     int label;
+ *     RandomListNode *next, *random;
+ *     RandomListNode(int x) : label(x), next(NULL), random(NULL) {}
+ * };
+ */
 
-// 1st Hash-based Version, time complexity O(n), space complexity O(n)
+// Hash, time O(n), space O(n)
 class Solution {
 public:
     RandomListNode *copyRandomList(RandomListNode *head) {
-        unordered_map<RandomListNode *, RandomListNode *> hash;
-        hash[NULL] = NULL;
-        for (RandomListNode *cur=head; cur; cur=cur->next) {
-            hash[cur] = new RandomListNode(cur->label);
-        }
-        for (RandomListNode *cur=head; cur; cur=cur->next) {
-            hash[cur]->next = hash[cur->next];
-            hash[cur]->random = hash[cur->random];
-        }
-        return hash[head];
-    }
-};
-
-// 2nd Hash-based Version, time complexity O(n), space complexity O(n)
-class Solution {
-public:
-    RandomListNode *copyRandomList(RandomListNode *head) {
-        unordered_map<RandomListNode *, RandomListNode *> hash;
-        hash[NULL] = NULL;
-        RandomListNode dummy(0), *newHead = &dummy;
+        unordered_map<RandomListNode*, RandomListNode*> h;
+        h[nullptr] = nullptr;  // corner case!
+        RandomListNode dummy(0), *cur = &dummy;
         for (; head; head=head->next) {
-            if (hash.find(head) == hash.end()) {
-                hash[head] = new RandomListNode(head->label);
+            if (h.find(head) == h.end()) {
+                h[head] = new RandomListNode(head->label);
             }
-            if (hash.find(head->random) == hash.end()) {
-                hash[head->random] = new RandomListNode(head->random->label);
+            if (h.find(head->random) == h.end()) {
+                h[head->random] = new RandomListNode(head->random->label);
             }
-            newHead->next = hash[head];
-            newHead = newHead->next;
-            newHead->random = hash[head->random];
+            cur->next = h[head];
+            cur = cur->next;
+            cur->random = h[head->random];
         }
         return dummy.next;
     }
 };
 
-// Non-hash Version, time complexity O(n), space complexity O(1)
+// time O(n), space O(1)
+// associate the original node with its copy node in a single linked list
+// 1. Iterate the original list and duplicate each node. The duplicate of each node follows its original immediately.
+// 2. Iterate the new list and assign the random pointer for each duplicated node.
+// 3. Restore the original list and extract the duplicated nodes.
 class Solution {
 public:
     RandomListNode *copyRandomList(RandomListNode *head) {
-        if (!head) return NULL;
+        if (!head) return nullptr;
         for (RandomListNode *cur=head; cur; cur=cur->next->next) {
-            RandomListNode *newCur = new RandomListNode(cur->label);
-            newCur->next = cur->next;
-            cur->next = newCur;
+            RandomListNode *t = new RandomListNode(cur->label);
+            t->next = cur->next;
+            cur->next = t;
         }
         for (RandomListNode *cur=head; cur; cur=cur->next->next) {
             if (cur->random) cur->next->random = cur->random->next;
         }
-        RandomListNode *newHead = head->next;
+        RandomListNode *res = head->next;
         for (RandomListNode *cur=head; cur; cur=cur->next) {
             RandomListNode *next = cur->next->next;
             if (next) cur->next->next = next->next;
             cur->next = next;
         }
-        return newHead;
+        return res;
     }
 };
