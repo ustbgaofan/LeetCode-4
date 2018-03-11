@@ -25,7 +25,7 @@ UPDATE (2017/1/20):
 The wordList parameter had been changed to a list of strings (instead of a set of strings). Please reload the code definition to get the latest changes.
 */
 
-
+// BFS, time O(n), space O(n), n = len(wordList)
 class Solution {
 public:
     vector<vector<string>> findLadders(string beginWord, string endWord, vector<string>& wordList) {
