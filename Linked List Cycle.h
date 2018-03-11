@@ -15,21 +15,21 @@ Can you solve it without using extra space?
  * };
  */
 
-// Naive Version, time complexity O(n), space complexity O(n)
+// Hash, time O(n), space O(n)
 class Solution {
 public:
     bool hasCycle(ListNode *head) {
-        unordered_set<ListNode *> hash;
+        unordered_set<ListNode*> h;
         while (head) {
-            if (hash.find(head) != hash.end()) return true;
-            hash.insert(head);
+            if (h.find(head) != h.end()) return true;
+            h.insert(head);
             head = head->next;
         }
         return false;
     }
 };
 
-// Two Pointers Version, time complexity O(n), space complexity O(1)
+// Two Pointers, time O(n), space O(1)
 class Solution {
 public:
     bool hasCycle(ListNode *head) {
