@@ -25,19 +25,19 @@ Return 6.
 
 // time O(n), space O(h)
 class Solution {
-public:
-    int maxPathSum(TreeNode *root, int &res) {
+public:  
+    int maxPathSum(TreeNode *root) {
+        int res = INT_MIN;
+        DFS(root, res);
+        return res;
+    }
+    
+    int DFS(TreeNode *root, int &res) {
         if (!root) return 0;
-        int l = maxPathSum(root->left, res);
-        int r = maxPathSum(root->right, res);
+        int l = DFS(root->left, res);
+        int r = DFS(root->right, res);
         int pathSum = max(root->val, max(l,r)+root->val);
         res = max(res, max(pathSum, root->val+l+r));
         return pathSum;
-    }
-    
-    int maxPathSum(TreeNode *root) {
-        int res = INT_MIN;
-        maxPathSum(root, res);
-        return res;
     }
 };
