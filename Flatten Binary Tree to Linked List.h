@@ -43,13 +43,13 @@ class Solution {
 public:
     void flatten(TreeNode *root) {
         TreeNode *next = nullptr;
-        flatten(root, next);
+        DFS(root, next);
     }
     
     void DFS(TreeNode *root, TreeNode *&next) {
         if (!root) return;
-        flatten(root->right, next);
-        flatten(root->left, next);
+        DFS(root->right, next);
+        DFS(root->left, next);
         root->left = nullptr;
         root->right = next;
         next = root;
