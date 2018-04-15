@@ -41,23 +41,18 @@ If you notice carefully in the flattened tree, each node's right child points to
 // Recursive, time O(n), space O(h)
 class Solution {
 public:
-    void flatten(TreeNode *root, TreeNode *&next) {
+    void flatten(TreeNode *root) {
+        TreeNode *next = nullptr;
+        flatten(root, next);
+    }
+    
+    void DFS(TreeNode *root, TreeNode *&next) {
         if (!root) return;
-        if (!root->left && !root->right) {
-            root->left = root->right = nullptr;
-            next = root;
-            return;
-        }
         flatten(root->right, next);
         flatten(root->left, next);
         root->left = nullptr;
         root->right = next;
         next = root;
-    }
-    
-    void flatten(TreeNode *root) {
-        TreeNode *next = nullptr;
-        flatten(root, next);
     }
 };
 
