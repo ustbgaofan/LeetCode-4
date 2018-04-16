@@ -38,6 +38,7 @@ public:
 };
 
 // Hard!!!, time O(log(m+n)), space O(log(m+n))
+// More reasonable here https://www.geeksforgeeks.org/?p=2105
 class Solution {
 public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
