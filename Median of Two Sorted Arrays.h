@@ -37,28 +37,26 @@ public:
     }
 };
 
-// Difficult, time O(log(m+n)), space O(log(m+n))
+// Hard!!!, time O(log(m+n)), space O(log(m+n))
 class Solution {
 public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
         int M = nums1.size(), N = nums2.size();
-        int l = (M+N+1) / 2, r = (M+N+2) / 2; 
+        int l = (M+N+1) / 2, r = (M+N+2) / 2;
         return (findKth(nums1, 0, nums2, 0, l) + findKth(nums1, 0, nums2, 0, r)) / 2.0;
     }
     
-    int findKth(vector<int>& nums1, int S1, vector<int>& nums2, int S2, int k) {
+    int findKth(vector<int>& nums1, int s1, vector<int>& nums2, int s2, int k) {
         int M = nums1.size(), N = nums2.size();
-        if (S1 == M) return nums2[S2+k-1];
-        if (S2 == N) return nums1[S1+k-1];
-        if (k == 1) return min(nums1[S1], nums2[S2]);
+        if (s1 == M) return nums2[s2+k-1];
+        if (s2 == N) return nums1[s1+k-1];
+        if (k == 1) return min(nums1[s1], nums2[s2]);
         
-        int mid1 = INT_MAX, mid2 = INT_MAX;
-        if (S1 + k/2 - 1 < M) mid1 = nums1[S1 + k/2 - 1];
-        if (S2 + k/2 - 1 < N) mid2 = nums2[S2 + k/2 - 1];
+        int mid1 = nums1[min(M,s1+k/2) - 1], mid2 = nums2[min(N,s2+k/2) - 1];
         if (mid1 < mid2) {
-            return findKth(nums1, S1 + k/2, nums2, S2, k - k/2);
+            return findKth(nums1, s1+min(M,k/2), nums2, s2, k-min(M,k/2));
         } else {
-            return findKth(nums1, S1, nums2, S2 + k/2, k - k/2);
+            return findKth(nums1, s1, nums2, s2+min(N,k/2), k-min(N,k/2));
         }
     }
 };
