@@ -37,23 +37,28 @@ public:
     }
 };
 
-// Advanced Version, time complexity O(log(m+n)), space complexity O(log(m+n))
+// Difficult, time O(log(m+n)), space O(log(m+n))
 class Solution {
 public:
-    int findKth(int A[], int m, int B[], int n, int k) {
-        if (m > n) return findKth(B, n, A, m, k);
-        if (m == 0) return B[k-1];
-        if (k == 1) return min(A[0], B[0]);
-        int l = min(k>>1, m), r = k - l;
-        if (A[l-1] < B[r-1]) return findKth(A+l, m-l, B, r, k-l);
-        if (A[l-1] > B[r-1]) return findKth(A, l, B+r, n-r, k-r);
-        return A[l-1];
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        int M = nums1.size(), N = nums2.size();
+        int l = (M+N+1) / 2, r = (M+N+2) / 2; 
+        return (findKth(nums1, 0, nums2, 0, l) + findKth(nums1, 0, nums2, 0, r)) / 2.0;
     }
     
-    double findMedianSortedArrays(int A[], int m, int B[], int n) {
-        assert(m!=0 || n!=0);
-        int len = m + n, half = (m + n) >> 1;
-        if (len & 0x1) return findKth(A, m, B, n, half+1);
-        else return (findKth(A, m, B, n, half) + findKth(A, m, B, n, half+1)) / 2.0;
+    int findKth(vector<int>& nums1, int S1, vector<int>& nums2, int S2, int k) {
+        int M = nums1.size(), N = nums2.size();
+        if (S1 == M) return nums2[S2+k-1];
+        if (S2 == N) return nums1[S1+k-1];
+        if (k == 1) return min(nums1[S1], nums2[S2]);
+        
+        int mid1 = INT_MAX, mid2 = INT_MAX;
+        if (S1 + k/2 - 1 < M) mid1 = nums1[S1 + k/2 - 1];
+        if (S2 + k/2 - 1 < N) mid2 = nums2[S2 + k/2 - 1];
+        if (mid1 < mid2) {
+            return findKth(nums1, S1 + k/2, nums2, S2, k - k/2);
+        } else {
+            return findKth(nums1, S1, nums2, S2 + k/2, k - k/2);
+        }
     }
 };
