@@ -2,10 +2,13 @@
 /*
 Given a linked list, swap every two adjacent nodes and return its head.
 
-For example,
-Given 1->2->3->4, you should return the list as 2->1->4->3.
+Example:
 
-Your algorithm should use only constant space. You may not modify the values in the list, only nodes itself can be changed.
+Given 1->2->3->4, you should return the list as 2->1->4->3.
+Note:
+
+Your algorithm should use only constant extra space.
+You may not modify the values in the list's nodes, only nodes itself may be changed.
 */
 
 /**
@@ -17,13 +20,12 @@ Your algorithm should use only constant space. You may not modify the values in 
  * };
  */
  
-// Iterative Version 
+// Iterative, time O(n), space O(1) 
 class Solution {
 public:
-    ListNode *swapPairs(ListNode *head) {
-        ListNode header(0);
-        header.next = head;
-        ListNode *p1 = &header, *p2 = head;
+    ListNode* swapPairs(ListNode* head) {
+        ListNode dummy(0), *p1 = &dummy, *p2 = head;
+        dummy.next = head;
         while (p1 && p2 && p2->next) {
             p1->next = p2->next;
             p1 = p1->next;
@@ -32,14 +34,14 @@ public:
             p1 = p2;
             p2 = p2->next;
         }
-        return header.next;
+        return dummy.next;
     }
 };
 
-// Recursive Version 
+// Recursive, time O(n), space O(n)
 class Solution {
 public:
-    ListNode *swapPairs(ListNode *head) {
+    ListNode* swapPairs(ListNode* head) {
         if (!head || !head->next) return head;
         ListNode *newHead = head->next;
         head->next = newHead->next;
