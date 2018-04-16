@@ -1,30 +1,39 @@
 // Median of Two Sorted Arrays
 /*
-There are two sorted arrays A and B of size m and n respectively. 
+There are two sorted arrays nums1 and nums2 of size m and n respectively.
+
 Find the median of the two sorted arrays. The overall run time complexity should be O(log (m+n)).
+
+Example 1:
+nums1 = [1, 3]
+nums2 = [2]
+
+The median is 2.0
+Example 2:
+nums1 = [1, 2]
+nums2 = [3, 4]
+
+The median is (2 + 3)/2 = 2.5
 */
 
-
-// Naive Version, time complexity O(m+n), space complexity O(1)
+// time O(m+n), space O(1)
 class Solution {
 public:
-    double findMedianSortedArrays(int A[], int m, int B[], int n) {
-        assert(m!=0 || n!=0);
-        int t1 = INT_MIN, t2 = INT_MIN, len = ((m+n)>>1) + 1;
-        for (int i=0, j=0, p=0; p<len; ++p) {
-            t1 = t2;
-            if (i == m) {
-                t2 = B[j++];
-                continue;
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        int M = nums1.size(), N = nums2.size(), len = (M+N)/2, a, b;
+        for (int i=0, j=0, p=0; p<=len; ++p) {
+            a = b;
+            if (i == M) {
+                b = nums2[j++];
+            } else if (j == N) {
+                b = nums1[i++];
+            } else if (nums1[i] <= nums2[j]) {
+                b = nums1[i++];
+            } else if (nums1[i] > nums2[j]) {
+                b = nums2[j++];
             }
-            if (j == n) {
-                t2 = A[i++];
-                continue;
-            }
-            if (A[i] <= B[j]) t2 = A[i++];
-            else t2 = B[j++];
         }
-        return (m+n)&0x1? t2: (t1+t2)/2.0;
+        return (M+N)%2? b: (a+b)/2.0;
     }
 };
 
