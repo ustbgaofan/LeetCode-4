@@ -13,8 +13,7 @@ Given the following matrix:
 You should return [1,2,3,6,9,8,7,4,5].
 */
 
-
-// A Very Clean Solution!
+// time O(n), space O(1)
 class Solution {
 public:
     vector<int> spiralOrder(vector<vector<int> > &matrix) {
